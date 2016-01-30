@@ -1,8 +1,11 @@
 package com.rishi.app.app;
 
+import org.apache.http.protocol.HTTP;
+import org.apache.http.entity.ByteArrayEntity;
+import org.apache.http.message.BasicHeader;
 import org.json.JSONException;
 import org.json.JSONObject;
-
+import org.apache.http.entity.StringEntity;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
@@ -11,152 +14,96 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
-
+import android.util.Log;
 import com.loopj.android.http.AsyncHttpClient;
+import com.loopj.android.http.JsonHttpResponseHandler;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
-/**
- * Created by RishiS on 1/27/2016.
- */
 
-/**
- *
- * Login Activity Class
- *
- */
+import android.preference.PreferenceActivity.Header;
+import java.io.UnsupportedEncodingException;
+
+
+
+
 public class LoginActivity extends Activity {
-    // Progress Dialog Object
-    ProgressDialog prgDialog;
-    // Error Msg TextView Object
-    TextView errorMsg;
-    // Email Edit View Object
-    EditText emailET;
-    // Passwprd Edit View Object
-    EditText pwdET;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.login);
-        // Find Error Msg Text View control by ID
-        errorMsg = (TextView)findViewById(R.id.login_error);
-        // Find Email Edit View control by ID
-        emailET = (EditText)findViewById(R.id.loginEmail);
-        // Find Password Edit View control by ID
-        pwdET = (EditText)findViewById(R.id.loginPassword);
-        // Instantiate Progress Dialog object
-        prgDialog = new ProgressDialog(this);
-        // Set Progress Dialog Text
-        prgDialog.setMessage("Please wait...");
-        // Set Cancelable as False
-        prgDialog.setCancelable(false);
     }
 
-    /**
-     * Method gets triggered when Login button is clicked
-     *
-     * @param view
-     */
-    public void loginUser(View view){
-        // Get Email Edit View Value
-        String email = emailET.getText().toString();
-        // Get Password Edit View Value
-        String password = pwdET.getText().toString();
-        // Instantiate Http Request Param Object
-        RequestParams params = new RequestParams();
-        // When Email Edit View and Password Edit View have values other than Null
-        if(Utility.isNotNull(email) && Utility.isNotNull(password)){
-            // When Email entered is Valid
-            if(Utility.validate(email)){
-                // Put Http parameter username with value of Email Edit View control
-                params.put("username", email);
-                // Put Http parameter password with value of Password Edit Value control
-                params.put("password", password);
-                // Invoke RESTful Web Service with Http parameters
-                invokeWS(params);
-            }
-            // When Email is invalid
-            else{
-                Toast.makeText(getApplicationContext(), "Please enter valid email", Toast.LENGTH_LONG).show();
-            }
-        } else{
-            Toast.makeText(getApplicationContext(), "Please fill the form, don't leave any field blank", Toast.LENGTH_LONG).show();
+
+
+    public void  loginUser(View view) throws JSONException, UnsupportedEncodingException {
+        String login = "amit.rajula@gmail.com";
+        String password = "test1234s";
+
+        JSONObject jsonObject = new JSONObject();
+        if(Utility.isNotNull(login) && Utility.isNotNull(password)) {
+            jsonObject.put("emailId", "amit.rajula@gmail.com");
+            jsonObject.put("password", "test1234s");
+            invokeWS(jsonObject);
         }
-
+        else{
+            Toast.makeText(getApplicationContext(), "Proszę wypełnić wszystkie pola!", Toast.LENGTH_LONG).show();
+        }
     }
 
-    /**
-     * Method that performs RESTful webservice invocations
-     *
-     * @param params
-     */
-    public void invokeWS(RequestParams params){
-        // Show Progress Dialog
-        prgDialog.show();
-        // Make RESTful webservice call using AsyncHttpClient object
+    private void invokeWS(JSONObject jsonObject) throws UnsupportedEncodingException {
+
+        StringEntity se = new StringEntity(jsonObject.toString());
         AsyncHttpClient client = new AsyncHttpClient();
-        client.get("http://192.168.2.2:9999/useraccount/login/dologin",params ,new AsyncHttpResponseHandler() {
-            // When the response returned by REST has Http response code '200'
+        client.post(getApplicationContext(),"http://52.89.2.186/project/webservice/public/Login",se,"application/json", new AsyncHttpResponseHandler() {
+
             @Override
+            public void onStart() {
+                // called before request is started
+            }
+
+           // @Override
             public void onSuccess(String response) {
-                // Hide Progress Dialog
-                prgDialog.hide();
-                try {
-                    // JSON Object
+                // called when response HTTP status is "200 OK"
+                try{
                     JSONObject obj = new JSONObject(response);
-                    // When the JSON response has status boolean value assigned with true
-                    if(obj.getBoolean("status")){
-                        Toast.makeText(getApplicationContext(), "You are successfully logged in!", Toast.LENGTH_LONG).show();
-                        // Navigate to Home screen
-                        navigatetoHomeActivity();
+
+                    if(obj.getBoolean("error")){
+                        Toast.makeText(getApplicationContext(), obj.getString("msg"), Toast.LENGTH_LONG).show();
+                    }else{
+                        Toast.makeText(getApplicationContext(), obj.getString("msg"), Toast.LENGTH_LONG).show();
                     }
-                    // Else display error message
-                    else{
-                        errorMsg.setText(obj.getString("error_msg"));
-                        Toast.makeText(getApplicationContext(), obj.getString("error_msg"), Toast.LENGTH_LONG).show();
-                    }
-                } catch (JSONException e) {
+
+                }catch (JSONException e) {
                     // TODO Auto-generated catch block
                     Toast.makeText(getApplicationContext(), "Error Occured [Server's JSON response might be invalid]!", Toast.LENGTH_LONG).show();
                     e.printStackTrace();
 
                 }
             }
-            // When the response returned by REST has Http response code other than '200'
-            @Override
-            public void onFailure(int statusCode, Throwable error,
-                                  String content) {
-                // Hide Progress Dialog
-                prgDialog.hide();
-                // When Http response code is '404'
-                if(statusCode == 404){
-                    Toast.makeText(getApplicationContext(), "Requested resource not found", Toast.LENGTH_LONG).show();
-                }
-                // When Http response code is '500'
-                else if(statusCode == 500){
-                    Toast.makeText(getApplicationContext(), "Something went wrong at server end", Toast.LENGTH_LONG).show();
-                }
-                // When Http response code other than 404, 500
-                else{
-                    Toast.makeText(getApplicationContext(), "Unexpected Error occcured! [Most common Error: Device might not be connected to Internet or remote server is not up and running]", Toast.LENGTH_LONG).show();
-                }
+
+            //@Override
+            public void onFailure(int statusCode, Header[] headers, byte[] errorResponse, Throwable e) {
+                // called when response HTTP status is "4XX" (eg. 401, 403, 404)
+            }
+
+            //@Override
+            public void onRetry(int retryNo) {
+                // called when request is retried
             }
         });
+
+
     }
 
-    /**
-     * Method which navigates from Login Activity to Home Activity
-     */
+
     public void navigatetoHomeActivity(){
         Intent homeIntent = new Intent(getApplicationContext(),HomeActivity.class);
         homeIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         startActivity(homeIntent);
     }
 
-    /**
-     * Method gets triggered when Register button is clicked
-     *
-     * @param view
-     */
+
     public void navigatetoRegisterActivity(View view){
         Intent loginIntent = new Intent(getApplicationContext(),RegisterActivity.class);
         loginIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);

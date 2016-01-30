@@ -1,4 +1,5 @@
 package com.rishi.app.app;
+import org.apache.http.Header;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -6,6 +7,7 @@ import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.preference.PreferenceActivity;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -14,14 +16,11 @@ import android.widget.Toast;
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
+import com.loopj.android.http.JsonHttpResponseHandler;
 /**
  * Created by RishiS on 1/27/2016.
  */
 
-/**
- *
- * Register Activity Class
- */
 public class RegisterActivity extends Activity {
     // Progress Dialog Object
     ProgressDialog prgDialog;
@@ -72,13 +71,11 @@ public class RegisterActivity extends Activity {
             // When Email entered is Valid
             if(Utility.validate(email)){
                 // Put Http parameter name with value of Name Edit View control
-                params.put("firstName", name);
-                // Put Http parameter username with value of Email Edit View control
-                params.put("emailId", email);
+                //params.put("name", name);
+               // // Put Http parameter username with value of Email Edit View control
+                params.put("emailId", "amit.rajula@gmail.com");
                 // Put Http parameter password with value of Password Edit View control
-                params.put("password", password);
-                params.put("lastName", "Keshav");
-                params.put("mobileNo", "6268419153");
+                params.put("password", "test1234");
                 // Invoke RESTful Web Service with Http parameters
                 invokeWS(params);
             }
@@ -104,7 +101,7 @@ public class RegisterActivity extends Activity {
         prgDialog.show();
         // Make RESTful webservice call using AsyncHttpClient object
         AsyncHttpClient client = new AsyncHttpClient();
-        client.get("http://192.168.2.2:9999/useraccount/register/doregister",params ,new AsyncHttpResponseHandler() {
+        client.post("http://52.89.2.186/project/webservice/public/Login", params, new AsyncHttpResponseHandler() {
             // When the response returned by REST has Http response code '200'
             @Override
             public void onSuccess(String response) {
@@ -114,16 +111,18 @@ public class RegisterActivity extends Activity {
                     // JSON Object
                     JSONObject obj = new JSONObject(response);
                     // When the JSON response has status boolean value assigned with true
-                    if(obj.getBoolean("status")){
+                    if (obj.getBoolean("error")) {
+
+                        errorMsg.setText(obj.getString("msg"));
+                        Toast.makeText(getApplicationContext(), obj.getString("msg"), Toast.LENGTH_LONG).show();
                         // Set Default Values for Edit View controls
-                        setDefaultValues();
-                        // Display successfully registered message using Toast
-                        Toast.makeText(getApplicationContext(), "You are successfully registered!", Toast.LENGTH_LONG).show();
+
                     }
                     // Else display error message
-                    else{
-                        errorMsg.setText(obj.getString("error_msg"));
-                        Toast.makeText(getApplicationContext(), obj.getString("error_msg"), Toast.LENGTH_LONG).show();
+                    else {
+                        setDefaultValues();
+                        // Display successfully registered message using Toast
+                        Toast.makeText(getApplicationContext(), obj.getString("msg"), Toast.LENGTH_LONG).show();
                     }
                 } catch (JSONException e) {
                     // TODO Auto-generated catch block
@@ -132,6 +131,7 @@ public class RegisterActivity extends Activity {
 
                 }
             }
+
             // When the response returned by REST has Http response code other than '200'
             @Override
             public void onFailure(int statusCode, Throwable error,
@@ -139,15 +139,15 @@ public class RegisterActivity extends Activity {
                 // Hide Progress Dialog
                 prgDialog.hide();
                 // When Http response code is '404'
-                if(statusCode == 404){
+                if (statusCode == 404) {
                     Toast.makeText(getApplicationContext(), "Requested resource not found", Toast.LENGTH_LONG).show();
                 }
                 // When Http response code is '500'
-                else if(statusCode == 500){
+                else if (statusCode == 500) {
                     Toast.makeText(getApplicationContext(), "Something went wrong at server end", Toast.LENGTH_LONG).show();
                 }
                 // When Http response code other than 404, 500
-                else{
+                else {
                     Toast.makeText(getApplicationContext(), "Unexpected Error occcured! [Most common Error: Device might not be connected to Internet or remote server is not up and running]", Toast.LENGTH_LONG).show();
                 }
             }
