@@ -31,7 +31,7 @@ public class HomeActivity extends Activity {
         textView = new TextView(this);
 
 //        Log.i("SER",sessionManager.getFirstName());
-        Toast.makeText(getApplicationContext(),"hhhh",Toast.LENGTH_LONG).show();
+        Toast.makeText(getApplicationContext(),"Welcome " + sessionManager.getFirstName(),Toast.LENGTH_LONG).show();
         textView.setText(sessionManager.getFirstName());
 
         FrameLayout fl = (FrameLayout)findViewById(R.id.home);

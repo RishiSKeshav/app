@@ -39,7 +39,8 @@
             android:layout_height="wrap_content" android:hint="@string/prompt_password"
             android:layout_marginBottom="10dp"
             android:textColorHint="#ffffffff"
-            android:textColor="#ffffffff" />
+            android:textColor="#ffffffff"
+            android:inputType="textPassword" />
 
         <Button android:id="@+id/login" style="?android:textAppearanceSmall"
             android:layout_width="match_parent" android:layout_height="wrap_content"
@@ -67,13 +68,15 @@
 
             <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
                 android:orientation="vertical">
+
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_marginTop="30dp"
                     android:layout_height="40dp"
                     android:text="Signup"
                     android:textSize="15dp"
-                    android:onClick="navigatetoRegisterActivity"
+                    android:onClick="goToRegisterActivity"
+                    android:clickable="true"
                     android:textColor="#ffffffff"
                    android:gravity="center|center_horizontal"/>
 
