@@ -37,9 +37,9 @@ public class RegisterActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.register);
         // Find Error Msg Text View control by ID
-        errorMsg = (TextView)findViewById(R.id.register_error);
+        //errorMsg = (TextView)findViewById(R.id.register_error);
         // Find Name Edit View control by ID
-        nameET = (EditText)findViewById(R.id.registerName);
+        //nameET = (EditText)findViewById(R.id.registerName);
         // Find Email Edit View control by ID
         emailET = (EditText)findViewById(R.id.registerEmail);
         // Find Password Edit View control by ID

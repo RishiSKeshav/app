@@ -25,7 +25,8 @@ public class HomeActivity extends Activity {
 
         sessionManager = new SessionManager(getApplicationContext());
 
-      //  textView = (TextView) findViewById(R.id.display);
+        textView = (TextView) findViewById(R.id.display);
+        textView.setText(sessionManager.getFirstName());
     }
 
 }

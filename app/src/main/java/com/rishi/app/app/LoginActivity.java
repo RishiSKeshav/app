@@ -94,6 +94,8 @@ public class LoginActivity extends Activity {
                         //Retrieve data
                         // If value is not present return second param value - In this case null
                         //pref.getString("key_name", null);
+
+                        navigatetoHomeActivity();
                     }
 
                 }catch (JSONException e) {
