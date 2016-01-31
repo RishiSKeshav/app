@@ -4,6 +4,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
+import android.util.Log;
+import android.widget.Toast;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -34,6 +36,7 @@ public class SessionManager {
 
     public  void createLoginSession(JSONObject userObj)
     {
+
         try {
                 editor.putString("id",userObj.getString("id"));
                 editor.putString("firstName",userObj.getString("firstName"));
@@ -41,7 +44,11 @@ public class SessionManager {
                 editor.putString("emailId",userObj.getString("emailId"));
                 editor.putString("mobileNo",userObj.getString("mobileNo"));
                 editor.putString("displayPicture",userObj.getString("displayPicture"));
+
+                editor.commit();
+
         } catch (JSONException e) {
+            Toast.makeText(_context, "Error ", Toast.LENGTH_LONG).show();
             e.printStackTrace();
         }
     }

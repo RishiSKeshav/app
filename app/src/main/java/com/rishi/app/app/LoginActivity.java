@@ -87,7 +87,7 @@ public class LoginActivity extends Activity {
                     }else{
 
                         JSONObject userObj = obj.getJSONObject("user");
-                        Toast.makeText(getApplicationContext(),"Welcome " + userObj.get("lastName") + "!", Toast.LENGTH_LONG).show();
+                       // Toast.makeText(getApplicationContext(),"Welcome " + userObj.get("lastName") + "!", Toast.LENGTH_LONG).show();
 
                         sessionManager.createLoginSession(userObj);
 
