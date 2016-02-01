@@ -33,6 +33,7 @@ public class LoginActivity extends ActionBarActivity {
 
     EditText emailET;
 
+
     EditText passwordET;
 
     @Override

@@ -12,6 +12,7 @@ import android.graphics.PorterDuffXfermode;
 import android.graphics.Rect;
 import android.graphics.RectF;
 import android.media.Image;
+import android.net.LinkAddress;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
@@ -39,6 +40,7 @@ import org.w3c.dom.Text;
 public class HomeActivity extends AppCompatActivity {
 
     SessionManager sessionManager;
+    TextView nameTV;
 
 
     @Override
@@ -53,6 +55,12 @@ public class HomeActivity extends AppCompatActivity {
         //getSupportActionBar().setCustomView(R.layout.actionbar_title);
 
         sessionManager = new SessionManager(getApplicationContext());
+//        LinearLayout ll = (LinearLayout)findViewById(R.id.nameLayout);
+//        nameTV = (TextView)findViewById(R.id.name);
+//
+//        nameTV.setText(sessionManager.getFirstName() + " " + sessionManager.getLastName());
+//        ll.addView(nameTV);
+
 
         Bitmap bm = BitmapFactory.decodeResource(getResources(),R.mipmap.image);
 
