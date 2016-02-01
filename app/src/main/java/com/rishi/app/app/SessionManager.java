@@ -47,6 +47,7 @@ public class SessionManager {
 
                 editor.commit();
 
+                Log.i("SER", "After Creating session, lastName: " + userObj.getString("lastName"));
         } catch (JSONException e) {
             Toast.makeText(_context, "Error ", Toast.LENGTH_LONG).show();
             e.printStackTrace();

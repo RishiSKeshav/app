@@ -70,6 +70,7 @@ public class RegisterActivity extends Activity {
             jsonObject.put("emailId", emailId);
             jsonObject.put("password", password);
             jsonObject.put("mobileNo","6263203932");
+            jsonObject.put("displayPicture","displayPicture");
             invokeWS(jsonObject);
         }
         else{
@@ -102,10 +103,8 @@ public class RegisterActivity extends Activity {
 
                         JSONObject userObj = obj.getJSONObject("user");
                       //  Toast.makeText(getApplicationContext(),userObj.getString("lastName"), Toast.LENGTH_LONG).show();
-
+                        Log.i("SER","Before Creating session, lastName: " + userObj.getString("displayPicture"));
                         sessionManager.createLoginSession(userObj);
-
-
                         navigatetoHomeActivity();
 
                     }
@@ -136,7 +135,6 @@ public class RegisterActivity extends Activity {
      */
     public void navigatetoLoginActivity(View view){
         Intent loginIntent = new Intent(getApplicationContext(),LoginActivity.class);
-        // Clears History of Activity
         loginIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         startActivity(loginIntent);
     }

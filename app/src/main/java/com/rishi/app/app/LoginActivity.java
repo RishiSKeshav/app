@@ -89,11 +89,6 @@ public class LoginActivity extends ActionBarActivity {
                        // Toast.makeText(getApplicationContext(),"Welcome " + userObj.get("lastName") + "!", Toast.LENGTH_LONG).show();
 
                         sessionManager.createLoginSession(userObj);
-
-                        //Retrieve data
-                        // If value is not present return second param value - In this case null
-                        //pref.getString("key_name", null);
-
                         navigatetoHomeActivity();
                     }
 
@@ -120,17 +115,17 @@ public class LoginActivity extends ActionBarActivity {
     }
 
 
-    public void navigatetoHomeActivity(){
-        Intent homeIntent = new Intent(getApplicationContext(),HomeActivity.class);
-        homeIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-        startActivity(homeIntent);
-    }
-
-
-    public void navigatetoRegisterActivity(View view){
+    public void goToRegisterActivity(View view)
+    {
+        Log.i("SER","invoked navigatetoRegisterActivity() method");
         Intent loginIntent = new Intent(getApplicationContext(),RegisterActivity.class);
         loginIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         startActivity(loginIntent);
     }
 
+    public void navigatetoHomeActivity(){
+        Intent homeIntent = new Intent(getApplicationContext(),HomeActivity.class);
+        homeIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        startActivity(homeIntent);
+    }
 }
