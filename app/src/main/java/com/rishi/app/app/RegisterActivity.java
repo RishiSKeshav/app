@@ -1,5 +1,4 @@
 package com.rishi.app.app;
-import org.apache.http.Header;
 import org.apache.http.entity.StringEntity;
 import org.json.JSONException;
 import org.json.JSONObject;

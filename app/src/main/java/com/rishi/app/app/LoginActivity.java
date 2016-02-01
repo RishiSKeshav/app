@@ -1,8 +1,6 @@
 package com.rishi.app.app;
 
-import org.apache.http.protocol.HTTP;
-import org.apache.http.entity.ByteArrayEntity;
-import org.apache.http.message.BasicHeader;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.apache.http.entity.StringEntity;
