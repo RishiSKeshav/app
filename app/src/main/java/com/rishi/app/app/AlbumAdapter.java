@@ -2,6 +2,7 @@ package com.rishi.app.app;
 
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.media.Image;
@@ -13,6 +14,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.rishi.app.app.Album;
 import com.squareup.picasso.Picasso;
@@ -22,30 +24,48 @@ import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.List;
 
 public class AlbumAdapter extends RecyclerView.Adapter<AlbumAdapter.MyViewHolder> {
 
     private List<Album> albumList;
+
     private Bitmap bitmap;
     //Context context;
 
-    public class MyViewHolder extends RecyclerView.ViewHolder {
+
+    public class MyViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         public TextView name, date,count;
         public ImageView thumbnail;
 
             public MyViewHolder(View view) {
             super(view);
+            view.setOnClickListener(this);
             name = (TextView) view.findViewById(R.id.name);
             thumbnail = (ImageView) view.findViewById(R.id.thumbnail);
             count = (TextView) view.findViewById(R.id.count);
             date = (TextView) view.findViewById(R.id.date);
         }
+
+        @Override
+        public void onClick(View view) {
+            Context context = view.getContext();
+            Album al = albumList.get(getPosition());
+            Intent intent = new Intent(context,AlbumMediaDisplay.class);
+            intent.putExtra("Id",al.getId());
+
+            context.startActivity(intent);
+
+        }
     }
+
+
 
 
     public AlbumAdapter(List<Album> albumList) {
         this.albumList = albumList;
+
        // this.context = context;
     }
 
@@ -66,6 +86,8 @@ public class AlbumAdapter extends RecyclerView.Adapter<AlbumAdapter.MyViewHolder
         Context context = holder.thumbnail.getContext();
         Picasso.with(context).load(album.getThumbnail()).error(R.mipmap.ic_launcher).placeholder(R.mipmap.ic_launcher)
                 .into(holder.thumbnail);
+
+
     }
 
     @Override

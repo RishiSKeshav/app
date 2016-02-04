@@ -8,22 +8,26 @@ import java.sql.Timestamp;
 /**
  * Created by amitrajula on 2/2/16.
  */
-public class Album {
+public class AlbumMedia {
 
-    private String name,thumbnail;
+    private String name,path;
     private String date;
-    private String count,id;
+    private String id,albumId;
 
-    public Album(){
+    public AlbumMedia(){
 
     }
 
-    public Album(String id,String name,String thumbnail,String count,String date){
+    public AlbumMedia(String id,String name,String path,String date,String albumId){
         this.id = id;
         this.name = name;
-        this.thumbnail = thumbnail;
-        this.count = count;
+        this.path = path;
         this.date = date;
+        this.albumId = albumId;
+    }
+
+    public AlbumMedia(String path){
+            this.path = path;
     }
 
 
@@ -51,19 +55,19 @@ public class Album {
         this.date = album_date;
     }
 
-    public String getThumbnail() {
-        return thumbnail;
+    public String getPath() {
+        return path;
     }
 
-    public void setThumbnail(String thumbnail) {
-        this.thumbnail = thumbnail;
+    public void setPath(String thumbnail) {
+        this.path = path;
     }
 
-    public String getCount(){
-        return count;
+    public void setAlbumId (String albumId){
+        this.albumId = albumId;
     }
 
-    public void setCount(String count){
-        this.count = count;
+    public String getAlbumId (){
+        return albumId;
     }
 }

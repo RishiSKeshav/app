@@ -35,6 +35,16 @@
 
 
         </activity>
+
+        <activity android:name=".AlbumMediaDisplay">
+
+
+        </activity>
+
+        <activity android:name=".FullScreenMediaDisplay">
+
+
+        </activity>
     </application>
 
 </manifest>

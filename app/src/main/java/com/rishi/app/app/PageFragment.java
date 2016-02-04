@@ -75,7 +75,7 @@ public class PageFragment extends Fragment {
             aswipeRefreshLayout = (SwipeRefreshLayout)view.findViewById(R.id.pager_refresh_layout);
             mAdapter = new AlbumAdapter(albumList);
             recyclerView.setHasFixedSize(true);
-            RecyclerView.LayoutManager mLayoutManager = new StaggeredGridLayoutManager(2,1);
+            RecyclerView.LayoutManager mLayoutManager = new GridLayoutManager(getContext(),2);
             recyclerView.setLayoutManager(mLayoutManager);
             recyclerView.setAdapter(mAdapter);
 
@@ -153,7 +153,7 @@ public class PageFragment extends Fragment {
                             JSONObject albumdetails = albumarray.optJSONObject(i);
 
 
-                            Album al = new Album(albumdetails.optString("name"), albumdetails.optString("thumbnail"),
+                            Album al = new Album(albumdetails.optString("id"),albumdetails.optString("name"), albumdetails.optString("thumbnail"),
                                     albumdetails.optString("count"), albumdetails.optString("date"));
                             albumList.add(al);
                             mAdapter.notifyDataSetChanged();
