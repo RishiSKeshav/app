@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="250dp"
+    android:layout_margin="1dp"
+    android:orientation="vertical"
+    >
+    <TextView
+        android:id="@+id/shared_album_user"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Qmit df"
+        android:padding="10dp"
+        android:textColor="#000"
+        android:textSize="17sp"
+        />
+
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/shared_album_media_recycler_view2"
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_alignBottom="@+id/shared_album_user"
+        tools:context=".MainActivity$PlaceholderFragment"/>
+
+</LinearLayout>

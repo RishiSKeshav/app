@@ -5,19 +5,12 @@ import android.content.Context;
 import android.os.Bundle;
 import android.preference.PreferenceActivity;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentPagerAdapter;
-import android.support.v4.view.ViewPager;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.GridLayoutManager;
-import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.widget.Toast;
@@ -40,14 +33,14 @@ import java.util.List;
 public class PageFragment extends Fragment {
     public static final String ARG_PAGE = "ARG_PAGE";
 
-    private int mPage;
+    private int mPage,countalbum,countsharedalbum,countsharedmedia;
     Context context;
     private List<Album> albumList = new ArrayList<>();
-    private List<ShareAlbum> sharealbumlist = new ArrayList<>();
+    private List<SharedAlbum> sharealbumlist = new ArrayList<>();
     private List<SharedMedia> sharedMediaList = new ArrayList<>();
     private RecyclerView recyclerView;
     private AlbumAdapter mAdapter;
-    private ShareAlbumAdapter sAdapter;
+    private SharedAlbumAdapter sAdapter;
     private SharedMediaAdapter smAdapter;
     private SwipeRefreshLayout aswipeRefreshLayout;
 
@@ -96,7 +89,7 @@ public class PageFragment extends Fragment {
 
         if (mPage == 2){
             recyclerView = (RecyclerView) view.findViewById(R.id.recycler_view);
-            sAdapter = new ShareAlbumAdapter(sharealbumlist);
+            sAdapter = new SharedAlbumAdapter(sharealbumlist);
             recyclerView.setHasFixedSize(true);
             RecyclerView.LayoutManager sLayoutManager = new LinearLayoutManager(getContext());
             recyclerView.setLayoutManager(sLayoutManager);
@@ -148,15 +141,17 @@ public class PageFragment extends Fragment {
 
                         JSONObject albumObj = obj.getJSONObject("outputObj");
                         JSONArray albumarray = albumObj.optJSONArray("album");
+                        countalbum = albumarray.length();
+                        if(countalbum > 0) {
+                            for (int i = 0; i < albumarray.length(); i++) {
+                                JSONObject albumdetails = albumarray.optJSONObject(i);
 
-                        for (int i = 0; i < albumarray.length(); i++) {
-                            JSONObject albumdetails = albumarray.optJSONObject(i);
 
-
-                            Album al = new Album(albumdetails.optString("id"),albumdetails.optString("name"), albumdetails.optString("thumbnail"),
-                                    albumdetails.optString("count"), albumdetails.optString("date"));
-                            albumList.add(al);
-                            mAdapter.notifyDataSetChanged();
+                                Album al = new Album(albumdetails.optString("id"), albumdetails.optString("name"), albumdetails.optString("thumbnail"),
+                                        albumdetails.optString("count"), albumdetails.optString("date"));
+                                albumList.add(al);
+                                mAdapter.notifyDataSetChanged();
+                            }
                         }
                     }
                     aswipeRefreshLayout.setRefreshing(false);
@@ -218,15 +213,17 @@ public class PageFragment extends Fragment {
 
                                 JSONObject albumObj = obj.getJSONObject("outputObj");
                                 JSONArray albumarray = albumObj.optJSONArray("album");
+                                countsharedalbum = albumarray.length();
+                                if(countsharedalbum > 0) {
+                                    for (int i = 0; i < albumarray.length(); i++) {
+                                        JSONObject albumdetails = albumarray.optJSONObject(i);
 
-                                for (int i = 0; i < albumarray.length(); i++) {
-                                    JSONObject albumdetails = albumarray.optJSONObject(i);
 
-
-                                    ShareAlbum sa = new ShareAlbum(albumdetails.optString("name"), albumdetails.optString("thumbnail"),
-                                            albumdetails.optString("count"), albumdetails.optString("date"),albumdetails.optString("members"));
-                                    sharealbumlist.add(sa);
-                                    sAdapter.notifyDataSetChanged();
+                                        SharedAlbum sa = new SharedAlbum(albumdetails.optString("id"),albumdetails.optString("name"), albumdetails.optString("thumbnail"),
+                                                albumdetails.optString("count"), albumdetails.optString("date"), albumdetails.optString("members"));
+                                        sharealbumlist.add(sa);
+                                        sAdapter.notifyDataSetChanged();
+                                    }
                                 }
                             }
 
@@ -289,15 +286,18 @@ public class PageFragment extends Fragment {
 
                                 JSONObject mediaObj = obj.getJSONObject("outputObj");
                                 JSONArray mediaaaray = mediaObj.optJSONArray("media");
+                                countsharedmedia = mediaaaray.length();
+                                if(countsharedmedia > 0) {
 
-                                for (int i = 0; i < mediaaaray.length(); i++) {
-                                    JSONObject mediadetails = mediaaaray.optJSONObject(i);
+                                    for (int i = 0; i < mediaaaray.length(); i++) {
+                                        JSONObject mediadetails = mediaaaray.optJSONObject(i);
 
 
-                                    SharedMedia sm = new SharedMedia(mediadetails.optString("name"), mediadetails.optString("path"),
-                                            mediadetails.optString("date"));
-                                    sharedMediaList.add(sm);
-                                    smAdapter.notifyDataSetChanged();
+                                        SharedMedia sm = new SharedMedia(mediadetails.optString("name"), mediadetails.optString("path"),
+                                                mediadetails.optString("date"));
+                                        sharedMediaList.add(sm);
+                                        smAdapter.notifyDataSetChanged();
+                                    }
                                 }
                             }
 

@@ -16,6 +16,17 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.util.Log;
+
+import com.facebook.CallbackManager;
+import com.facebook.FacebookCallback;
+import com.facebook.FacebookException;
+import com.facebook.FacebookSdk;
+import com.facebook.GraphRequest;
+import com.facebook.GraphResponse;
+import com.facebook.HttpMethod;
+import com.facebook.Profile;
+import com.facebook.login.LoginResult;
+import com.facebook.login.widget.LoginButton;
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.JsonHttpResponseHandler;
 import com.loopj.android.http.AsyncHttpResponseHandler;
@@ -28,7 +39,8 @@ import java.io.UnsupportedEncodingException;
 
 
 public class LoginActivity extends ActionBarActivity {
-
+    private CallbackManager callbackManager;
+    private LoginButton loginButton;
     SessionManager sessionManager;
 
     EditText emailET;
@@ -39,13 +51,97 @@ public class LoginActivity extends ActionBarActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        FacebookSdk.sdkInitialize(getApplicationContext());
+        callbackManager=CallbackManager.Factory.create();
+
         setContentView(R.layout.login);
 
         sessionManager = new SessionManager(getApplicationContext());
 
         emailET = (EditText) findViewById(R.id.loginEmail);
         passwordET = (EditText) findViewById(R.id.loginPassword);
+
+        loginButton= (LoginButton)findViewById(R.id.login_button);
+        loginButton.setReadPermissions("public_profile", "email","user_friends");
+
+
+
+
+        loginButton.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
+            @Override
+            public void onSuccess(LoginResult loginResult) {
+//                GraphRequest request = GraphRequest.newMeRequest(loginResult.getAccessToken(), new GraphRequest.GraphJSONObjectCallback() {
+//                            @Override
+//                            public void onCompleted(
+//                                    JSONObject object,
+//                                    GraphResponse response) {
+//
+//                                Log.e("response: ", response + "");
+//                                try {
+//
+//                                    Log.i("sss",object.toString());
+////                                    user = new User();
+////                                    user.facebookID = object.getString("id").toString();
+////                                    user.email = object.getString("email").toString();
+////                                    user.name = object.getString("name").toString();
+////                                    user.gender = object.getString("gender").toString();
+////                                    PrefUtils.setCurrentUser(user, LoginActivity.this);
+//
+//                                } catch (Exception e) {
+//                                    e.printStackTrace();
+//                                }
+////                                Toast.makeText(LoginActivity.this, "welcome " + user.name, Toast.LENGTH_LONG).show();
+////                                Intent intent = new Intent(LoginActivity.this, LogoutActivity.class);
+////                                startActivity(intent);
+////                                finish();
+//
+//                            }
+//
+//                        });
+//
+//                Bundle parameters = new Bundle();
+//                parameters.putString("fields", "id,name,email,gender, birthday");
+//                request.setParameters(parameters);
+//                request.executeAsync();
+
+
+                new GraphRequest(
+                        loginResult.getAccessToken(),
+                        "/me/friends",
+                        null,
+                        HttpMethod.GET,
+                        new GraphRequest.Callback() {
+                            public void onCompleted(GraphResponse response) {
+                                Log.e("response: ", response + "");
+                            }
+                        }
+                ).executeAsync();
+
+
+
+            }
+
+            @Override
+            public void onCancel() {
+                //info.setText("Login attempt cancelled.");
+            }
+
+            @Override
+            public void onError(FacebookException e) {
+                e.printStackTrace();
+                //info.setText("Login attempt failed.");
+            }
+        });
     }
+
+
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        callbackManager.onActivityResult(requestCode, resultCode, data);
+    }
+
+
 
     public void  loginUser(View view) throws JSONException, UnsupportedEncodingException {
 

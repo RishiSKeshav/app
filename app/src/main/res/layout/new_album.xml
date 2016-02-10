@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <android.support.v7.widget.Toolbar
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:float="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/new_monitor_toolbar"
+    android:minHeight="?android:attr/actionBarSize"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="#0097A7">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginLeft="16dp"
+        android:orientation="vertical">
+
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="56dp"/>
+
+        <EditText
+            android:id="@+id/album_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingBottom="16dp"
+            android:paddingTop="16dp"
+            android:textSize="40dp"
+            android:textColor="#fff"
+            android:textColorHint="#BDBDBD"
+            android:hint="Title"/>
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="16dp"/>
+        </LinearLayout>
+
+    </android.support.v7.widget.Toolbar>
+
+    <TextView
+
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Synced Media"
+        android:textColor="#000"
+        android:textSize="18sp"
+        android:padding="15dp"/>
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/recycler_view_new_album"
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".MainActivity$PlaceholderFragment"/>
+
+
+
+</LinearLayout>
+
+
+
+
+

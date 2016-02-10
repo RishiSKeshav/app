@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="schemas.android.com/tools"
+    tools:context="com.rishi.app.app.AlbumMedia"
+    xmlns:yourapp="http://schemas.android.com/apk/res-auto" >
+
+    <item android:id="@+id/delete_album_media_select"
+    android:title=""
+    android:icon="@android:drawable/ic_menu_delete"
+    yourapp:showAsAction="ifRoom"/>
+
+    <item android:id="@+id/save"    android:title="Forward">
+
+        <menu>
+
+            <item android:id="@+id/to_personal_album"
+
+                android:title="Personal Album" />
+
+            <item android:id="@+id/to_shared_album"
+
+                android:title="Shared Album" />
+
+            <item android:id="@+id/to_others"
+
+                android:title="User" />
+
+        </menu>
+
+    </item>
+
+
+
+    <!--<item android:id="@+id/share_personal_album_media_display"-->
+        <!--android:title="Personal Album"></item>-->
+
+    <!--<item android:id="@+id/shared_album_media_display"-->
+        <!--android:title="Shared Album"></item>-->
+
+    <!--<item android:id="@+id/other_album_media_display"-->
+        <!--android:title="Others"></item>-->
+
+
+
+
+</menu>

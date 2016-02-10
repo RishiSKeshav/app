@@ -19,4 +19,8 @@
     <string name="invalid_password">Password is too short</string>
     <string name="incorrect_password">Password is incorrect</string>
     <string name="field_required">This field is required</string>
+
+
+    <string name="facebook_app_id">507308039440027</string>
+    <string name="font_fontFamily_medium">sans-serif</string>
 </resources>

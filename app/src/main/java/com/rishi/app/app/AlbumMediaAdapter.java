@@ -83,10 +83,8 @@ public class AlbumMediaAdapter extends RecyclerView.Adapter<AlbumMediaAdapter.My
         Context context = holder.path.getContext();
         Picasso.with(context).load(am.getPath()).error(R.mipmap.ic_launcher).placeholder(R.mipmap.ic_launcher)
                 .into(holder.path);
-
-             path = (albumMediaList.get(position).getPath());
+            path = albumMediaList.get(position).getPath();
             arrayalbumMediaList.add(path);
-
     }
 
 

@@ -2,6 +2,7 @@ package com.rishi.app.app;
 
 import android.app.ActionBar;
 import android.app.Activity;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
@@ -14,6 +15,7 @@ import android.graphics.RectF;
 import android.media.Image;
 import android.net.LinkAddress;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBarActivity;
@@ -41,6 +43,7 @@ public class HomeActivity extends AppCompatActivity {
 
     SessionManager sessionManager;
     TextView nameTV;
+    private FloatingActionButton fab;
 
 
     @Override
@@ -61,6 +64,14 @@ public class HomeActivity extends AppCompatActivity {
 //        nameTV.setText(sessionManager.getFirstName() + " " + sessionManager.getLastName());
 //        ll.addView(nameTV);
 
+        fab = (FloatingActionButton)findViewById(R.id.fab);
+        fab.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(HomeActivity.this, NewAlbum.class);
+                startActivity(intent);
+            }
+        });
 
         Bitmap bm = BitmapFactory.decodeResource(getResources(),R.mipmap.image);
 
@@ -71,7 +82,6 @@ public class HomeActivity extends AppCompatActivity {
         viewPager.setAdapter(new SampleFragmentPagerAdapter(getSupportFragmentManager(),
                 HomeActivity.this));
 
-        // Give the TabLayout the ViewPager
         TabLayout tabLayout = (TabLayout) findViewById(R.id.sliding_tabs);
         tabLayout.setupWithViewPager(viewPager);
 

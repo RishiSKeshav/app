@@ -3,23 +3,24 @@ package com.rishi.app.app;
 /**
  * Created by amitrajula on 2/2/16.
  */
-public class ShareAlbum {
+public class SharedAlbum {
 
 
-    private String name,thumbnail;
+    private String name,thumbnail,id;
     private String date,members;
     private String count;
 
-    public ShareAlbum(){
+    public SharedAlbum(){
 
     }
 
-    public ShareAlbum(String name,String thumbnail,String count,String date,String members){
+    public SharedAlbum(String id,String name,String thumbnail,String count,String date,String members){
 
         this.name = name;
         this.thumbnail = thumbnail;
         this.count = count;
         this.date = date;
+        this.id = id;
         this.members= members;
     }
 
@@ -62,6 +63,14 @@ public class ShareAlbum {
 
     public void setMembers(String count){
         this.members = members;
+    }
+
+    public void setId (String id){
+        this.id = id;
+    }
+
+    public String getId(){
+        return id;
     }
 
 }

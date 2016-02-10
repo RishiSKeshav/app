@@ -54,6 +54,7 @@ public class AlbumAdapter extends RecyclerView.Adapter<AlbumAdapter.MyViewHolder
             Album al = albumList.get(getPosition());
             Intent intent = new Intent(context,AlbumMediaDisplay.class);
             intent.putExtra("Id",al.getId());
+            intent.putExtra("Name",al.getName());
 
             context.startActivity(intent);
 

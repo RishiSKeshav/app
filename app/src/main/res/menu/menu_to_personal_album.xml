@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="schemas.android.com/tools"
+    tools:context="com.rishi.app.app.AlbumMedia"
+    xmlns:yourapp="http://schemas.android.com/apk/res-auto" >
+
+    <item android:id="@+id/done_to_personal_album"
+        android:title="Done"
+        yourapp:showAsAction="ifRoom"/>
+
+</menu>

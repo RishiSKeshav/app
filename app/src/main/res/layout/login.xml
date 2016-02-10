@@ -50,17 +50,25 @@
             android:textColor="#ffffffff"
             android:background="#00838F" />
 
-            <Button android:id="@+id/ddd" style="?android:textAppearanceSmall"
-                android:layout_width="match_parent" android:layout_height="wrap_content"
-                android:layout_marginTop="16dp" android:text="Facebook Login"
-                android:textStyle="bold"
-                android:textColor="#ffffffff"
-                android:background="#00838F" />
+            <!--<Button android:id="@+id/ddd" style="?android:textAppearanceSmall"-->
+                <!--android:layout_width="match_parent" android:layout_height="wrap_content"-->
+                <!--android:layout_marginTop="16dp" android:text="Facebook Login"-->
+                <!--android:textStyle="bold"-->
+                <!--android:textColor="#ffffffff"-->
+                <!--android:background="#00838F" />-->
+
+            <com.facebook.login.widget.LoginButton
+                android:id="@+id/login_button"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:height="30dp"
+                android:layout_centerInParent="true" />
 
 
 
 
-            </LinearLayout>
+        </LinearLayout>
 
 
 
@@ -93,6 +101,7 @@
 
 
     </LinearLayout>
+
 
 
 
