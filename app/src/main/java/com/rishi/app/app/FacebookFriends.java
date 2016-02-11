@@ -11,6 +11,7 @@ import java.sql.Timestamp;
 public class FacebookFriends {
 
     private String id,firstName,lastName,emailId,mobileNo,displayPicture,facebookId;
+    private boolean isSelected;
 
 
     public FacebookFriends(){
@@ -18,7 +19,7 @@ public class FacebookFriends {
     }
 
     public FacebookFriends(String id,String firstName,String lastName,String emailId,
-                           String mobileNo,String displayPicture,String facebookId){
+                           String mobileNo,String displayPicture,String facebookId,boolean isSelected){
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -26,6 +27,8 @@ public class FacebookFriends {
         this.mobileNo = mobileNo;
         this.displayPicture = displayPicture;
         this.facebookId = facebookId;
+        this.isSelected = isSelected;
+
 
     }
 
@@ -83,5 +86,13 @@ public class FacebookFriends {
 
     public void setFacebookId(){
         this.facebookId = facebookId;
+    }
+
+    public boolean isSelected() {
+        return isSelected;
+    }
+
+    public void setSelected(boolean isSelected) {
+        this.isSelected = isSelected;
     }
 }

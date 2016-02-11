@@ -23,4 +23,6 @@
 
     <string name="facebook_app_id">507308039440027</string>
     <string name="font_fontFamily_medium">sans-serif</string>
+
+    <string name="title_activity_camera_full_image_display">CameraFullImageDisplayActivity</string>
 </resources>

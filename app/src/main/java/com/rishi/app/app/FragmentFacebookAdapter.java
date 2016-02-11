@@ -19,6 +19,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -43,30 +44,17 @@ public class FragmentFacebookAdapter extends RecyclerView.Adapter<FragmentFacebo
     //Context context;
 
 
-    public class MyViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+    public class MyViewHolder extends RecyclerView.ViewHolder {
         public TextView name;
         public ImageView path;
+        public CheckBox check;
 
         public MyViewHolder(View view) {
             super(view);
-            view.setOnClickListener(this);
             // name = (TextView) view.findViewById(R.id.name);
             path =  (ImageView) view.findViewById(R.id.facebook_displayPicture);
             name = (TextView) view.findViewById(R.id.facebook_name);
-            //date = (TextView) view.findViewById(R.id.date);
-        }
-
-        @Override
-        public void onClick(View view) {
-
-//            int position = getAdapterPosition();
-//
-//            String pos = Integer.toString(position);
-//            Context context = view.getContext();
-//            Intent intent = new Intent(context,FullScreenMediaDisplay.class);
-//            intent.putExtra("Position", pos);
-//            intent.putStringArrayListExtra("data",arrayalbumMediaList);
-//            context.startActivity(intent);
+            check = (CheckBox) view.findViewById(R.id.facebook_chkSelected);
         }
     }
 
@@ -84,11 +72,29 @@ public class FragmentFacebookAdapter extends RecyclerView.Adapter<FragmentFacebo
     }
 
     @Override
-    public void onBindViewHolder(MyViewHolder holder, int position) {
+    public void onBindViewHolder(MyViewHolder holder, final int position) {
 
         FacebookFriends ff = friends.get(position);
 
         holder.name.setText(ff.getFirstName() + " " + ff.getLastName());
+
+        holder.check.setChecked(ff.isSelected());
+        holder.check.setTag(ff);
+
+        holder.check.setOnClickListener(new View.OnClickListener(){
+            public void onClick(View v) {
+                CheckBox cb = (CheckBox) v;
+                FacebookFriends ffs = (FacebookFriends) cb.getTag();
+
+                ffs.setSelected(cb.isChecked());
+                friends.get(position).setSelected(cb.isChecked());
+
+                Toast.makeText(
+                        v.getContext(),
+                        "Clicked on Checkbox: " + cb.getText() + " is "
+                                + cb.isChecked(), Toast.LENGTH_LONG).show();
+            }
+        });
 
         Context context = holder.path.getContext();
         Picasso.with(context).load(ff.getDisplayPicture()).error(R.mipmap.ic_launcher).placeholder(R.mipmap.ic_launcher)

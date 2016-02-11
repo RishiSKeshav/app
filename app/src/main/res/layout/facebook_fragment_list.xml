@@ -25,7 +25,7 @@
         android:textSize="16sp" />
 
     <CheckBox
-        android:id="@+id/chkSelected"
+        android:id="@+id/facebook_chkSelected"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"

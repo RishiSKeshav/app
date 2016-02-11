@@ -124,7 +124,7 @@ public class FragmentFacebook extends Fragment{
                                                         FacebookFriends ff = new FacebookFriends(userDetails.optString("id"),userDetails.optString("firstName"),
                                                                 userDetails.optString("lastName"),userDetails.optString("emailId"),
                                                                 userDetails.optString("mobileNo"),userDetails.optString("displayPicture"),
-                                                                userDetails.optString("facebookId"));
+                                                                userDetails.optString("facebookId"),false);
 
                                                         friends.add(ff);
                                                         ffAdapter.notifyDataSetChanged();
