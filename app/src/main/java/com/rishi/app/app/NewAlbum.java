@@ -37,9 +37,9 @@ public class NewAlbum extends AppCompatActivity implements NewAlbumAdapter.MyVie
     private RecyclerView recyclerView;
     private ActionModeCallback actionModeCallback = new ActionModeCallback();
     private ActionMode actionMode;
-    private List<Integer> pos = new ArrayList<Integer>();
+    private ArrayList<Integer> pos = new ArrayList<Integer>();
     private EditText album_title;
-
+    String SHARED;
 
 
     @Override
@@ -48,11 +48,18 @@ public class NewAlbum extends AppCompatActivity implements NewAlbumAdapter.MyVie
         //Displays Home Screen
         setContentView(R.layout.new_album);
 
+        Intent i = getIntent();
+        SHARED = i.getStringExtra("shared");
+
+
         album_title = (EditText)findViewById(R.id.album_title);
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setTitle("Create Album");
-
+        if(SHARED.equals("yes")){
+            getSupportActionBar().setTitle("Create Shared Album");
+        }else {
+            getSupportActionBar().setTitle("Create Album");
+        }
         recyclerView = (RecyclerView)findViewById(R.id.recycler_view_new_album);
 
         nmAdapter = new NewAlbumAdapter(mediaList,this);
@@ -123,74 +130,85 @@ public class NewAlbum extends AppCompatActivity implements NewAlbumAdapter.MyVie
         public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
             switch (item.getItemId()) {
                 case R.id.selected_menu:
-                   String  at = album_title.getText().toString();
-                    try {
-                        JSONArray a = new JSONArray(pos);
-                        JSONObject obj = new JSONObject();
-                        obj.put("userId", "1");
-                        obj.put("shared", "No");
-                        obj.put("name",at);
-                        obj.put("mediaId",a);
-                        StringEntity jsonString = new StringEntity(obj.toString());
+                    if (SHARED.equals("yes")) {
+                        String at = album_title.getText().toString();
+                        Intent intent = new Intent(NewAlbum.this, Userbase.class);
+                        intent.putExtra("action","create_shared_album");
+                        intent.putExtra("album_name",at);
+                        intent.putIntegerArrayListExtra("mediaId", pos);
+                        startActivity(intent);
+
+                    } else {
+
+                        String at = album_title.getText().toString();
+                        try {
+                            JSONArray a = new JSONArray(pos);
+                            JSONObject obj = new JSONObject();
+                            obj.put("userId", "1");
+                            obj.put("shared", "No");
+                            obj.put("name", at);
+                            obj.put("mediaId", a);
+                            StringEntity jsonString = new StringEntity(obj.toString());
 
 
-                        AsyncHttpClient client = new AsyncHttpClient();
+                            AsyncHttpClient client = new AsyncHttpClient();
 
-                        client.post(getApplicationContext(), "http://52.89.2.186/project/webservice/public/Createalbum", jsonString, "application/json", new AsyncHttpResponseHandler() {
+                            client.post(getApplicationContext(), "http://52.89.2.186/project/webservice/public/Createalbum", jsonString, "application/json", new AsyncHttpResponseHandler() {
 
-                            @Override
-                            public void onStart() {
-                                // called before request is started
-                            }
-
-                            // @Override
-                            public void onSuccess(String response) {
-                                // called when response HTTP status is "200 OK"
-                                try {
-                                    JSONObject obj = new JSONObject(response);
-
-                                    if (obj.getBoolean("error")) {
-                                        Toast.makeText(getApplicationContext(), obj.getString("msg"), Toast.LENGTH_LONG).show();
-                                    } else {
-                                        Toast.makeText(getApplicationContext(), obj.getString("msg"), Toast.LENGTH_LONG).show();
-
-                                        Intent homeIntent = new Intent(getApplicationContext(),HomeActivity.class);
-                                        homeIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                                        startActivity(homeIntent);
-                                    }
-                                } catch (JSONException e) {
-                                    // TODO Auto-generated catch block
-                                    Toast.makeText(getApplicationContext(), "Error Occured [Server's JSON response might be invalid]!", Toast.LENGTH_LONG).show();
-                                    e.printStackTrace();
-
+                                @Override
+                                public void onStart() {
+                                    // called before request is started
                                 }
-                            }
 
-                            //@Override
-                            public void onFailure(int statusCode, PreferenceActivity.Header[] headers, byte[] errorResponse, Throwable e) {
-                                // called when response HTTP status is "4XX" (eg. 401, 403, 404)
-                            }
+                                // @Override
+                                public void onSuccess(String response) {
+                                    // called when response HTTP status is "200 OK"
+                                    try {
+                                        JSONObject obj = new JSONObject(response);
 
-                            //@Override
-                            public void onRetry(int retryNo) {
-                                // called when request is retried
-                            }
+                                        if (obj.getBoolean("error")) {
+                                            Toast.makeText(getApplicationContext(), obj.getString("msg"), Toast.LENGTH_LONG).show();
+                                        } else {
+                                            Toast.makeText(getApplicationContext(), obj.getString("msg"), Toast.LENGTH_LONG).show();
+
+                                            Intent homeIntent = new Intent(getApplicationContext(), HomeActivity.class);
+                                            homeIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                                            startActivity(homeIntent);
+                                        }
+                                    } catch (JSONException e) {
+                                        // TODO Auto-generated catch block
+                                        Toast.makeText(getApplicationContext(), "Error Occured [Server's JSON response might be invalid]!", Toast.LENGTH_LONG).show();
+                                        e.printStackTrace();
+
+                                    }
+                                }
+
+                                //@Override
+                                public void onFailure(int statusCode, PreferenceActivity.Header[] headers, byte[] errorResponse, Throwable e) {
+                                    // called when response HTTP status is "4XX" (eg. 401, 403, 404)
+                                }
+
+                                //@Override
+                                public void onRetry(int retryNo) {
+                                    // called when request is retried
+                                }
 
 
-                        });
+                            });
 
-                    }catch (JSONException e) {
-                        e.printStackTrace();
-                    }catch(UnsupportedEncodingException ee){
-                        ee.printStackTrace();
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        } catch (UnsupportedEncodingException ee) {
+                            ee.printStackTrace();
+                        }
+
+                        mode.finish();
+                        return true;
                     }
 
-                    mode.finish();
-                    return true;
-
-                default:
-                    return false;
-            }
+                        default:
+                            return false;
+                    }
 
 
         }

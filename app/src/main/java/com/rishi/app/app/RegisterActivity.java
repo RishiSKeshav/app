@@ -29,8 +29,7 @@ public class RegisterActivity extends Activity {
 
     SessionManager sessionManager;
 
-    EditText firstNameET;
-    EditText lastNameET;
+    EditText nameET;
     EditText emailET;
     EditText passwordET;
     @Override
@@ -42,8 +41,8 @@ public class RegisterActivity extends Activity {
         sessionManager = new SessionManager(getApplicationContext());
 
 
-        firstNameET = (EditText)findViewById(R.id.registerFirstName);
-        lastNameET = (EditText)findViewById(R.id.registerLastName);
+        nameET = (EditText)findViewById(R.id.registername);
+
         emailET = (EditText)findViewById(R.id.registerEmail);
         passwordET = (EditText)findViewById(R.id.registerPassword);
 
@@ -57,16 +56,14 @@ public class RegisterActivity extends Activity {
     public void registerUser(View view) throws JSONException, UnsupportedEncodingException {
 
 
-        String firstName = firstNameET.getText().toString();
-        String lastName = lastNameET.getText().toString();
+        String name = nameET.getText().toString();
         String emailId = emailET.getText().toString();
         String password = passwordET.getText().toString();
 
         JSONObject jsonObject = new JSONObject();
 
         if(Utility.isNotNull(emailId) && Utility.isNotNull(password)) {
-            jsonObject.put("firstName", firstName);
-            jsonObject.put("lastName", lastName);
+            jsonObject.put("name", name);
             jsonObject.put("emailId", emailId);
             jsonObject.put("password", password);
             jsonObject.put("mobileNo","6263203932");
@@ -102,8 +99,7 @@ public class RegisterActivity extends Activity {
                     }else{
 
                         JSONObject userObj = obj.getJSONObject("user");
-                      //  Toast.makeText(getApplicationContext(),userObj.getString("lastName"), Toast.LENGTH_LONG).show();
-                        Log.i("SER","Before Creating session, lastName: " + userObj.getString("displayPicture"));
+
                         sessionManager.createLoginSession(userObj);
                         navigatetoHomeActivity();
 

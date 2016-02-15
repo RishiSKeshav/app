@@ -38,20 +38,37 @@ public class SessionManager {
     {
 
         try {
+            Log.i("qqq",userObj.toString());
                 editor.putString("id",userObj.getString("id"));
-                editor.putString("firstName",userObj.getString("firstName"));
-                editor.putString("lastName",userObj.getString("lastName"));
+                editor.putString("name",userObj.getString("name"));
                 editor.putString("emailId",userObj.getString("emailId"));
+                editor.putString("password",userObj.getString("password"));
                 editor.putString("mobileNo",userObj.getString("mobileNo"));
                 editor.putString("displayPicture",userObj.getString("displayPicture"));
 
                 editor.commit();
 
-                Log.i("SER", "After Creating session, lastName: " + userObj.getString("lastName"));
+
         } catch (JSONException e) {
             Toast.makeText(_context, "Error ", Toast.LENGTH_LONG).show();
             e.printStackTrace();
         }
+    }
+
+    public void changeNameMobileNo(String name,String mobileNo){
+        editor.putString("name",name);
+        editor.putString("mobileNo",mobileNo);
+        editor.commit();
+    }
+
+    public void changeEmailId(String emailId){
+        editor.putString("emailId",emailId);
+        editor.commit();
+    }
+
+    public void changedisplayPicture(String displayPicture){
+        editor.putString("displayPicture",displayPicture);
+        editor.commit();
     }
 
     public String getId()
@@ -59,16 +76,16 @@ public class SessionManager {
        return pref.getString("id",null);
     }
 
-    public String getFirstName(){
-        return pref.getString("firstName",null);
-    }
-
-    public String getLastName(){
-        return pref.getString("lastName",null);
+    public String getName(){
+        return pref.getString("name",null);
     }
 
     public String getEmailId(){
         return pref.getString("emailId",null);
+    }
+
+    public String getPassword(){
+        return pref.getString("password",null);
     }
 
     public String getMobileNo(){

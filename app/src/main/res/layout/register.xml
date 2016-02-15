@@ -26,17 +26,17 @@
             <LinearLayout android:id="@+id/email_login_form" android:layout_width="match_parent"
                 android:layout_height="wrap_content" android:orientation="vertical">
 
-                <EditText android:id="@+id/registerFirstName" android:layout_width="match_parent"
-                    android:layout_height="wrap_content" android:hint="FirstName"
+                <EditText android:id="@+id/registername" android:layout_width="match_parent"
+                    android:layout_height="wrap_content" android:hint="Name"
                     android:layout_marginBottom="10dp"
                     android:textColorHint="#ffffffff"
                     android:textColor="#ffffffff" />
 
-                <EditText android:id="@+id/registerLastName" android:layout_width="match_parent"
-                    android:layout_height="wrap_content" android:hint="LastName"
-                    android:layout_marginBottom="10dp"
-                    android:textColorHint="#ffffffff"
-                    android:textColor="#ffffffff" />
+                <!--<EditText android:id="@+id/registerLastName" android:layout_width="match_parent"-->
+                    <!--android:layout_height="wrap_content" android:hint="LastName"-->
+                    <!--android:layout_marginBottom="10dp"-->
+                    <!--android:textColorHint="#ffffffff"-->
+                    <!--android:textColor="#ffffffff" />-->
 
                 <AutoCompleteTextView android:id="@+id/registerEmail" android:layout_width="match_parent"
                     android:layout_height="wrap_content" android:hint="@string/prompt_email"

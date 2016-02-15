@@ -10,18 +10,17 @@ import java.sql.Timestamp;
  */
 public class ContactsFriends {
 
-    private String id,firstName,lastName,emailId,mobileNo,displayPicture,facebookId;
+    private String id,name,emailId,mobileNo,displayPicture,facebookId;
 
 
     public ContactsFriends(){
 
     }
 
-    public ContactsFriends(String id,String firstName,String lastName,String emailId,
+    public ContactsFriends(String id,String name,String emailId,
                            String mobileNo,String displayPicture,String facebookId){
         this.id = id;
-        this.firstName = firstName;
-        this.lastName = lastName;
+        this.name = name;
         this.emailId = emailId;
         this.mobileNo = mobileNo;
         this.displayPicture = displayPicture;
@@ -39,21 +38,14 @@ public class ContactsFriends {
     }
 
     public void setName(String firstName){
-        this.firstName = firstName;
+        this.name = name;
     }
 
-    public String getFirstName(){
-        return firstName;
+    public String getName(){
+        return name;
     }
 
 
-    public String getLastName() {
-        return lastName;
-    }
-
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
-    }
 
     public String getEmailId() {
         return emailId;

@@ -148,7 +148,7 @@ public class SharedAlbumMediaSelect extends AppCompatActivity implements SharedA
                     i.putIntegerArrayListExtra("mediaId", pos);
                     i.putExtra("Id", ID);
                     i.putExtra("Name", NAME);
-                    i.putExtra("shared","yes");
+                    i.putExtra("shared", "yes");
                     SharedAlbumMediaSelect.this.startActivity(i);
 
                     return true;
@@ -160,6 +160,16 @@ public class SharedAlbumMediaSelect extends AppCompatActivity implements SharedA
                     in.putExtra("Name", NAME);
                     in.putExtra("shared", "yes");
                     SharedAlbumMediaSelect.this.startActivity(in);
+                    return true;
+
+                case R.id.to_others:
+                    Intent i2 = new Intent(SharedAlbumMediaSelect.this,Userbase.class);
+                    i2.putExtra("action","to_others");
+                    i2.putIntegerArrayListExtra("mediaId", pos);
+                    i2.putExtra("Id", ID);
+                    i2.putExtra("Name", NAME);
+                    i2.putExtra("shared","yes");
+                    SharedAlbumMediaSelect.this.startActivity(i2);
                     return true;
 
                 default:
@@ -321,8 +331,8 @@ public class SharedAlbumMediaSelect extends AppCompatActivity implements SharedA
                                         samsAdapter.notifyDataSetChanged();
                                     }
                                 }
-                                SharedAlbumMedia smmedia = new SharedAlbumMedia(usermediadetails.optString("id"),usermediadetails.optString("firstName"),
-                                        usermediadetails.optString("lastName"),usermediadetails.optString("displayPicture"),
+                                SharedAlbumMedia smmedia = new SharedAlbumMedia(usermediadetails.optString("id"),usermediadetails.optString("name")
+                                        ,usermediadetails.optString("displayPicture"),
                                         mediaList);
                                 sharedalbumMediaList.add(smmedia);
                                // samAdapter.notifyDataSetChanged();

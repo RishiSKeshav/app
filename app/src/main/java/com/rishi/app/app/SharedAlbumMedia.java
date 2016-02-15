@@ -8,38 +8,31 @@ import java.util.ArrayList;
 public class SharedAlbumMedia {
 
 
-    private String firstName,lastName,id,displayPicture;
+    private String name,id,displayPicture;
     private ArrayList<Media> media = new ArrayList<>();
 
     public SharedAlbumMedia(){
 
     }
 
-    public SharedAlbumMedia(String id,String firstName,String lastName,String displayPicture,ArrayList<Media> media){
+    public SharedAlbumMedia(String id,String name,String displayPicture,ArrayList<Media> media){
 
-        this.firstName = firstName;
-        this.lastName = lastName;
+        this.name = name;
+
         this.displayPicture =displayPicture;
         this.id = id;
         this.media = media;
     }
 
-    public void setFirstName(String firstName){
-        this.firstName = firstName;
+    public void setName(String name){
+        this.name = name;
     }
 
-    public String getFirstName(){
-        return firstName;
+    public String getName(){
+        return name;
     }
 
 
-    public String getLastName() {
-        return lastName;
-    }
-
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
-    }
 
     public String getDisplayPicture() {
         return displayPicture;
