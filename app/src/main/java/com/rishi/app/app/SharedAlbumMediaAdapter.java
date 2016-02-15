@@ -87,7 +87,7 @@ public class SharedAlbumMediaAdapter extends RecyclerView.Adapter<SharedAlbumMed
     @Override
     public void onBindViewHolder(MyViewHolder holder, int position) {
         SharedAlbumMedia sam = sharedalbumMediaList.get(position);
-        holder.name.setText(sam.getFirstName() + " " + sam.getLastName());
+        holder.name.setText(sam.getName());
 
         mediaList.clear();
 

@@ -2,6 +2,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.rishi.app.app" >
 
+
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.CAMERA" />
 
@@ -11,6 +13,17 @@
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
     <uses-permission android:name="android.permission.READ_CONTACTS" />
+
+    <uses-permission
+        android:name="android.permission.READ_SYNC_SETTINGS"/>
+    <uses-permission
+        android:name="android.permission.WRITE_SYNC_SETTINGS"/>
+    <uses-permission
+        android:name="android.permission.AUTHENTICATE_ACCOUNTS"/>
+
+    <permission android:name="com.rishi.app.app.permission.C2D_MESSAGE"
+        android:protectionLevel="signature" />
+    <uses-permission android:name="com.rishi.app.app.permission.C2D_MESSAGE" />
 
     <application
         android:allowBackup="true"
@@ -29,11 +42,21 @@
         <activity
             android:name=".LoginActivity"
             android:label="@string/title_activity_login" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+
+
         </activity>
 
         <activity
             android:name=".HomeActivity"
             android:label="@string/title_activity_home" >
+
+
+
         </activity>
 
         <activity
@@ -72,11 +95,22 @@
         </activity>
 
         <activity android:name=".Userbase">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
+        </activity>
+
+        <activity android:name=".HomeSettings">
+
+        </activity>
+        <activity android:name=".EditProfile">
+
+        </activity>
+
+        <activity android:name=".EditEmail">
+
+        </activity>
+
+        <activity android:name=".EditPassword">
+
         </activity>
 
         <activity

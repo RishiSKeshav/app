@@ -1,6 +1,7 @@
 package com.rishi.app.app;
 
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.apache.http.entity.StringEntity;
@@ -10,6 +11,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.os.Bundle;
+import android.preference.PreferenceActivity;
 import android.support.v7.app.ActionBarActivity;
 import android.view.View;
 import android.widget.EditText;
@@ -70,52 +72,89 @@ public class LoginActivity extends ActionBarActivity {
         loginButton.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
             @Override
             public void onSuccess(LoginResult loginResult) {
-//                GraphRequest request = GraphRequest.newMeRequest(loginResult.getAccessToken(), new GraphRequest.GraphJSONObjectCallback() {
-//                            @Override
-//                            public void onCompleted(
-//                                    JSONObject object,
-//                                    GraphResponse response) {
-//
-//                                Log.e("response: ", response + "");
-//                                try {
-//
-//                                    Log.i("sss",object.toString());
-////                                    user = new User();
-////                                    user.facebookID = object.getString("id").toString();
-////                                    user.email = object.getString("email").toString();
-////                                    user.name = object.getString("name").toString();
-////                                    user.gender = object.getString("gender").toString();
-////                                    PrefUtils.setCurrentUser(user, LoginActivity.this);
-//
-//                                } catch (Exception e) {
-//                                    e.printStackTrace();
-//                                }
-////                                Toast.makeText(LoginActivity.this, "welcome " + user.name, Toast.LENGTH_LONG).show();
-////                                Intent intent = new Intent(LoginActivity.this, LogoutActivity.class);
-////                                startActivity(intent);
-////                                finish();
-//
-//                            }
-//
-//                        });
-//
-//                Bundle parameters = new Bundle();
-//                parameters.putString("fields", "id,name,email,gender, birthday");
-//                request.setParameters(parameters);
-//                request.executeAsync();
+                GraphRequest request = GraphRequest.newMeRequest(loginResult.getAccessToken(), new GraphRequest.GraphJSONObjectCallback() {
+                            @Override
+                            public void onCompleted(
+                                    JSONObject object,
+                                    GraphResponse response) {
 
-
-                new GraphRequest(
-                        loginResult.getAccessToken(),
-                        "/me/friends",
-                        null,
-                        HttpMethod.GET,
-                        new GraphRequest.Callback() {
-                            public void onCompleted(GraphResponse response) {
                                 Log.e("response: ", response + "");
+                                try {
+//                                    user.email = object.getString("email").toString();
+
+                                    JSONObject obj = new JSONObject();
+                                    obj.put("emailId", object.getString("email").toString());
+                                    obj.put("password","");
+                                    obj.put("name", object.getString("name").toString());
+                                    obj.put("mobileNo", "");
+                                    obj.put("displayPicture","https://graph.facebook.com/" + object.getString("id").toString() +"/picture?type=large");
+                                    StringEntity jsonString = new StringEntity(obj.toString());
+
+
+                                    AsyncHttpClient client = new AsyncHttpClient();
+
+                                    client.post(getApplicationContext(), "http://52.89.2.186/project/webservice/public/Facebooklogin", jsonString, "application/json", new AsyncHttpResponseHandler() {
+
+                                        @Override
+                                        public void onStart() {
+                                            // called before request is started
+                                        }
+
+                                        // @Override
+                                        public void onSuccess(String response) {
+                                            // called when response HTTP status is "200 OK"
+                                            try {
+                                                JSONObject obj = new JSONObject(response);
+
+                                                if (obj.getBoolean("error")) {
+                                                    Toast.makeText(getApplicationContext(), obj.getString("msg"), Toast.LENGTH_LONG).show();
+                                                } else {
+
+                                                    JSONObject outputObj = obj.getJSONObject("outputObj");
+                                                    JSONObject user = outputObj.getJSONObject("user");
+                                                    sessionManager.createLoginSession(user);
+                                                    navigatetoHomeActivity();
+
+                                                }
+
+                                            } catch (JSONException e) {
+                                                // TODO Auto-generated catch block
+                                                Toast.makeText(getApplicationContext(), "Error Occured [Server's JSON response might be invalid]!", Toast.LENGTH_LONG).show();
+                                                e.printStackTrace();
+
+                                            }
+                                        }
+
+                                        //@Override
+                                        public void onFailure(int statusCode, PreferenceActivity.Header[] headers, byte[] errorResponse, Throwable e) {
+                                            // called when response HTTP status is "4XX" (eg. 401, 403, 404)
+                                        }
+
+                                        //@Override
+                                        public void onRetry(int retryNo) {
+                                            // called when request is retried
+                                        }
+
+
+                                    });
+
+
+
+
+
+                            } catch (Exception e) {
+                                    e.printStackTrace();
+                                }
                             }
-                        }
-                ).executeAsync();
+
+                        });
+
+                Bundle parameters = new Bundle();
+                parameters.putString("fields", "id,name,email,gender, birthday");
+                request.setParameters(parameters);
+                request.executeAsync();
+
+
 
 
 
@@ -183,8 +222,6 @@ public class LoginActivity extends ActionBarActivity {
                     }else{
 
                         JSONObject userObj = obj.getJSONObject("user");
-                       // Toast.makeText(getApplicationContext(),"Welcome " + userObj.get("lastName") + "!", Toast.LENGTH_LONG).show();
-
                         sessionManager.createLoginSession(userObj);
                         navigatetoHomeActivity();
                     }

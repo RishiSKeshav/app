@@ -24,13 +24,6 @@
         android:text="Example application"
         android:textSize="16sp" />
 
-    <CheckBox
-        android:id="@+id/contacts_chkSelected"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentRight="true"
-        android:layout_marginRight="10dp"
-        android:layout_centerVertical="true"
-        />
+
 
 </RelativeLayout> 

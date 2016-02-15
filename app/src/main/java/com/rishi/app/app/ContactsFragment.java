@@ -140,8 +140,8 @@ public class ContactsFragment extends Fragment{
 
                                             }else{
 
-                                                ContactsFriends cf = new ContactsFriends(userDetails.optString("id"), userDetails.optString("firstName"),
-                                                        userDetails.optString("lastName"), userDetails.optString("emailId"),
+                                                ContactsFriends cf = new ContactsFriends(userDetails.optString("id"), userDetails.optString("name"),
+                                                        userDetails.optString("emailId"),
                                                         userDetails.optString("mobileNo"), userDetails.optString("displayPicture"),
                                                         userDetails.optString("facebookId"));
 

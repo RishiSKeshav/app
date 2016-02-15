@@ -9,12 +9,17 @@
     <com.facebook.login.widget.LoginButton
         android:id="@+id/login_button"
         android:layout_marginLeft="10dp"
-        android:layout_width="360dp"
-        android:layout_marginTop="15dp"
-        android:layout_marginBottom="15dp"
+        android:layout_width="match_parent"
+        android:layout_margin="15dp"
         android:layout_height="40dp"
          />
 
+    <android.support.v4.widget.SwipeRefreshLayout
+        android:id="@+id/facebook_refresh_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:paddingTop="0dp"
+        xmlns:android="http://schemas.android.com/apk/res/android">
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/facebook_friends"
@@ -24,6 +29,8 @@
         android:layout_height="match_parent"
         android:layout_alignBottom="@+id/login_button"
         tools:context=".MainActivity$PlaceholderFragment"/>
+
+    </android.support.v4.widget.SwipeRefreshLayout>
 
 
 

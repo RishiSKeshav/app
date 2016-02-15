@@ -10,7 +10,7 @@ import java.sql.Timestamp;
  */
 public class FacebookFriends {
 
-    private String id,firstName,lastName,emailId,mobileNo,displayPicture,facebookId;
+    private String id,name,emailId,mobileNo,displayPicture,facebookId;
     private boolean isSelected;
 
 
@@ -18,11 +18,10 @@ public class FacebookFriends {
 
     }
 
-    public FacebookFriends(String id,String firstName,String lastName,String emailId,
+    public FacebookFriends(String id,String name,String emailId,
                            String mobileNo,String displayPicture,String facebookId,boolean isSelected){
         this.id = id;
-        this.firstName = firstName;
-        this.lastName = lastName;
+        this.name = name;
         this.emailId = emailId;
         this.mobileNo = mobileNo;
         this.displayPicture = displayPicture;
@@ -41,22 +40,14 @@ public class FacebookFriends {
         return id;
     }
 
-    public void setName(String firstName){
-        this.firstName = firstName;
+    public void s(String name){
+        this.name = name;
     }
 
-    public String getFirstName(){
-        return firstName;
+    public String getName(){
+        return name;
     }
 
-
-    public String getLastName() {
-        return lastName;
-    }
-
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
-    }
 
     public String getEmailId() {
         return emailId;

@@ -106,6 +106,17 @@ public class SharedAlbumMediaDisplay extends AppCompatActivity {
             return true;
         }
 
+        if(id == R.id.add_user){
+
+            Intent i2 = new Intent(SharedAlbumMediaDisplay.this,Userbase.class);
+            i2.putExtra("action","add_user");
+            i2.putExtra("Id", ID);
+            i2.putExtra("Name", NAME);
+            i2.putExtra("shared","yes");
+            SharedAlbumMediaDisplay.this.startActivity(i2);
+            return true;
+        }
+
         if (id == R.id.select) {
 
             Intent i = new Intent(SharedAlbumMediaDisplay.this,SharedAlbumMediaSelect.class);
@@ -357,8 +368,8 @@ public class SharedAlbumMediaDisplay extends AppCompatActivity {
                                             m.add(md);
                                         }
                                     }
-                                    SharedAlbumMedia smmedia = new SharedAlbumMedia(usermediadetails.optString("id"),usermediadetails.optString("firstName"),
-                                            usermediadetails.optString("lastName"),usermediadetails.optString("displayPicture"),
+                                    SharedAlbumMedia smmedia = new SharedAlbumMedia(usermediadetails.optString("id"),usermediadetails.optString("name")
+                                            ,usermediadetails.optString("displayPicture"),
                                     m);
                                     sharedalbumMediaList.add(smmedia);
                                     samAdapter.notifyDataSetChanged();

@@ -35,31 +35,61 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
-public class FragmentFacebookAdapter extends RecyclerView.Adapter<FragmentFacebookAdapter.MyViewHolder> {
+public class FragmentFacebookAdapter extends SelectableAdapter<FragmentFacebookAdapter.MyViewHolder> {
 
     //private List<AlbumMedia> albumMediaList;
     private ArrayList<FacebookFriends> friends = new ArrayList<FacebookFriends>();
     private Bitmap bitmap;
+    private MyViewHolder.ClickListener clickListener;
     //String path = "";
     //Context context;
 
 
-    public class MyViewHolder extends RecyclerView.ViewHolder {
+    public static class MyViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener,View.OnLongClickListener {
         public TextView name;
-        public ImageView path;
-        public CheckBox check;
+        public ImageView check,path;
+        private ClickListener listener;
+        View selectedOverlay;
 
-        public MyViewHolder(View view) {
+        public MyViewHolder(View view,ClickListener listener) {
             super(view);
+            view.setOnClickListener(this);
+            view.setOnLongClickListener(this);
+            this.listener = listener;
             // name = (TextView) view.findViewById(R.id.name);
             path =  (ImageView) view.findViewById(R.id.facebook_displayPicture);
             name = (TextView) view.findViewById(R.id.facebook_name);
-            check = (CheckBox) view.findViewById(R.id.facebook_chkSelected);
+            check = (ImageView) view.findViewById(R.id.facebook_image_check);
+            selectedOverlay = view.findViewById(R.id.facebook_selected_overlay);
+        }
+
+
+        @Override
+        public void onClick(View v) {
+            if (listener != null) {
+                listener.onItemClicked(getPosition());
+            }
+        }
+
+        @Override
+        public boolean onLongClick(View v) {
+            if (listener != null) {
+                return listener.onItemLongClicked(getPosition());
+            }
+
+            return false;
+        }
+
+        public interface ClickListener {
+            public void onItemClicked(int position);
+            public boolean onItemLongClicked(int position);
         }
     }
 
-    public FragmentFacebookAdapter(ArrayList<FacebookFriends> friends) {
+    public FragmentFacebookAdapter(ArrayList<FacebookFriends> friends,MyViewHolder.ClickListener clickListener) {
+        super();
         this.friends = friends;
+        this.clickListener = clickListener;
 
     }
 
@@ -68,7 +98,7 @@ public class FragmentFacebookAdapter extends RecyclerView.Adapter<FragmentFacebo
         View itemView = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.facebook_fragment_list, parent, false);
 
-        return new MyViewHolder(itemView);
+        return new MyViewHolder(itemView,clickListener);
     }
 
     @Override
@@ -76,32 +106,16 @@ public class FragmentFacebookAdapter extends RecyclerView.Adapter<FragmentFacebo
 
         FacebookFriends ff = friends.get(position);
 
-        holder.name.setText(ff.getFirstName() + " " + ff.getLastName());
-
-        holder.check.setChecked(ff.isSelected());
-        holder.check.setTag(ff);
-
-        holder.check.setOnClickListener(new View.OnClickListener(){
-            public void onClick(View v) {
-                CheckBox cb = (CheckBox) v;
-                FacebookFriends ffs = (FacebookFriends) cb.getTag();
-
-                ffs.setSelected(cb.isChecked());
-                friends.get(position).setSelected(cb.isChecked());
-
-                Toast.makeText(
-                        v.getContext(),
-                        "Clicked on Checkbox: " + cb.getText() + " is "
-                                + cb.isChecked(), Toast.LENGTH_LONG).show();
-            }
-        });
+        holder.name.setText(ff.getName());
 
         Context context = holder.path.getContext();
         Picasso.with(context).load(ff.getDisplayPicture()).error(R.mipmap.ic_launcher).placeholder(R.mipmap.ic_launcher)
                 .into(holder.path);
+
+        holder.selectedOverlay.setVisibility(isSelected(position) ? View.VISIBLE : View.INVISIBLE);
+        holder.check.setVisibility(isSelected(position) ? View.VISIBLE : View.INVISIBLE);
+
     }
-
-
 
     @Override
     public int getItemCount() {
@@ -109,29 +123,5 @@ public class FragmentFacebookAdapter extends RecyclerView.Adapter<FragmentFacebo
     }
 
 
-
-    private Bitmap getCircleBitmap(Bitmap bitmap) {
-        final Bitmap output = Bitmap.createBitmap(bitmap.getWidth(),
-                bitmap.getHeight(), Bitmap.Config.ARGB_8888);
-        final Canvas canvas = new Canvas(output);
-
-        final int color = Color.RED;
-        final Paint paint = new Paint();
-        final Rect rect = new Rect(0, 0, bitmap.getWidth(), bitmap.getHeight());
-        final RectF rectF = new RectF(rect);
-
-        paint.setAntiAlias(true);
-        canvas.drawARGB(0, 0, 0, 0);
-        paint.setColor(color);
-        canvas.drawOval(rectF, paint);
-
-        paint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.SRC_IN));
-
-        canvas.drawBitmap(bitmap, rect, rect, paint);
-
-        bitmap.recycle();
-
-        return output;
-    }
 }
 

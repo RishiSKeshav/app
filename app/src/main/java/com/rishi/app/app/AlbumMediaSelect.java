@@ -131,7 +131,7 @@ public class AlbumMediaSelect extends AppCompatActivity implements AlbumMediaSel
                     i.putIntegerArrayListExtra("mediaId", pos);
                     i.putExtra("Id", ID);
                     i.putExtra("Name", NAME);
-                    i.putExtra("shared","no");
+                    i.putExtra("shared", "no");
                     AlbumMediaSelect.this.startActivity(i);
                     return true;
 
@@ -142,6 +142,16 @@ public class AlbumMediaSelect extends AppCompatActivity implements AlbumMediaSel
                     intent.putExtra("Name", NAME);
                     intent.putExtra("shared","no");
                     AlbumMediaSelect.this.startActivity(intent);
+                    return true;
+
+                case R.id.to_others:
+                    Intent i2 = new Intent(AlbumMediaSelect.this,Userbase.class);
+                    i2.putExtra("action","to_others");
+                    i2.putIntegerArrayListExtra("mediaId", pos);
+                    i2.putExtra("Id", ID);
+                    i2.putExtra("Name", NAME);
+                    i2.putExtra("shared","no");
+                    AlbumMediaSelect.this.startActivity(i2);
                     return true;
 
                 default:

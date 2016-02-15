@@ -1,5 +1,7 @@
 package com.rishi.app.app;
 
+import android.content.Intent;
+import android.hardware.camera2.params.Face;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
@@ -7,7 +9,11 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.widget.TextView;
 import com.rishi.app.app.FragmentFacebook;
 import com.facebook.FacebookSdk;
@@ -22,18 +28,38 @@ public class Userbase extends AppCompatActivity {
 
     TabLayout tabLayout;
     private ViewPager viewPager;
+    private FragmentFacebookAdapter fAdapter;
+    ArrayList<Integer> mediaIDS = new ArrayList<>();
+    String ID,NAME,ACTION,ALBUM_NAME,SHARED;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-
-        //Displays Home Screen
         setContentView(R.layout.userbase);
 
-         viewPager = (ViewPager) findViewById(R.id.userbase_viewpager);
-       // viewPager.setAdapter(new UserbaseSampleFragmentPagerAdapter(getSupportFragmentManager(),
-         //       Userbase.this));
+        Intent i = getIntent();
+        ACTION = i.getStringExtra("action");
+        if(ACTION.equals("create_shared_album"))
+        {
+            ALBUM_NAME = i.getStringExtra("album_name");
+            mediaIDS = i.getIntegerArrayListExtra("mediaId");
+        }
 
+        if (ACTION.equals("to_others")){
+            mediaIDS = i.getIntegerArrayListExtra("mediaId");
+            ID = i.getStringExtra("Id");
+            NAME = i.getStringExtra("Name");
+            SHARED = i.getStringExtra("shared");
+        }
+
+        if(ACTION.equals("add_user")){
+            ID = i.getStringExtra("Id");
+            NAME = i.getStringExtra("Name");
+            SHARED = i.getStringExtra("shared");
+        }
+
+         viewPager = (ViewPager) findViewById(R.id.userbase_viewpager);
         setupViewPager(viewPager);
 
         tabLayout = (TabLayout) findViewById(R.id.userbase_tabs);
@@ -43,6 +69,8 @@ public class Userbase extends AppCompatActivity {
         getSupportActionBar().setTitle("Find Users");
 
         setupTabIcons();
+
+
 
     }
 
@@ -96,6 +124,35 @@ public class Userbase extends AppCompatActivity {
         public void addFrag(Fragment fragment, String title) {
             mFragmentList.add(fragment);
             mFragmentTitleList.add(title);
+
+            Bundle bundle = new Bundle();
+
+            if(ACTION.equals("create_shared_album"))
+            {
+                bundle.putString("action",ACTION);
+                bundle.putString("album_name", ALBUM_NAME);
+                bundle.putIntegerArrayList("mediaId", mediaIDS);
+                fragment.setArguments(bundle);
+            }
+
+            if(ACTION.equals("to_others"))
+            {
+                bundle.putString("action",ACTION);
+                bundle.putString("Name", NAME);
+                bundle.putString("Id",ID);
+                bundle.putIntegerArrayList("mediaId",mediaIDS);
+                bundle.putString("shared",SHARED);
+                fragment.setArguments(bundle);
+            }
+
+            if(ACTION.equals("add_user")){
+
+                bundle.putString("action",ACTION);
+                bundle.putString("Name", NAME);
+                bundle.putString("Id",ID);
+                bundle.putString("shared",SHARED);
+                fragment.setArguments(bundle);
+            }
         }
 
         @Override
