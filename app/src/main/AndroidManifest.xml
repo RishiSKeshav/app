@@ -9,7 +9,6 @@
     <uses-feature android:name="android.hardware.camera.front" />
 
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-
     <uses-permission android:name="android.permission.READ_CONTACTS" />
 
     <application
@@ -17,61 +16,72 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme" >
-
-        <meta-data android:name="com.facebook.sdk.ApplicationId" android:value="@string/facebook_app_id"/>
+        <meta-data
+            android:name="com.facebook.sdk.ApplicationId"
+            android:value="@string/facebook_app_id" />
 
         <activity
             android:name="com.facebook.FacebookActivity"
-            android:configChanges= "keyboard|keyboardHidden|screenLayout|screenSize|orientation"
-            android:theme="@android:style/Theme.Translucent.NoTitleBar"
-            android:label="@string/app_name" />
-
+            android:configChanges="keyboard|keyboardHidden|screenLayout|screenSize|orientation"
+            android:label="@string/app_name"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
         <activity
             android:name=".LoginActivity"
             android:label="@string/title_activity_login" >
-        </activity>
 
+        </activity>
         <activity
             android:name=".HomeActivity"
             android:label="@string/title_activity_home" >
         </activity>
-
         <activity
             android:name=".RegisterActivity"
             android:label="@string/app_name" >
         </activity>
-
         <activity android:name=".CameraActivity" >
         </activity>
-
         <activity android:name=".AlbumMediaDisplay" >
         </activity>
-
         <activity android:name=".FullScreenMediaDisplay" >
         </activity>
-
-        <activity android:name=".NewAlbum">
+        <activity android:name=".NewAlbum" >
+        </activity>
+        <activity android:name=".AddMoreMedia" >
+        </activity>
+        <activity android:name=".AlbumMediaSelect" >
+        </activity>
+        <activity android:name=".ToPersonalAlbum" >
+        </activity>
+        <activity android:name=".ToSharedAlbum" >
+        </activity>
+        <activity android:name=".SharedAlbumMediaDisplay" >
+        </activity>
+        <activity android:name=".SharedAlbumMediaSelect" >
+        </activity>
+        <activity android:name=".Userbase" >
+        </activity>
+        <activity
+            android:name=".CameraFullImageDisplayActivity"
+            android:label="@string/title_activity_camera_full_image_display" >
+        </activity>
+        <activity android:name=".FetchImages" >
+        </activity>
+        <activity
+            android:name=".SampleSync"
+            android:label="@string/title_activity_sample_sync"
+            android:theme="@style/AppTheme.NoActionBar" >
         </activity>
 
-        <activity android:name=".AddMoreMedia">
-        </activity>
+        <receiver android:name=".NewImageBroadcastReceiver" >
+            <intent-filter>
+                <action android:name="android.intent.action.CAMERA_BUTTON" />
+                <action android:name="android.hardware.action.NEW_PICTURE" />
 
-        <activity android:name=".AlbumMediaSelect">
-        </activity>
+                <data android:mimeType="image/*" />
+            </intent-filter>
+        </receiver>
 
-        <activity android:name=".ToPersonalAlbum">
-        </activity>
-
-        <activity android:name=".ToSharedAlbum">
-        </activity>
-
-        <activity android:name=".SharedAlbumMediaDisplay">
-        </activity>
-
-        <activity android:name=".SharedAlbumMediaSelect">
-        </activity>
-
-        <activity android:name=".Userbase">
+        <activity android:name=".Sync" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -79,11 +89,10 @@
             </intent-filter>
         </activity>
 
-        <activity
-            android:name=".CameraFullImageDisplayActivity"
-            android:label="@string/title_activity_camera_full_image_display"
-             >
-        </activity>
 
+        <service android:name=".ImageUploadService">
+
+        </service>
     </application>
+
 </manifest>

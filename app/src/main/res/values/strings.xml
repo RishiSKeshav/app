@@ -25,4 +25,5 @@
     <string name="font_fontFamily_medium">sans-serif</string>
 
     <string name="title_activity_camera_full_image_display">CameraFullImageDisplayActivity</string>
+    <string name="title_activity_sample_sync">SampleSync</string>
 </resources>
