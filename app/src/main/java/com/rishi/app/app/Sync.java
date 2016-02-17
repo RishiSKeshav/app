@@ -1,15 +1,22 @@
 package com.rishi.app.app;
 
 import android.app.Activity;
+import android.content.BroadcastReceiver;
 import android.content.ContentResolver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.database.Cursor;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.view.ViewGroup;
 import android.widget.CompoundButton;
+import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.Switch;
 
 import java.util.ArrayList;
@@ -21,6 +28,8 @@ public class Sync extends Activity {
     private ArrayList<com.rishi.app.app.Image> syncedImageList;
     private ArrayList<com.rishi.app.app.Image> unSyncedImageList;
     private ArrayList<String> syncedPathList;
+    ProgressBar pBar;
+    LinearLayout layout;
 
     Intent serviceIntent;
 
@@ -30,6 +39,12 @@ public class Sync extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sync);
+
+        pBar = (ProgressBar) findViewById(R.id.progressBar);
+        layout =(LinearLayout) findViewById(R.id.sync_layout);
+
+        IntentFilter filter = new IntentFilter("PROGRESS_ACTION");
+        registerReceiver(myReceiver,filter);
 
         initializeImageLists();
 
@@ -70,7 +85,7 @@ public class Sync extends Activity {
 
     }
 
-    private void initializeImageLists() {
+        private void initializeImageLists() {
 
         generateImageList();
         generateDBImageList();
@@ -88,17 +103,6 @@ public class Sync extends Activity {
         }
 
         Log.d("unsynced count", String.valueOf(unSyncedImageList.size()));
-
-       /* Iterator<com.rishi.app.app.Image> iteratorList = unSyncedImageList.iterator();
-
-        Log.d("Unsynced ImageList b","-------------------------------------");
-        while(iteratorList.hasNext()){
-
-            com.rishi.app.app.Image img = iteratorList.next();
-
-            Log.d("image details: ",img.getName()  +" " + img.getPath());
-        }
-        Log.d("Unsynced ImageList e","-------------------------------------");*/
     }
 
     private void generateDBImageList() {
@@ -131,44 +135,56 @@ public class Sync extends Activity {
         ContentResolver cr = this.getContentResolver();
 
         String[] columns = new String[] {
-                MediaStore.Images.ImageColumns._ID,
-                MediaStore.Images.ImageColumns.TITLE,
                 MediaStore.Images.ImageColumns.DATA,
-                MediaStore.Images.ImageColumns.MIME_TYPE,
-                MediaStore.Images.ImageColumns.SIZE,
-                MediaStore.Images.ImageColumns.DATE_TAKEN,
                 MediaStore.Images.ImageColumns.DISPLAY_NAME};
         Cursor cursor = cr.query(MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
                 columns, null, null, null);
-
 
         if (cursor.moveToFirst()) {
             do {
                 com.rishi.app.app.Image image = new com.rishi.app.app.Image();
 
-                image.setPath(cursor.getString(2));
-                image.setName(cursor.getString(6));
-                image.setData_taken(cursor.getString(5));
+                image.setPath(cursor.getString(0));
+                image.setName(cursor.getString(1));
 
                 imageList.add(image);
             } while (cursor.moveToNext());
         }
 
         Log.d("image list count", String.valueOf(imageList.size()));
-
-        /*Log.d("ImageList","Displaying image list");
-        Iterator<com.rishi.app.app.Image> iteratorList = imageList.iterator();
-
-        while(iteratorList.hasNext()){
-
-            com.rishi.app.app.Image img = iteratorList.next();
-
-            Log.d("image details: ",img.getName()  +" " + img.getPath());
-        }
-        Log.d("ImageList","-------------------------------------");*/
-
     }
 
+    private BroadcastReceiver myReceiver = new BroadcastReceiver() {
 
 
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            int ola = intent.getIntExtra("NUMBER", 0);
+            if(pBar.getParent()!=null)
+                ((ViewGroup)pBar.getParent()).removeView(pBar);
+
+            if(ola==100)
+            {
+                pBar.setVisibility(View.VISIBLE);
+                pBar.setProgress(ola);
+                pBar.setVisibility(View.INVISIBLE);
+                layout.addView(pBar);
+            }
+
+            else {
+                pBar.setVisibility(View.VISIBLE);
+                pBar.setProgress(ola);
+                layout.addView(pBar);
+            }
+            //Log.d("dddReceiver", String.valueOf(ola));   //can't see
+        }
+    };
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+
+        unregisterReceiver(myReceiver);
+
+    }
 }

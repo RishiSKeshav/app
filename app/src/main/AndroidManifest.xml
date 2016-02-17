@@ -41,11 +41,7 @@
         <activity
             android:name=".LoginActivity"
             android:label="@string/title_activity_login" >
-                <intent-filter>
-                    <action android:name="android.intent.action.MAIN" />
 
-                    <category android:name="android.intent.category.LAUNCHER" />
-                </intent-filter>
         </activity>
 
         <activity
@@ -85,8 +81,6 @@
             android:name=".CameraFullImageDisplayActivity"
             android:label="@string/title_activity_camera_full_image_display" >
         </activity>
-        <activity android:name=".FetchImages" >
-        </activity>
         <activity
             android:name=".SampleSync"
             android:label="@string/title_activity_sample_sync"
@@ -104,6 +98,11 @@
 
 
         <activity android:name=".Sync" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
         </activity>
 
         <activity android:name=".HomeSettings">

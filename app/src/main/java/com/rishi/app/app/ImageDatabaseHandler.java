@@ -34,9 +34,8 @@ public class ImageDatabaseHandler extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase db) {
 
-        String CREATE_CONTACTS_TABLE = "CREATE TABLE IF NOT EXISTS " + TABLE_SyncedMedia + "( image_id INTEGER PRIMARY KEY autoincrement,"
+        String CREATE_CONTACTS_TABLE = "CREATE TABLE IF NOT EXISTS " + TABLE_SyncedMedia + "( media_id INTEGER PRIMARY KEY,"
                 + " name TEXT,"
-                + " uuid TEXT,"
                 + " path TEXT"
                  + ")";
 
@@ -53,8 +52,8 @@ public class ImageDatabaseHandler extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getWritableDatabase();
 
         ContentValues values = new ContentValues();
+        values.put("media_id", img.getId());
         values.put("name", img.getName());
-        values.put("uuid", img.getUuid());
         values.put("path", img.getPath());
 
         // Inserting Row
@@ -90,8 +89,7 @@ public class ImageDatabaseHandler extends SQLiteOpenHelper {
 
                 img.setId(Integer.parseInt(cursor.getString(0)));
                 img.setName(cursor.getString(1));
-                img.setUuid(cursor.getString(2));
-                img.setPath(cursor.getString(3));
+                img.setPath(cursor.getString(2));
 
                 // Adding contact to list
                 syncedImageList.add(img);
@@ -114,7 +112,7 @@ public class ImageDatabaseHandler extends SQLiteOpenHelper {
         // looping through all rows and adding to list
         if (cursor.moveToFirst()) {
             do {
-                syncedImagePathList.add(cursor.getString(3));
+                syncedImagePathList.add(cursor.getString(2));
             } while (cursor.moveToNext());
         }
 
