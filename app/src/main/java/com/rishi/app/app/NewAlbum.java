@@ -3,15 +3,20 @@ package com.rishi.app.app;
 import android.content.Intent;
 import android.os.Bundle;
 import android.preference.PreferenceActivity;
+import android.support.design.widget.CoordinatorLayout;
+import android.support.design.widget.Snackbar;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.view.ActionMode;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -27,6 +32,9 @@ import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.List;
 
+
+
+
 /**
  * Created by amitrajula on 2/4/16.
  */
@@ -41,6 +49,8 @@ public class NewAlbum extends AppCompatActivity implements NewAlbumAdapter.MyVie
     private EditText album_title;
     String SHARED;
 
+    View main_layout;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,17 +58,24 @@ public class NewAlbum extends AppCompatActivity implements NewAlbumAdapter.MyVie
         //Displays Home Screen
         setContentView(R.layout.new_album);
 
+        main_layout = (View) findViewById(R.id.main_layout);
+
+        Toolbar new_album_toolbar= (Toolbar) findViewById(R.id.new_album_toolbar);
+        setSupportActionBar(new_album_toolbar);
+        TextView tv = (TextView) findViewById(R.id.tv_ld_header);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+
         Intent i = getIntent();
         SHARED = i.getStringExtra("shared");
-
 
         album_title = (EditText)findViewById(R.id.album_title);
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         if(SHARED.equals("yes")){
-            getSupportActionBar().setTitle("Create Shared Album");
+            tv.setText("New shared album");
         }else {
-            getSupportActionBar().setTitle("Create Album");
+            tv.setText("New album");
         }
         recyclerView = (RecyclerView)findViewById(R.id.recycler_view_new_album);
 
@@ -74,21 +91,22 @@ public class NewAlbum extends AppCompatActivity implements NewAlbumAdapter.MyVie
 
     @Override
     public void onItemClicked(int position) {
-        if (actionMode != null) {
-            toggleSelection(position);
-        }
-    }
-
-    @Override
-    public boolean onItemLongClicked(int position) {
         if (actionMode == null) {
             actionMode = startSupportActionMode(actionModeCallback);
         }
-
         toggleSelection(position);
-
-        return true;
     }
+
+//    @Override
+//    public boolean onItemLongClicked(int position) {
+//        if (actionMode == null) {
+//            actionMode = startSupportActionMode(actionModeCallback);
+//        }
+//
+//        toggleSelection(position);
+//
+//        return true;
+//    }
 
 
     private void toggleSelection(int position) {
@@ -169,11 +187,22 @@ public class NewAlbum extends AppCompatActivity implements NewAlbumAdapter.MyVie
                                         if (obj.getBoolean("error")) {
                                             Toast.makeText(getApplicationContext(), obj.getString("msg"), Toast.LENGTH_LONG).show();
                                         } else {
-                                            Toast.makeText(getApplicationContext(), obj.getString("msg"), Toast.LENGTH_LONG).show();
 
-                                            Intent homeIntent = new Intent(getApplicationContext(), HomeActivity.class);
+
+                                            Snackbar.make(main_layout, "New album created", Snackbar.LENGTH_INDEFINITE)
+                                                    .setAction("Ok", new View.OnClickListener() {
+                                                        @Override
+                                                        public void onClick(View view) {
+                                                            Intent homeIntent = new Intent(getApplicationContext(), HomeActivity.class);
                                             homeIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                                             startActivity(homeIntent);
+
+                                                        }
+                                                    })
+                                                    .setActionTextColor(getResources().getColor(android.R.color.primary_text_dark ))
+                                                    .show();
+
+//
                                         }
                                     } catch (JSONException e) {
                                         // TODO Auto-generated catch block

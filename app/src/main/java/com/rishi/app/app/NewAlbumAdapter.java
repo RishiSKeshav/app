@@ -34,7 +34,7 @@ public class NewAlbumAdapter extends SelectableAdapter<NewAlbumAdapter.MyViewHol
     private MyViewHolder.ClickListener clickListener;
 
 
-    public static class MyViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener,View.OnLongClickListener {
+    public static class MyViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         public TextView name, date,count;
         public ImageView path,check;
         View selectedOverlay;
@@ -43,7 +43,7 @@ public class NewAlbumAdapter extends SelectableAdapter<NewAlbumAdapter.MyViewHol
         public MyViewHolder(View view, ClickListener listener) {
             super(view);
             view.setOnClickListener(this);
-            view.setOnLongClickListener(this);
+           // view.setOnLongClickListener(this);
             this.listener = listener;
             path = (ImageView) view.findViewById(R.id.new_album);
             selectedOverlay = view.findViewById(R.id.selected_overlay);
@@ -57,18 +57,18 @@ public class NewAlbumAdapter extends SelectableAdapter<NewAlbumAdapter.MyViewHol
             }
         }
 
-        @Override
-        public boolean onLongClick(View v) {
-            if (listener != null) {
-                return listener.onItemLongClicked(getPosition());
-            }
-
-            return false;
-        }
+//        @Override
+//        public boolean onLongClick(View v) {
+//            if (listener != null) {
+//                return listener.onItemLongClicked(getPosition());
+//            }
+//
+//            return false;
+//        }
 
         public interface ClickListener {
             public void onItemClicked(int position);
-            public boolean onItemLongClicked(int position);
+           // public boolean onItemLongClicked(int position);
         }
     }
 
