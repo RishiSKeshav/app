@@ -1,9 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.rishi.app.app" >
-
+    package="com.rishi.app.app">
 
     <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <uses-permission android:name="com.google.android.c2dm.permission.RECEIVE" />
+
+    <permission
+        android:name="com.rishi.app.app.permission.C2D_MESSAGE"
+        android:protectionLevel="signature" />
+
+    <uses-permission android:name="com.rishi.app.app.permission.C2D_MESSAGE" />
+    <uses-permission android:name="android.permission.GET_TASKS" />
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.CAMERA" />
 
@@ -11,113 +18,102 @@
     <uses-feature android:name="android.hardware.camera.front" />
 
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-
     <uses-permission android:name="android.permission.READ_CONTACTS" />
-
-    <uses-permission
-        android:name="android.permission.READ_SYNC_SETTINGS"/>
-    <uses-permission
-        android:name="android.permission.WRITE_SYNC_SETTINGS"/>
-    <uses-permission
-        android:name="android.permission.AUTHENTICATE_ACCOUNTS"/>
-
-    <permission android:name="com.rishi.app.app.permission.C2D_MESSAGE"
-        android:protectionLevel="signature" />
-    <uses-permission android:name="com.rishi.app.app.permission.C2D_MESSAGE" />
+    <uses-permission android:name="android.permission.READ_SYNC_SETTINGS" />
+    <uses-permission android:name="android.permission.WRITE_SYNC_SETTINGS" />
+    <uses-permission android:name="android.permission.AUTHENTICATE_ACCOUNTS" />
 
     <application
-        android:allowBackup="true"
+        android:name=".MyApplication"
+        android:allowBackup="false"
         android:label="@string/app_name"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme" >
-
-        <meta-data android:name="com.facebook.sdk.ApplicationId" android:value="@string/facebook_app_id"/>
+        android:theme="@style/AppTheme">
+        <meta-data
+            android:name="com.facebook.sdk.ApplicationId"
+            android:value="@string/facebook_app_id" />
 
         <activity
             android:name="com.facebook.FacebookActivity"
-            android:configChanges= "keyboard|keyboardHidden|screenLayout|screenSize|orientation"
-            android:theme="@android:style/Theme.Translucent.NoTitleBar"
-            android:label="@string/app_name" />
-
+            android:configChanges="keyboard|keyboardHidden|screenLayout|screenSize|orientation"
+            android:label="@string/app_name"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
         <activity
             android:name=".LoginActivity"
-            android:label="@string/title_activity_login" >
+            android:label=""
+            >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
 
-
         </activity>
-
         <activity
             android:name=".HomeActivity"
-            android:label="@string/title_activity_home" >
-
-
+            android:label=""
+            android:uiOptions="splitActionBarWhenNarrow"
+            >
+            <meta-data android:name="android.support.UI_OPTIONS"
+                android:value="splitActionBarWhenNarrow" />
 
         </activity>
+
 
         <activity
             android:name=".RegisterActivity"
-            android:label="@string/app_name" >
-        </activity>
-
-        <activity android:name=".CameraActivity" >
-        </activity>
-
-        <activity android:name=".AlbumMediaDisplay" >
-        </activity>
-
-        <activity android:name=".FullScreenMediaDisplay" >
-        </activity>
-
-        <activity android:name=".NewAlbum">
-        </activity>
-
-        <activity android:name=".AddMoreMedia">
-        </activity>
-
-        <activity android:name=".AlbumMediaSelect">
-        </activity>
-
-        <activity android:name=".ToPersonalAlbum">
-        </activity>
-
-        <activity android:name=".ToSharedAlbum">
-        </activity>
-
-        <activity android:name=".SharedAlbumMediaDisplay">
-        </activity>
-
-        <activity android:name=".SharedAlbumMediaSelect">
-        </activity>
-
-        <activity android:name=".Userbase">
-
-        </activity>
-
-        <activity android:name=".HomeSettings">
-
-        </activity>
-        <activity android:name=".EditProfile">
-
-        </activity>
-
-        <activity android:name=".EditEmail">
-
-        </activity>
-
-        <activity android:name=".EditPassword">
-
-        </activity>
-
+            android:label="@string/app_name" />
+        <activity android:name=".CameraActivity" />
+        <activity android:name=".AlbumMediaDisplay"
+            android:parentActivityName=".HomeActivity"/>
+        <activity android:name=".FullScreenMediaDisplay" />
+        <activity android:name=".NewAlbum" />
+        <activity android:name=".AddMoreMedia" />
+        <activity android:name=".AlbumMediaSelect"
+           />
+        <activity android:name=".ToPersonalAlbum" />
+        <activity android:name=".ToSharedAlbum" />
+        <activity android:name=".SharedAlbumMediaDisplay" />
+        <activity android:name=".SharedAlbumMediaSelect" />
+        <activity android:name=".Userbase" />
+        <activity android:name=".HomeSettings" />
+        <activity android:name=".EditProfile" />
+        <activity android:name=".EditEmail" />
+        <activity android:name=".EditPassword" />
         <activity
             android:name=".CameraFullImageDisplayActivity"
-            android:label="@string/title_activity_camera_full_image_display"
-             >
-        </activity>
+            android:label="@string/title_activity_camera_full_image_display" />
+
+        <activity
+            android:name=".UploadDP"
+             />
+
+        <receiver
+            android:name="com.google.android.gms.gcm.GcmReceiver"
+            android:exported="true"
+            android:permission="com.google.android.c2dm.permission.SEND">
+            <intent-filter>
+                <action android:name="com.google.android.c2dm.intent.RECEIVE" />
+
+                <category android:name="info.androidhive.gcm" />
+            </intent-filter>
+        </receiver>
+
+        <service
+            android:name=".MyGcmPushReceiver"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="com.google.android.c2dm.intent.RECEIVE" />
+            </intent-filter>
+        </service>
+        <service
+            android:name=".GcmIntentService"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="com.google.android.gms.iid.InstanceID" />
+            </intent-filter>
+        </service>
 
     </application>
+
 </manifest>

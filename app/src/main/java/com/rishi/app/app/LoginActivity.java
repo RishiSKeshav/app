@@ -29,6 +29,8 @@ import com.facebook.HttpMethod;
 import com.facebook.Profile;
 import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.GoogleApiAvailability;
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.JsonHttpResponseHandler;
 import com.loopj.android.http.AsyncHttpResponseHandler;
@@ -47,7 +49,8 @@ public class LoginActivity extends ActionBarActivity {
 
     EditText emailET;
 
-
+    private String TAG = LoginActivity.class.getSimpleName();
+    private static final int PLAY_SERVICES_RESOLUTION_REQUEST = 9000;
     EditText passwordET;
 
     @Override
@@ -88,6 +91,7 @@ public class LoginActivity extends ActionBarActivity {
                                     obj.put("name", object.getString("name").toString());
                                     obj.put("mobileNo", "");
                                     obj.put("displayPicture","https://graph.facebook.com/" + object.getString("id").toString() +"/picture?type=large");
+                                    obj.put("facebookId",object.getString("id").toString());
                                     StringEntity jsonString = new StringEntity(obj.toString());
 
 
@@ -103,8 +107,10 @@ public class LoginActivity extends ActionBarActivity {
                                         // @Override
                                         public void onSuccess(String response) {
                                             // called when response HTTP status is "200 OK"
+
                                             try {
                                                 JSONObject obj = new JSONObject(response);
+
 
                                                 if (obj.getBoolean("error")) {
                                                     Toast.makeText(getApplicationContext(), obj.getString("msg"), Toast.LENGTH_LONG).show();
@@ -112,7 +118,10 @@ public class LoginActivity extends ActionBarActivity {
 
                                                     JSONObject outputObj = obj.getJSONObject("outputObj");
                                                     JSONObject user = outputObj.getJSONObject("user");
-                                                    sessionManager.createLoginSession(user);
+                                                   sessionManager.createLoginSession(user);
+                                                    if (checkPlayServices()) {
+                                                      registerGCM();
+                                                    }
                                                     navigatetoHomeActivity();
 
                                                 }
@@ -173,6 +182,28 @@ public class LoginActivity extends ActionBarActivity {
         });
     }
 
+    private void registerGCM() {
+        Intent intent = new Intent(this, GcmIntentService.class);
+        intent.putExtra("key", "register");
+        startService(intent);
+    }
+
+    private boolean checkPlayServices() {
+        GoogleApiAvailability apiAvailability = GoogleApiAvailability.getInstance();
+        int resultCode = apiAvailability.isGooglePlayServicesAvailable(this);
+        if (resultCode != ConnectionResult.SUCCESS) {
+            if (apiAvailability.isUserResolvableError(resultCode)) {
+                apiAvailability.getErrorDialog(this, resultCode, PLAY_SERVICES_RESOLUTION_REQUEST)
+                        .show();
+            } else {
+                Log.i(TAG, "This device is not supported. Google Play Services not installed!");
+                Toast.makeText(getApplicationContext(), "This device is not supported. Google Play Services not installed!", Toast.LENGTH_LONG).show();
+                finish();
+            }
+            return false;
+        }
+        return true;
+    }
 
 
     @Override
@@ -215,6 +246,7 @@ public class LoginActivity extends ActionBarActivity {
             public void onSuccess(String response) {
                 // called when response HTTP status is "200 OK"
                 try{
+                    Log.i("fff",response);
                     JSONObject obj = new JSONObject(response);
 
                     if(obj.getBoolean("error")){

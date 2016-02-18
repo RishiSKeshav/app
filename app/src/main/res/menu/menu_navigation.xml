@@ -1,0 +1,30 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:myapp="http://schemas.android.com/apk/res-auto" >
+
+    <item
+        android:id="@+id/phone"
+        android:title="s"
+        android:icon="@drawable/ic_info_black_24dp"
+        myapp:showAsAction="ifRoom|withText" />
+
+    <item
+        android:id="@+id/computer"
+        android:title="b"
+        android:icon="@drawable/messenger_button_blue_bg_selector"
+        myapp:showAsAction="ifRoom|withText" />
+
+    <item
+        android:id="@+id/gamepad"
+        android:title="c"
+        android:icon="@drawable/messenger_bubble_large_white"
+        myapp:showAsAction="ifRoom|withText" />
+
+    <item
+        android:id="@+id/camera"
+        android:title="d"
+        android:icon="@drawable/messenger_bubble_large_blue"
+        myapp:showAsAction="ifRoom|withText" />
+
+
+
+</menu>

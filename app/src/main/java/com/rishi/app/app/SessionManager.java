@@ -38,7 +38,7 @@ public class SessionManager {
     {
 
         try {
-            Log.i("qqq",userObj.toString());
+
                 editor.putString("id",userObj.getString("id"));
                 editor.putString("name",userObj.getString("name"));
                 editor.putString("emailId",userObj.getString("emailId"));

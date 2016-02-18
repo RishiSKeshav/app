@@ -61,6 +61,7 @@ public class FragmentFacebook extends Fragment implements FragmentFacebookAdapte
     private ArrayList<Integer> userIDS = new ArrayList<Integer>();
     private ArrayList<Integer> mediaIDS = new ArrayList<>();
     String ID,NAME,ACTION,ALBUM_NAME,SHARED;
+    SessionManager sessionManager;
 
 
 
@@ -82,6 +83,7 @@ public class FragmentFacebook extends Fragment implements FragmentFacebookAdapte
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View vq = inflater.inflate(R.layout.facebook_fragment, container, false);
+        sessionManager = new SessionManager(getContext());
 
         ACTION = getArguments().getString("action");
 
@@ -140,14 +142,14 @@ public class FragmentFacebook extends Fragment implements FragmentFacebookAdapte
         toggleSelection(position);
     }
 
-    @Override
-    public boolean onItemLongClicked(int position) {
-
-
-        toggleSelection(position);
-
-        return true;
-    }
+//    @Override
+//    public boolean onItemLongClicked(int position) {
+//
+//
+//        toggleSelection(position);
+//
+//        return true;
+//    }
 
 
 
@@ -197,6 +199,7 @@ public class FragmentFacebook extends Fragment implements FragmentFacebookAdapte
                             JSONArray b = new JSONArray(mediaIDS);
                             JSONObject obj = new JSONObject();
                             obj.put("userId", "1");
+                            obj.put("userName",sessionManager.getName());
                             obj.put("mediaId", b);
                             obj.put("sharedUserId", a);
                             obj.put("name",ALBUM_NAME);

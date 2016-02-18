@@ -1,5 +1,6 @@
 package com.rishi.app.app;
 
+import android.app.ActionBar;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
@@ -9,6 +10,7 @@ import android.preference.PreferenceActivity;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -50,6 +52,16 @@ public class AlbumMediaDisplay extends AppCompatActivity{
         super.onCreate(savedInstanceState);
         //Displays Home Screen
         setContentView(R.layout.album_media_display);
+        Intent intent = getIntent();
+        ID = intent.getStringExtra("Id");
+        NAME = intent.getStringExtra("Name");
+
+        Toolbar toolbar= (Toolbar) findViewById(R.id.album_media_display_toolbar);
+        TextView tv = (TextView) findViewById(R.id.tv_ld_header);
+        tv.setText(NAME);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         mediacount = (TextView)findViewById(R.id.media_count);
         edit_album_title = (EditText)findViewById(R.id.edit_album_title);
@@ -61,12 +73,7 @@ public class AlbumMediaDisplay extends AppCompatActivity{
         recyclerView.setLayoutManager(mLayoutManager);
         recyclerView.setAdapter(amAdapter);
 
-        Intent intent = getIntent();
-        ID = intent.getStringExtra("Id");
-        NAME = intent.getStringExtra("Name");
 
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setTitle(NAME);
 
         prepareAlbumMediaData(ID);
 

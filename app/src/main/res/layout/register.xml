@@ -26,18 +26,50 @@
             <LinearLayout android:id="@+id/email_login_form" android:layout_width="match_parent"
                 android:layout_height="wrap_content" android:orientation="vertical">
 
+                <android.support.design.widget.TextInputLayout
+                    android:id="@+id/input_layout_name"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
                 <EditText android:id="@+id/registername" android:layout_width="match_parent"
                     android:layout_height="wrap_content" android:hint="Name"
                     android:layout_marginBottom="10dp"
                     android:textColorHint="#ffffffff"
                     android:textColor="#ffffffff" />
-
+</android.support.design.widget.TextInputLayout>
                 <!--<EditText android:id="@+id/registerLastName" android:layout_width="match_parent"-->
                     <!--android:layout_height="wrap_content" android:hint="LastName"-->
                     <!--android:layout_marginBottom="10dp"-->
                     <!--android:textColorHint="#ffffffff"-->
                     <!--android:textColor="#ffffffff" />-->
 
+                <android.support.design.widget.TextInputLayout
+                    android:id="@+id/input_layout_mobileNO"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <EditText android:id="@+id/registermobileNo" android:layout_width="match_parent"
+                        android:layout_height="wrap_content" android:hint="MobileNo"
+                        android:layout_marginBottom="10dp"
+                        android:textColorHint="#ffffffff"
+                        android:textColor="#ffffffff"
+                        android:inputType="number" />
+                </android.support.design.widget.TextInputLayout>
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Entering MobileNo makes sharing easy"
+                    android:textColor="#fff"
+                    android:padding="3dp"
+                    android:paddingTop="0dp"
+                    android:gravity="center_horizontal"
+                    android:layout_marginLeft="10dp"/>
+
+
+                <android.support.design.widget.TextInputLayout
+                    android:id="@+id/input_layout_email"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
                 <AutoCompleteTextView android:id="@+id/registerEmail" android:layout_width="match_parent"
                     android:layout_height="wrap_content" android:hint="@string/prompt_email"
                     android:inputType="textEmailAddress" android:maxLines="1"
@@ -45,6 +77,12 @@
                     android:layout_marginBottom="10dp"
                     android:textColorHint="#ffffffff"
                     android:textColor="#ffffffff" />
+                </android.support.design.widget.TextInputLayout>
+
+                <android.support.design.widget.TextInputLayout
+                    android:id="@+id/input_layout_password"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
 
                 <EditText android:id="@+id/registerPassword" android:layout_width="match_parent"
                     android:layout_height="wrap_content" android:hint="@string/prompt_password"
@@ -52,6 +90,7 @@
                     android:textColorHint="#ffffffff"
                     android:textColor="#ffffffff"
                     android:inputType="textPassword" />
+                </android.support.design.widget.TextInputLayout>
 
                 <Button android:id="@+id/btnRegister" style="?android:textAppearanceSmall"
                     android:layout_width="match_parent" android:layout_height="wrap_content"
@@ -60,16 +99,6 @@
                     android:onClick="registerUser"
                     android:textColor="#ffffffff"
                     android:background="#00838F" />
-
-                <Button android:id="@+id/ddd" style="?android:textAppearanceSmall"
-                    android:layout_width="match_parent" android:layout_height="wrap_content"
-                    android:layout_marginTop="16dp" android:text="Facebook Login"
-                    android:textStyle="bold"
-
-                    android:textColor="#ffffffff"
-                    android:background="#00838F" />
-
-
 
             </LinearLayout>
 

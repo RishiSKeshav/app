@@ -16,6 +16,7 @@ import android.graphics.PorterDuffXfermode;
 import android.graphics.Rect;
 import android.graphics.RectF;
 import android.media.Image;
+
 import android.net.LinkAddress;
 import android.net.Uri;
 import android.os.AsyncTask;
@@ -23,12 +24,16 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.ParcelFileDescriptor;
 import android.provider.MediaStore;
-import android.support.design.widget.FloatingActionButton;
+import com.github.clans.fab.FloatingActionButton;
+import com.github.clans.fab.FloatingActionMenu;
+
+import android.support.design.widget.Snackbar;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.AppCompatActivity;
 
+import android.support.v7.widget.Toolbar;
 import android.util.Base64;
 
 import android.util.Log;
@@ -96,11 +101,10 @@ public class HomeActivity extends AppCompatActivity {
     final int PIC_CROP = 2;
     private Uri mImageCaptureUri;
     private Bitmap bitmap;
-    private String imagepath=null;
     String encodedString;
 
-    int[] colorIntArray = {R.color.cardview_dark_background,R.color.cardview_light_background,R.color.cardview_shadow_end_color};
-    int[] iconIntArray = {R.drawable.ic_photo_black_48dp,R.drawable.ic_person_black_48dp,R.drawable.ic_alarm_on_black_48dp};
+    private FloatingActionButton album;
+    private FloatingActionButton share_album;
     private static final String TAG = HomeActivity.class.getName();
     RequestParams params = new RequestParams();
 
@@ -109,24 +113,26 @@ public class HomeActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.home);
 
+        Toolbar home_toolbar= (Toolbar) findViewById(R.id.home_toolbar);
+        setSupportActionBar(home_toolbar);
+
+
         sessionManager = new SessionManager(getApplicationContext());
-        Log.i(TAG,sessionManager.getDisplayPicture());
         name = (TextView) findViewById(R.id.name);
         name.setText(sessionManager.getName());
 
-
-        fab = (FloatingActionButton)findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener(){
+        album = (FloatingActionButton) findViewById(R.id.fab_album);
+        share_album = (FloatingActionButton) findViewById(R.id.fab_shared_album);
+        album.setOnClickListener(new View.OnClickListener(){
             @Override
-            public void onClick(View view) {
+            public void onClick(View view){
                 Intent intent = new Intent(HomeActivity.this, NewAlbum.class);
                 intent.putExtra("shared","no");
                 startActivity(intent);
+
             }
         });
-
-        fab1 = (FloatingActionButton) findViewById(R.id.fab1);
-        fab1.setOnClickListener(new View.OnClickListener(){
+        share_album.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view){
                 Intent intent = new Intent(HomeActivity.this, NewAlbum.class);
@@ -136,6 +142,39 @@ public class HomeActivity extends AppCompatActivity {
             }
         });
 
+        ImageView nav1 = (ImageView) findViewById(R.id.nav1);
+        nav1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
+
+        ImageView nav2 = (ImageView) findViewById(R.id.nav2);
+        nav2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.i("qqqgg","reach");
+               Intent i = new Intent(HomeActivity.this,CameraActivity.class);
+                HomeActivity.this.startActivity(i);
+            }
+        });
+
+        ImageView nav3 = (ImageView) findViewById(R.id.nav3);
+        nav3.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
+
+        ImageView nav4 = (ImageView) findViewById(R.id.nav4);
+        nav4.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
 
         CircleImageView imageView = (CircleImageView) findViewById(R.id.image);
 
@@ -382,8 +421,10 @@ public class HomeActivity extends AppCompatActivity {
         @Override
     public boolean onCreateOptionsMenu(Menu menu){
 
-        MenuInflater inflater = getMenuInflater();
+       MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.menu_home, menu);
+
+
         return true;
     }
 
@@ -405,17 +446,17 @@ public class HomeActivity extends AppCompatActivity {
             protected void animateFab(final int position) {
         switch (position) {
             case 0:
-                fab.show();
-                fab1.hide();
+                album.setVisibility(View.VISIBLE);
+               share_album.setVisibility(View.INVISIBLE);
                 break;
             case 1:
-                fab1.show();
-                fab.hide();
+                album.setVisibility(View.INVISIBLE);
+                share_album.setVisibility(View.VISIBLE);
                 break;
 
             default:
-                fab.hide();
-                fab1.hide();
+                album.setVisibility(View.INVISIBLE);
+                share_album.setVisibility(View.INVISIBLE);
                 break;
         }
     }

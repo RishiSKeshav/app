@@ -3,18 +3,35 @@ package com.rishi.app.app;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.drawable.ShapeDrawable;
+import android.graphics.drawable.shapes.OvalShape;
+import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
 import android.preference.PreferenceActivity;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.view.ActionMode;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
+import android.text.Html;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.TextView;
 import android.widget.Toast;
 
+
+import com.facebook.CallbackManager;
+import com.facebook.FacebookCallback;
+import com.facebook.FacebookException;
+import com.facebook.share.Sharer;
+import com.facebook.share.model.ShareLinkContent;
+import com.facebook.share.widget.ShareDialog;
+import com.github.clans.fab.FloatingActionButton;
+import com.github.clans.fab.FloatingActionMenu;
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 
@@ -26,6 +43,7 @@ import org.json.JSONObject;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.List;
+
 
 /**
  * Created by amitrajula on 2/6/16.
@@ -39,20 +57,29 @@ public class AlbumMediaSelect extends AppCompatActivity implements AlbumMediaSel
     private ArrayList<Integer> pos = new ArrayList<Integer>();
     private List<AlbumMedia> albummediaList = new ArrayList<>();
     String ID,NAME;
+    ShareDialog shareDialog;
+    CallbackManager callbackManager;
+
+    private FloatingActionButton menu_fab1;
+    private FloatingActionButton menu_fab2;
+    private FloatingActionButton menu_fab3;
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         //Displays Home Screen
         setContentView(R.layout.album_media_select);
 
-
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setTitle("Select Media");
-
         Intent i = getIntent();
         albummediaList = i.getParcelableArrayListExtra("al");
         ID = i.getStringExtra("id");
         NAME = i.getStringExtra("name");
+
+        Toolbar toolbar= (Toolbar) findViewById(R.id.album_media_select_toolbar);
+        TextView tv = (TextView) findViewById(R.id.tv_ld_header);
+        tv.setText(NAME);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         recyclerView = (RecyclerView)findViewById(R.id.recycler_album_media_select);
         amsAdapter = new AlbumMediaSelectAdapter(albummediaList,this);
@@ -61,6 +88,65 @@ public class AlbumMediaSelect extends AppCompatActivity implements AlbumMediaSel
         recyclerView.setLayoutManager(mLayoutManager);
         recyclerView.setAdapter(amsAdapter);
 
+
+        shareDialog = new ShareDialog(this);
+        callbackManager = CallbackManager.Factory.create();
+        shareDialog.registerCallback(callbackManager, new
+
+                FacebookCallback<Sharer.Result>() {
+                    @Override
+                    public void onSuccess(Sharer.Result result) {}
+
+                    @Override
+                    public void onCancel() {}
+
+                    @Override
+                    public void onError(FacebookException error) {}
+                });
+
+
+
+                  if (ShareDialog.canShow(ShareLinkContent.class)) {
+
+                  }
+//
+//
+//                    ShareLinkContent linkContent = new ShareLinkContent.Builder()
+//                            .setContentTitle("Hello Facebook")
+//                            .setContentDescription("The 'Hello Facebook' sample  showcases simple Facebook integration")
+//                            .setContentUrl(Uri.parse("http://developers.facebook.com/android"))
+//                            .setImageUrl()
+//                            .build();
+//
+//                    shareDialog.show(linkContent);
+//                }
+//                Intent sharingIntent = new Intent(Intent.ACTION_SEND);
+//                sharingIntent.setType("text/html");
+//                sharingIntent.putExtra(android.content.Intent.EXTRA_TEXT, Html.fromHtml("<p>This is the text that will be shared.</p>"));
+//                startActivity(Intent.createChooser(sharingIntent,"Share using"));
+
+
+//        menu_fab2.setOnClickListener(clickListener);
+//        menu_fab3.setOnClickListener(clickListener);
+
+
+
+    }
+
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+
+        if (id == android.R.id.home) {
+            Intent i = new Intent(AlbumMediaSelect.this,AlbumMediaDisplay.class);
+            i.putExtra("Id",ID);
+            i.putExtra("Name",NAME);
+            AlbumMediaSelect.this.startActivity(i);
+
+        }
+
+        return super.onOptionsItemSelected(item);
     }
 
     @Override

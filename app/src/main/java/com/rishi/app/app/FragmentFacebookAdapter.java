@@ -45,7 +45,7 @@ public class FragmentFacebookAdapter extends SelectableAdapter<FragmentFacebookA
     //Context context;
 
 
-    public static class MyViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener,View.OnLongClickListener {
+    public static class MyViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         public TextView name;
         public ImageView check,path;
         private ClickListener listener;
@@ -54,7 +54,7 @@ public class FragmentFacebookAdapter extends SelectableAdapter<FragmentFacebookA
         public MyViewHolder(View view,ClickListener listener) {
             super(view);
             view.setOnClickListener(this);
-            view.setOnLongClickListener(this);
+           // view.setOnLongClickListener(this);
             this.listener = listener;
             // name = (TextView) view.findViewById(R.id.name);
             path =  (ImageView) view.findViewById(R.id.facebook_displayPicture);
@@ -71,18 +71,18 @@ public class FragmentFacebookAdapter extends SelectableAdapter<FragmentFacebookA
             }
         }
 
-        @Override
-        public boolean onLongClick(View v) {
-            if (listener != null) {
-                return listener.onItemLongClicked(getPosition());
-            }
-
-            return false;
-        }
+//        @Override
+//        public boolean onLongClick(View v) {
+//            if (listener != null) {
+//                return listener.onItemLongClicked(getPosition());
+//            }
+//
+//            return false;
+//        }
 
         public interface ClickListener {
             public void onItemClicked(int position);
-            public boolean onItemLongClicked(int position);
+       //     public boolean onItemLongClicked(int position);
         }
     }
 

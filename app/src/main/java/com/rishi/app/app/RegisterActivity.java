@@ -14,11 +14,17 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.GoogleApiAvailability;
+import com.google.android.gms.common.GooglePlayServicesUtil;
+import com.google.android.gms.gcm.GoogleCloudMessaging;
+import com.google.android.gms.iid.InstanceID;
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
 import com.loopj.android.http.JsonHttpResponseHandler;
 
+import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 
 /**
@@ -32,6 +38,9 @@ public class RegisterActivity extends Activity {
     EditText nameET;
     EditText emailET;
     EditText passwordET;
+    private String TAG = RegisterActivity.class.getSimpleName();
+    private static final int PLAY_SERVICES_RESOLUTION_REQUEST = 9000;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -83,47 +92,49 @@ public class RegisterActivity extends Activity {
     public void invokeWS(JSONObject object) throws UnsupportedEncodingException{
 
         StringEntity jsonString = new StringEntity(object.toString());
-        Log.i("SER","reached");
         AsyncHttpClient client = new AsyncHttpClient();
       //  client.post(getApplicationContext(),"http://52.89.2.186/project/webservice/public/Register", jsonString,"application/json", new AsyncHttpResponseHandler() {
-            client.post(getApplicationContext(),"http://52.89.2.186/project/webservice/public/Register",jsonString,"application/json", new AsyncHttpResponseHandler() {
-            // When the response returned by REST has Http response code '200'
-            @Override
-            public void onSuccess(String response) {
+            client.post(getApplicationContext(), "http://52.89.2.186/project/webservice/public/Register", jsonString, "application/json", new AsyncHttpResponseHandler() {
+                // When the response returned by REST has Http response code '200'
+                @Override
+                public void onSuccess(String response) {
 
-                try{
-                    JSONObject obj = new JSONObject(response);
+                    try {
+                        JSONObject obj = new JSONObject(response);
 
-                    if(obj.getBoolean("error")){
-                        Toast.makeText(getApplicationContext(), obj.getString("msg"), Toast.LENGTH_LONG).show();
-                    }else{
+                        if (obj.getBoolean("error")) {
+                            Toast.makeText(getApplicationContext(), obj.getString("msg"), Toast.LENGTH_LONG).show();
+                        } else {
 
-                        JSONObject userObj = obj.getJSONObject("user");
+                            JSONObject userObj = obj.getJSONObject("user");
 
-                        sessionManager.createLoginSession(userObj);
-                        navigatetoHomeActivity();
+                            sessionManager.createLoginSession(userObj);
+                            if (checkPlayServices()) {
+                               registerGCM();
+                                navigatetoUploadDisplayPicture();
+
+                            }
+
+                        }
+                    }catch (JSONException e) {
+                        // TODO Auto-generated catch block
+                        Toast.makeText(getApplicationContext(), "Error Occured [Server's JSON response might be invalid]!", Toast.LENGTH_LONG).show();
+                        e.printStackTrace();
 
                     }
 
-                }catch (JSONException e) {
-                    // TODO Auto-generated catch block
-                    Toast.makeText(getApplicationContext(), "Error Occured [Server's JSON response might be invalid]!", Toast.LENGTH_LONG).show();
-                    e.printStackTrace();
-
-                }
-
                 }
 
 
-            @Override
-            public void onFailure(int statusCode, Throwable error,
-                                  String content){
+                @Override
+                public void onFailure(int statusCode, Throwable error,
+                                      String content) {
 
-    Toast.makeText(getApplicationContext(), "Error Occured [", Toast.LENGTH_LONG).show();
+                    Toast.makeText(getApplicationContext(), "Error Occured [", Toast.LENGTH_LONG).show();
 
-            }
+                }
 
-        });
+            });
     }
 
     /**
@@ -135,11 +146,36 @@ public class RegisterActivity extends Activity {
         startActivity(loginIntent);
     }
 
-    public void navigatetoHomeActivity(){
-        Intent homeIntent = new Intent(getApplicationContext(),HomeActivity.class);
-        homeIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+    public void navigatetoUploadDisplayPicture(){
+        Intent homeIntent = new Intent(getApplicationContext(),UploadDP.class);
         startActivity(homeIntent);
     }
+
+    private void registerGCM() {
+        Intent intent = new Intent(this, GcmIntentService.class);
+        intent.putExtra("key", "register");
+        startService(intent);
+    }
+
+    private boolean checkPlayServices() {
+        GoogleApiAvailability apiAvailability = GoogleApiAvailability.getInstance();
+        int resultCode = apiAvailability.isGooglePlayServicesAvailable(this);
+        if (resultCode != ConnectionResult.SUCCESS) {
+            if (apiAvailability.isUserResolvableError(resultCode)) {
+                apiAvailability.getErrorDialog(this, resultCode, PLAY_SERVICES_RESOLUTION_REQUEST)
+                        .show();
+            } else {
+                Log.i(TAG, "This device is not supported. Google Play Services not installed!");
+                Toast.makeText(getApplicationContext(), "This device is not supported. Google Play Services not installed!", Toast.LENGTH_LONG).show();
+                finish();
+            }
+            return false;
+        }
+        return true;
+    }
+
+
+
 
 
 }
