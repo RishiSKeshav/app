@@ -172,6 +172,8 @@ public class HomeActivity extends AppCompatActivity {
         nav3.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Intent i = new Intent(HomeActivity.this,Notification.class);
+                HomeActivity.this.startActivity(i);
 
             }
         });
