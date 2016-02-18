@@ -2,6 +2,11 @@ package com.rishi.app.app;
 
 import android.app.ActionBar;
 import android.app.Activity;
+import android.content.ContentResolver;
+import android.content.Context;
+import android.content.Intent;
+import android.content.SharedPreferences;
+import android.content.SharedPreferences.Editor;
 import android.app.ProgressDialog;
 import android.content.ActivityNotFoundException;
 import android.content.Intent;
@@ -22,6 +27,7 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
 import android.os.ParcelFileDescriptor;
 import android.provider.MediaStore;
 import com.github.clans.fab.FloatingActionButton;
@@ -72,7 +78,9 @@ import org.apache.http.util.EntityUtils;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.w3c.dom.Text;
-
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.UUID;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileDescriptor;
@@ -250,7 +258,6 @@ public class HomeActivity extends AppCompatActivity {
         });
 
     }
-
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -460,7 +467,6 @@ public class HomeActivity extends AppCompatActivity {
                 break;
         }
     }
-
 
     private Bitmap getCircleBitmap(Bitmap bitmap) {
         final Bitmap output = Bitmap.createBitmap(bitmap.getWidth(),

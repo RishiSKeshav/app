@@ -11,6 +11,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.os.Bundle;
+import android.os.Environment;
 import android.preference.PreferenceActivity;
 import android.support.v7.app.ActionBarActivity;
 import android.view.View;
@@ -37,15 +38,17 @@ import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
 
 import android.preference.PreferenceActivity.Header;
+
+import java.io.File;
 import java.io.UnsupportedEncodingException;
-
-
+import java.util.UUID;
 
 
 public class LoginActivity extends ActionBarActivity {
     private CallbackManager callbackManager;
     private LoginButton loginButton;
     SessionManager sessionManager;
+    ImageDatabaseHandler db;
 
     EditText emailET;
 
@@ -60,6 +63,8 @@ public class LoginActivity extends ActionBarActivity {
         callbackManager=CallbackManager.Factory.create();
 
         setContentView(R.layout.login);
+
+        databaseSetup();
 
         sessionManager = new SessionManager(getApplicationContext());
 
@@ -182,6 +187,7 @@ public class LoginActivity extends ActionBarActivity {
         });
     }
 
+
     private void registerGCM() {
         Intent intent = new Intent(this, GcmIntentService.class);
         intent.putExtra("key", "register");
@@ -203,6 +209,42 @@ public class LoginActivity extends ActionBarActivity {
             return false;
         }
         return true;
+    }
+
+    private void databaseSetup() {
+
+        File folder = new File(Environment.getExternalStorageDirectory().toString()+ "/app");
+        boolean success = true;
+        if (!folder.exists()) {
+            success = folder.mkdir();
+        }
+
+        db = new ImageDatabaseHandler(this,folder.toString());
+
+        Log.d("databasae_name", "Database SEtup started");
+
+        /*String uuid = UUID.randomUUID().toString();
+
+        com.rishi.app.app.Image img = new com.rishi.app.app.Image();
+
+        img.setName("IMG_20160207_124315.jpg");
+        img.setPath("/storage/emulated/0/IMG_20160207_124315.jpg");
+        img.setUuid(uuid);
+
+        db.addImage(img);*/
+
+        /*if(db!=null){
+            Toast.makeText(LoginActivity.this, db.getDatabaseName(), Toast.LENGTH_SHORT).show();
+            Log.i("databasae_name",db.getDatabaseName());
+        }
+        else
+            Log.i("databasae_name","DB not created");
+
+
+        db.addContact("Amit","6268419153");
+
+        Toast.makeText(LoginActivity.this,"count: "+ db.getContactsCount(), Toast.LENGTH_SHORT).show();*/
+
     }
 
 
