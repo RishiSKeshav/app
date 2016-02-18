@@ -17,6 +17,7 @@ import android.view.ViewGroup;
 import android.widget.CompoundButton;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
 import android.widget.Switch;
 
 import java.util.ArrayList;
@@ -28,8 +29,10 @@ public class Sync extends Activity {
     private ArrayList<com.rishi.app.app.Image> syncedImageList;
     private ArrayList<com.rishi.app.app.Image> unSyncedImageList;
     private ArrayList<String> syncedPathList;
+    int count=0;
+
     ProgressBar pBar;
-    LinearLayout layout;
+    RelativeLayout layout;
 
     Intent serviceIntent;
 
@@ -41,7 +44,7 @@ public class Sync extends Activity {
         setContentView(R.layout.activity_sync);
 
         pBar = (ProgressBar) findViewById(R.id.progressBar);
-        layout =(LinearLayout) findViewById(R.id.sync_layout);
+        layout =(RelativeLayout) findViewById(R.id.sync_sub_layout);
 
         IntentFilter filter = new IntentFilter("PROGRESS_ACTION");
         registerReceiver(myReceiver,filter);
@@ -49,7 +52,7 @@ public class Sync extends Activity {
         initializeImageLists();
 
         serviceIntent = new Intent(Sync.this,ImageUploadService.class);
-        serviceIntent.putExtra("unSyncedImageList", unSyncedImageList);
+        serviceIntent.putParcelableArrayListExtra("unSyncedImageList", unSyncedImageList);
         startService(serviceIntent);
 
         switchButton = (Switch) findViewById(R.id.switchButton);
@@ -64,7 +67,7 @@ public class Sync extends Activity {
                     initializeImageLists();
 
                     serviceIntent = new Intent(Sync.this, ImageUploadService.class);
-                    serviceIntent.putExtra("unSyncedImageList", unSyncedImageList);
+                    serviceIntent.putParcelableArrayListExtra("unSyncedImageList", unSyncedImageList);
                     startService(serviceIntent);
 
                     Log.d("checked", " checked reached");
@@ -74,7 +77,7 @@ public class Sync extends Activity {
 
                     Log.d("unchecked", " unchecked reached");
 
-                    Intent serviceIntent = new Intent(Sync.this, ImageUploadService.class);
+                    serviceIntent = new Intent(Sync.this, ImageUploadService.class);
 
                     stopService(serviceIntent);
 
@@ -101,6 +104,8 @@ public class Sync extends Activity {
             if(!syncedPathList.contains(img.path))
                 unSyncedImageList.add(img);
         }
+
+        count=unSyncedImageList.size();
 
         Log.d("unsynced count", String.valueOf(unSyncedImageList.size()));
     }

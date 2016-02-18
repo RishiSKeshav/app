@@ -84,7 +84,7 @@ public class ImageUploadService extends Service {
     public void onStart(Intent intent, int startId) {
 
         Log.d("service", " service started");
-        unSyncedImageList =(ArrayList<Image>) intent.getSerializableExtra("unSyncedImageList");
+        unSyncedImageList = intent.getParcelableArrayListExtra("unSyncedImageList");
 
         Log.d("Service: count ", String.valueOf(unSyncedImageList.size()));
 
@@ -96,8 +96,6 @@ public class ImageUploadService extends Service {
                 i++;
             }
         }
-
-
         db = new ImageDatabaseHandler(getApplicationContext(),Environment.getExternalStorageDirectory().toString()+ "/app");
         Log.d("Db count",String.valueOf(db.getCount()));
 
@@ -130,13 +128,10 @@ public class ImageUploadService extends Service {
                 i.putExtra("NUMBER", progress[0]);
                 sendBroadcast(i);
 /*
-
                 // Making progress bar visible
                 progressBar.setVisibility(View.VISIBLE);
-
                 // updating progress bar value
                 progressBar.setProgress(progress[0]);
-
                 // updating percentage value
                 txtPercentage.setText(String.valueOf(progress[0]) + "%");
 */
