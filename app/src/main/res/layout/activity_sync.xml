@@ -9,12 +9,13 @@
     <RelativeLayout
         android:id="@+id/sync_sub_layout"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp">
 
         <ImageView
             android:id="@+id/imgView"
-            android:layout_width="150dp"
-            android:layout_height="150dp"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
             android:src="@drawable/ic_alarm_on_black_48dp"
             android:layout_alignParentLeft="true"/>
 
@@ -27,26 +28,27 @@
             android:layout_marginTop="5dp"
             android:layout_marginRight="15dp"/>
 
-
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/uploadLeftTxt"
+            android:text="akladsjfkla"
+            android:layout_toRightOf="@+id/imgView"
+            android:layout_marginTop="40dp"/>
 
         <ProgressBar
             android:id="@+id/progressBar"
             style="?android:attr/progressBarStyleHorizontal"
             android:layout_width="fill_parent"
-            android:layout_height="20dp"
+            android:layout_height="25dp"
             android:layout_alignBottom="@+id/imgView"
             android:layout_toEndOf="@+id/imgView"
             android:layout_toRightOf="@+id/imgView"
-            android:visibility="gone"/>
-
-
+            android:layout_marginRight="15dp"
+            />
 
     </RelativeLayout>
 
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/uploadLeftTxt"
-        android:layout_centerVertical="true"/>
+
 </RelativeLayout>

@@ -206,7 +206,7 @@ public class Sync extends Activity {
 
                 uploadLeftTxt.setText("Backing up:" + countLeft + " left");
                 uploadLeftTxt.setVisibility(View.INVISIBLE);
-                mainLayout.addView(uploadLeftTxt);
+                layout.addView(uploadLeftTxt);
             }
 
             else {
@@ -218,7 +218,7 @@ public class Sync extends Activity {
                 layout.addView(imgView);
 
                 uploadLeftTxt.setText("Backing up:"+countLeft+" left");
-                mainLayout.addView(uploadLeftTxt);
+                layout.addView(uploadLeftTxt);
             }
             //Log.d("dddReceiver", String.valueOf(ola));   //can't see
         }
