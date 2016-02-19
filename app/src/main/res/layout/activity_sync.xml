@@ -6,12 +6,11 @@
     android:orientation="vertical"
     android:weightSum="1">
 
-
-
     <RelativeLayout
         android:id="@+id/sync_sub_layout"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp">
 
         <ImageView
             android:id="@+id/imgView"
@@ -24,30 +23,45 @@
             android:id="@+id/switchButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-
             android:text="Sync "
-            android:layout_centerVertical="true"
-            android:layout_alignRight="@+id/progressBar"
-            android:layout_alignEnd="@+id/progressBar"
-            android:layout_marginRight="33dp"
-            android:layout_marginEnd="33dp" />
-
-        <ProgressBar
-            android:id="@+id/progressBar"
-            style="?android:attr/progressBarStyleHorizontal"
-            android:layout_width="fill_parent"
-            android:layout_height="20dp"
-            android:layout_alignBottom="@+id/imgView"
-            android:layout_toEndOf="@+id/imgView"
-            android:layout_toRightOf="@+id/imgView"
-            android:visibility="gone"/>
+            android:layout_alignParentRight="true"
+            android:layout_marginTop="5dp"
+            android:layout_marginRight="15dp"/>
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/uploadLeftTxt"
-            android:layout_centerVertical="true"
+            android:text="akladsjfkla"
             android:layout_toRightOf="@+id/imgView"
-            android:layout_toEndOf="@+id/imgView" />
+            android:layout_marginTop="40dp"/>
+
+        <ProgressBar
+            android:id="@+id/progressBar"
+            style="?android:attr/progressBarStyleHorizontal"
+            android:layout_width="fill_parent"
+            android:layout_height="25dp"
+            android:layout_alignBottom="@+id/imgView"
+            android:layout_toEndOf="@+id/imgView"
+            android:layout_toRightOf="@+id/imgView"
+            android:layout_marginRight="15dp"
+            />
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/sync_recycle_layout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/sync_sub_layout"
+        android:layout_margin="10dp">
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/sync_media_recycler_view"
+            xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:tools="http://schemas.android.com/tools"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            tools:context=".MainActivity$PlaceholderFragment"/>
     </RelativeLayout>
 </RelativeLayout>
