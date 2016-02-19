@@ -30,9 +30,9 @@ public class SharedAlbumAdapter extends RecyclerView.Adapter<SharedAlbumAdapter.
             view.setOnClickListener(this);
             name = (TextView) view.findViewById(R.id.name);
             thumbnail = (ImageView) view.findViewById(R.id.thumbnail);
-            count = (TextView) view.findViewById(R.id.image_data);
-            date = (TextView) view.findViewById(R.id.date_data);
-            members = (TextView)view.findViewById(R.id.members_data);
+           // count = (TextView) view.findViewById(R.id.image_data);
+            //date = (TextView) view.findViewById(R.id.date_data);
+            //members = (TextView)view.findViewById(R.id.members_data);
         }
 
         @Override
@@ -67,9 +67,9 @@ public class SharedAlbumAdapter extends RecyclerView.Adapter<SharedAlbumAdapter.
     public void onBindViewHolder(MyViewHolderShared holder, int position) {
         SharedAlbum sh = sharealbumList.get(position);
         holder.name.setText(sh.getName());
-        holder.count.setText(sh.getCount());
-        holder.date.setText(sh.getDate());
-        holder.members.setText(sh.getMembers());
+        //holder.count.setText(sh.getCount());
+        //holder.date.setText(sh.getDate());
+        //holder.members.setText(sh.getMembers());
         Context context = holder.thumbnail.getContext();
         Picasso.with(context).load(sh.getThumbnail()).error(R.mipmap.ic_launcher).placeholder(R.mipmap.ic_launcher)
                 .into(holder.thumbnail);

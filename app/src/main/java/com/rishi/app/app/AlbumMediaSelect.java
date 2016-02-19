@@ -34,6 +34,9 @@ import com.github.clans.fab.FloatingActionButton;
 import com.github.clans.fab.FloatingActionMenu;
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.AsyncHttpResponseHandler;
+import com.nispok.snackbar.Snackbar;
+import com.nispok.snackbar.SnackbarManager;
+import com.nispok.snackbar.listeners.EventListener;
 
 import org.apache.http.entity.StringEntity;
 import org.json.JSONArray;
@@ -55,7 +58,7 @@ public class AlbumMediaSelect extends AppCompatActivity implements AlbumMediaSel
     private ActionMode actionMode;
     private RecyclerView recyclerView;
     private ArrayList<Integer> pos = new ArrayList<Integer>();
-    private List<AlbumMedia> albummediaList = new ArrayList<>();
+    private ArrayList<AlbumMedia> albummediaList = new ArrayList<>();
     String ID,NAME;
     ShareDialog shareDialog;
     CallbackManager callbackManager;
@@ -88,27 +91,27 @@ public class AlbumMediaSelect extends AppCompatActivity implements AlbumMediaSel
         recyclerView.setLayoutManager(mLayoutManager);
         recyclerView.setAdapter(amsAdapter);
 
+//
+//        shareDialog = new ShareDialog(this);
+//        callbackManager = CallbackManager.Factory.create();
+//        shareDialog.registerCallback(callbackManager, new
+//
+//                FacebookCallback<Sharer.Result>() {
+//                    @Override
+//                    public void onSuccess(Sharer.Result result) {}
+//
+//                    @Override
+//                    public void onCancel() {}
+//
+//                    @Override
+//                    public void onError(FacebookException error) {}
+//                });
 
-        shareDialog = new ShareDialog(this);
-        callbackManager = CallbackManager.Factory.create();
-        shareDialog.registerCallback(callbackManager, new
-
-                FacebookCallback<Sharer.Result>() {
-                    @Override
-                    public void onSuccess(Sharer.Result result) {}
-
-                    @Override
-                    public void onCancel() {}
-
-                    @Override
-                    public void onError(FacebookException error) {}
-                });
 
 
-
-                  if (ShareDialog.canShow(ShareLinkContent.class)) {
-
-                  }
+//                  if (ShareDialog.canShow(ShareLinkContent.class)) {
+//
+//                  }
 //
 //
 //                    ShareLinkContent linkContent = new ShareLinkContent.Builder()
@@ -151,21 +154,22 @@ public class AlbumMediaSelect extends AppCompatActivity implements AlbumMediaSel
 
     @Override
     public void onItemClicked(int position) {
-        if (actionMode != null) {
-            toggleSelection(position);
-        }
-    }
-
-    @Override
-    public boolean onItemLongClicked(int position) {
         if (actionMode == null) {
             actionMode = startSupportActionMode(actionModeCallback);
         }
-
         toggleSelection(position);
-
-        return true;
     }
+//
+//    @Override
+//    public boolean onItemLongClicked(int position) {
+//        if (actionMode == null) {
+//
+//        }
+//
+//        toggleSelection(position);
+//
+//        return true;
+//    }
 
 
 
@@ -215,6 +219,7 @@ public class AlbumMediaSelect extends AppCompatActivity implements AlbumMediaSel
 
                     Intent i = new Intent(AlbumMediaSelect.this,ToPersonalAlbum.class);
                     i.putIntegerArrayListExtra("mediaId", pos);
+                    i.putParcelableArrayListExtra("al", albummediaList);
                     i.putExtra("Id", ID);
                     i.putExtra("Name", NAME);
                     i.putExtra("shared", "no");
@@ -224,6 +229,7 @@ public class AlbumMediaSelect extends AppCompatActivity implements AlbumMediaSel
                 case R.id.to_shared_album:
                     Intent intent = new Intent(AlbumMediaSelect.this,ToSharedAlbum.class);
                     intent.putIntegerArrayListExtra("mediaId", pos);
+                    intent.putParcelableArrayListExtra("al", albummediaList);
                     intent.putExtra("Id", ID);
                     intent.putExtra("Name", NAME);
                     intent.putExtra("shared","no");
@@ -234,6 +240,7 @@ public class AlbumMediaSelect extends AppCompatActivity implements AlbumMediaSel
                     Intent i2 = new Intent(AlbumMediaSelect.this,Userbase.class);
                     i2.putExtra("action","to_others");
                     i2.putIntegerArrayListExtra("mediaId", pos);
+                    i2.putParcelableArrayListExtra("al", albummediaList);
                     i2.putExtra("Id", ID);
                     i2.putExtra("Name", NAME);
                     i2.putExtra("shared","no");
@@ -288,15 +295,58 @@ public class AlbumMediaSelect extends AppCompatActivity implements AlbumMediaSel
                                 JSONObject obj = new JSONObject(response);
 
                                 if (obj.getBoolean("error")) {
-                                    Toast.makeText(getApplicationContext(), obj.getString("msg"), Toast.LENGTH_LONG).show();
+                                    SnackbarManager.show(
+                                            com.nispok.snackbar.Snackbar.with(getApplicationContext())
+                                                    .text("Something went wrong")
+                                                    .duration(com.nispok.snackbar.Snackbar.SnackbarDuration.LENGTH_SHORT)
+                                    );
                                 } else {
-                                    Toast.makeText(getApplicationContext(), obj.getString("msg"), Toast.LENGTH_LONG).show();
 
-                                    Intent i = new Intent(AlbumMediaSelect.this, AlbumMediaDisplay.class);
-                                    i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                                    i.putExtra("Id", ID);
-                                    i.putExtra("Name", NAME);
-                                    AlbumMediaSelect.this.startActivity(i);
+                                    SnackbarManager.show(
+                                            com.nispok.snackbar.Snackbar.with(getApplicationContext())
+                                                    .text("Media Deleted")
+                                                    .duration(Snackbar.SnackbarDuration.LENGTH_SHORT)
+                                                    .eventListener(new EventListener() {
+                                                        @Override
+                                                        public void onShow(com.nispok.snackbar.Snackbar snackbar) {
+
+                                                        }
+
+                                                        @Override
+                                                        public void onShowByReplace(com.nispok.snackbar.Snackbar snackbar) {
+
+                                                        }
+
+                                                        @Override
+                                                        public void onShown(com.nispok.snackbar.Snackbar snackbar) {
+
+                                                        }
+
+                                                        @Override
+                                                        public void onDismiss(com.nispok.snackbar.Snackbar snackbar) {
+
+
+                                                            Intent i = new Intent(AlbumMediaSelect.this, AlbumMediaDisplay.class);
+                                                            i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                                                            i.putExtra("Id", ID);
+                                                            i.putExtra("Name", NAME);
+                                                            AlbumMediaSelect.this.startActivity(i);
+
+
+
+                                                        }
+
+                                                        @Override
+                                                        public void onDismissByReplace(com.nispok.snackbar.Snackbar snackbar) {
+
+                                                        }
+
+                                                        @Override
+                                                        public void onDismissed(com.nispok.snackbar.Snackbar snackbar) {
+
+                                                        }
+                                                    })
+                                            , AlbumMediaSelect.this);
 
                                 }
 

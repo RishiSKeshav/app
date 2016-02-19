@@ -5,6 +5,25 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/to_personal_album_toolbar"
+        android:minHeight="?attr/actionBarSize"
+        android:background="@color/color_primary"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:theme="@style/ToolBarStyle"
+        >
+
+        <TextView
+            android:id="@+id/tv_ld_header"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Select Personal Album"
+            android:textSize="18dp"
+            android:textColor="#fff"
+            />
+    </android.support.v7.widget.Toolbar>
+
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/recycler_to_personal_album"

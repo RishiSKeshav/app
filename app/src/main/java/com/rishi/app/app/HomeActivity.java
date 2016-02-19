@@ -182,7 +182,8 @@ public class HomeActivity extends AppCompatActivity {
         nav4.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                Intent i = new Intent(HomeActivity.this,Sync.class);
+                HomeActivity.this.startActivity(i);
             }
         });
 
@@ -233,10 +234,15 @@ public class HomeActivity extends AppCompatActivity {
             }
         });
 
+        Intent i = getIntent();
 
         final ViewPager viewPager = (ViewPager) findViewById(R.id.viewpager);
         viewPager.setAdapter(new SampleFragmentPagerAdapter(getSupportFragmentManager(),
                 HomeActivity.this));
+
+        if(i.hasExtra("shared_media")){
+            viewPager.setCurrentItem(2);
+        }
 
         TabLayout tabLayout = (TabLayout) findViewById(R.id.sliding_tabs);
         tabLayout.setupWithViewPager(viewPager);

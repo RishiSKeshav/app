@@ -22,6 +22,8 @@ import android.widget.Toast;
 
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.AsyncHttpResponseHandler;
+import com.nispok.snackbar.SnackbarManager;
+import com.nispok.snackbar.listeners.EventListener;
 
 import org.apache.http.entity.StringEntity;
 import org.json.JSONArray;
@@ -120,7 +122,6 @@ public class NewAlbum extends AppCompatActivity implements NewAlbumAdapter.MyVie
             pos.add(Integer.parseInt(m.getId()));
         }
 
-        Log.i("ttt",pos.toString());
         if (count == 0) {
             actionMode.finish();
         } else {
@@ -182,25 +183,68 @@ public class NewAlbum extends AppCompatActivity implements NewAlbumAdapter.MyVie
                                 public void onSuccess(String response) {
                                     // called when response HTTP status is "200 OK"
                                     try {
-                                        JSONObject obj = new JSONObject(response);
+                                        final JSONObject obj = new JSONObject(response);
+
 
                                         if (obj.getBoolean("error")) {
-                                            Toast.makeText(getApplicationContext(), obj.getString("msg"), Toast.LENGTH_LONG).show();
+                                            SnackbarManager.show(
+                                                    com.nispok.snackbar.Snackbar.with(getApplicationContext())
+                                                            .text("Something went wrong")
+                                                            .duration(com.nispok.snackbar.Snackbar.SnackbarDuration.LENGTH_SHORT)
+                                            );
                                         } else {
 
 
-                                            Snackbar.make(main_layout, "New album created", Snackbar.LENGTH_INDEFINITE)
-                                                    .setAction("Ok", new View.OnClickListener() {
-                                                        @Override
-                                                        public void onClick(View view) {
-                                                            Intent homeIntent = new Intent(getApplicationContext(), HomeActivity.class);
-                                            homeIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                                            startActivity(homeIntent);
+                                            SnackbarManager.show(
+                                                    com.nispok.snackbar.Snackbar.with(getApplicationContext())
+                                                            .text("New album created")
+                                                            .duration(com.nispok.snackbar.Snackbar.SnackbarDuration.LENGTH_SHORT)
+                                                            .eventListener(new EventListener() {
+                                                                @Override
+                                                                public void onShow(com.nispok.snackbar.Snackbar snackbar) {
 
-                                                        }
-                                                    })
-                                                    .setActionTextColor(getResources().getColor(android.R.color.primary_text_dark ))
-                                                    .show();
+                                                                }
+
+                                                                @Override
+                                                                public void onShowByReplace(com.nispok.snackbar.Snackbar snackbar) {
+
+                                                                }
+
+                                                                @Override
+                                                                public void onShown(com.nispok.snackbar.Snackbar snackbar) {
+
+                                                                }
+
+
+                                                                @Override
+                                                                public void onDismiss(com.nispok.snackbar.Snackbar snackbar) {
+
+                                                                    try {
+                                                                        Intent homeIntent = new Intent(getApplicationContext(), AlbumMediaDisplay.class);
+                                                                        homeIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                                                                        homeIntent.putExtra("Id", obj.getString("albumId"));
+                                                                        homeIntent.putExtra("Name", obj.getString("name"));
+                                                                        startActivity(homeIntent);
+
+                                                                    }catch (JSONException e) {
+                                                                        // TODO Auto-generated catch block
+                                                                        Toast.makeText(getApplicationContext(), "Error Occured [Server's JSON response might be invalid]!", Toast.LENGTH_LONG).show();
+                                                                        e.printStackTrace();
+
+                                                                    }
+                                                                }
+
+                                                                @Override
+                                                                public void onDismissByReplace(com.nispok.snackbar.Snackbar snackbar) {
+
+                                                                }
+
+                                                                @Override
+                                                                public void onDismissed(com.nispok.snackbar.Snackbar snackbar) {
+
+                                                                }
+                                                            })
+                                                    , NewAlbum.this);
 
 //
                                         }

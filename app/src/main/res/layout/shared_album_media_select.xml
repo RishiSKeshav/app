@@ -5,6 +5,24 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/shared_album_media_select_toolbar"
+        android:minHeight="?attr/actionBarSize"
+        android:background="@color/color_primary"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:theme="@style/ToolBarStyle"
+        >
+
+        <TextView
+            android:id="@+id/tv_ld_header"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="18dp"
+            android:textColor="#fff"
+            />
+    </android.support.v7.widget.Toolbar>
+
     <android.support.v7.widget.RecyclerView
         android:id="@+id/shared_album_media_select_recycler_view"
         xmlns:android="http://schemas.android.com/apk/res/android"

@@ -5,14 +5,9 @@
     xmlns:yourapp="http://schemas.android.com/apk/res-auto"
     >
 
-    <item android:id="@+id/delete_album_media_select"
-    android:title=""
-    android:icon="@android:drawable/ic_menu_delete"
-    yourapp:showAsAction="ifRoom"
-        />
 
-    <item android:id="@+id/save"    android:title="Forward"
-        >
+    <item android:id="@+id/move"    android:title="Move"
+        yourapp:showAsAction="ifRoom">
 
         <menu>
 
@@ -35,13 +30,13 @@
 
 
     <!--<item android:id="@+id/share_personal_album_media_display"-->
-        <!--android:title="Personal Album"></item>-->
+    <!--android:title="Personal Album"></item>-->
 
     <!--<item android:id="@+id/shared_album_media_display"-->
-        <!--android:title="Shared Album"></item>-->
+    <!--android:title="Shared Album"></item>-->
 
     <!--<item android:id="@+id/other_album_media_display"-->
-        <!--android:title="Others"></item>-->
+    <!--android:title="Others"></item>-->
 
 
 

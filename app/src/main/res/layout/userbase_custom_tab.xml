@@ -4,4 +4,5 @@
     android:layout_height="wrap_content"
     android:id="@+id/tab"
     android:textSize="12sp"
+    android:gravity="center"
     android:fontFamily="@string/font_fontFamily_medium"/>

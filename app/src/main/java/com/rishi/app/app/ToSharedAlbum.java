@@ -8,6 +8,7 @@ import android.support.v7.view.ActionMode;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -15,6 +16,9 @@ import android.widget.Toast;
 
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.AsyncHttpResponseHandler;
+import com.nispok.snackbar.Snackbar;
+import com.nispok.snackbar.SnackbarManager;
+import com.nispok.snackbar.listeners.EventListener;
 
 import org.apache.http.entity.StringEntity;
 import org.json.JSONArray;
@@ -37,20 +41,34 @@ public class ToSharedAlbum extends AppCompatActivity implements ToSharedAlbumAda
     private List<SharedAlbum> sharedalbumList = new ArrayList<>();
     private ArrayList<Integer> pos = new ArrayList<Integer>();
     private ArrayList<Integer> albumid = new ArrayList<>();
+    private ArrayList<AlbumMedia> albummediaList = new ArrayList<>();
+
     String ID,NAME,SHARED;
+    String imagedisplay="";
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         //Displays Home Screen
         setContentView(R.layout.to_shared_album);
 
-        getSupportActionBar().setTitle("Select Shared Album");
+        Toolbar toolbar= (Toolbar) findViewById(R.id.to_shared_album_toolbar);
+        setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
         Intent i = getIntent();
-        pos= i.getIntegerArrayListExtra("mediaId");
-        ID = i.getStringExtra("Id");
-        NAME = i.getStringExtra("Name");
-        SHARED = i.getStringExtra("shared");
+        if(i.hasExtra("imagedisplay")){
+            imagedisplay = i.getStringExtra("imagedisplay");
+            ID = i.getStringExtra("Id");
+        }else {
+            pos = i.getIntegerArrayListExtra("mediaId");
+            ID = i.getStringExtra("Id");
+            NAME = i.getStringExtra("Name");
+            SHARED = i.getStringExtra("shared");
+
+            if (SHARED.equals("no")) {
+                albummediaList = i.getParcelableArrayListExtra("al");
+            }
+        }
 
         recyclerView = (RecyclerView)findViewById(R.id.recycler_to_shared_album);
         tsaAdapter = new ToSharedAlbumAdapter(sharedalbumList,this);
@@ -64,22 +82,53 @@ public class ToSharedAlbum extends AppCompatActivity implements ToSharedAlbumAda
     }
 
     @Override
-    public void onItemClicked(int position) {
-        if (actionMode != null) {
-            toggleSelection(position);
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+
+        if (id == android.R.id.home) {
+            if(imagedisplay.equals("")) {
+                if (SHARED.equals("no")) {
+                    Intent i = new Intent(ToSharedAlbum.this, AlbumMediaSelect.class);
+                    i.putParcelableArrayListExtra("al", albummediaList);
+                    i.putExtra("id", ID);
+                    i.putExtra("name", NAME);
+                    ToSharedAlbum.this.startActivity(i);
+                } else {
+                    Intent i = new Intent(ToSharedAlbum.this, SharedAlbumMediaSelect.class);
+                    i.putExtra("Id", ID);
+                    i.putExtra("Name", NAME);
+                    ToSharedAlbum.this.startActivity(i);
+                }
+            }else{
+                Intent i = new Intent(ToSharedAlbum.this, SharedMediaDisplay.class);
+                i.putExtra("image", imagedisplay);
+                i.putExtra("Id",ID);
+                ToSharedAlbum.this.startActivity(i);
+            }
         }
+
+        return super.onOptionsItemSelected(item);
     }
 
+
     @Override
-    public boolean onItemLongClicked(int position) {
+    public void onItemClicked(int position) {
         if (actionMode == null) {
             actionMode = startSupportActionMode(actionModeCallback);
         }
-
         toggleSelection(position);
-
-        return true;
     }
+
+//    @Override
+//    public boolean onItemLongClicked(int position) {
+//        if (actionMode == null) {
+//            actionMode = startSupportActionMode(actionModeCallback);
+//        }
+//
+//        toggleSelection(position);
+//
+//        return true;
+//    }
 
 
 
@@ -122,86 +171,237 @@ public class ToSharedAlbum extends AppCompatActivity implements ToSharedAlbumAda
             switch (item.getItemId()) {
                 case R.id.done_to_shared_album:
 
-                    try {
-                        JSONArray mediapos = new JSONArray(pos);
-                        JSONArray albumids = new JSONArray(albumid);
-                        JSONObject obj = new JSONObject();
-                        obj.put("userId", "1");
-                        obj.put("mediaId", mediapos);
-                        obj.put("albumId",albumids);
-                        obj.put("shared","yes");
-                        StringEntity jsonString = new StringEntity(obj.toString());
+                    if(imagedisplay.equals("")) {
+
+                        try {
+                            JSONArray mediapos = new JSONArray(pos);
+                            JSONArray albumids = new JSONArray(albumid);
+                            JSONObject obj = new JSONObject();
+                            obj.put("userId", "1");
+                            obj.put("mediaId", mediapos);
+                            obj.put("albumId", albumids);
+                            obj.put("shared", "yes");
+                            StringEntity jsonString = new StringEntity(obj.toString());
 
 
-                        AsyncHttpClient client = new AsyncHttpClient();
+                            AsyncHttpClient client = new AsyncHttpClient();
 
-                        client.post(getApplicationContext(), "http://52.89.2.186/project/webservice/public/Sharetoalbum", jsonString, "application/json", new AsyncHttpResponseHandler() {
+                            client.post(getApplicationContext(), "http://52.89.2.186/project/webservice/public/Sharetoalbum", jsonString, "application/json", new AsyncHttpResponseHandler() {
 
-                            @Override
-                            public void onStart() {
-                                // called before request is started
-                            }
-
-                            // @Override
-                            public void onSuccess(String response) {
-                                // called when response HTTP status is "200 OK"
-                                try {
-                                    JSONObject obj = new JSONObject(response);
-
-                                    if (obj.getBoolean("error")) {
-                                        Toast.makeText(getApplicationContext(), obj.getString("msg"), Toast.LENGTH_LONG).show();
-                                    } else {
-
-                                        Toast.makeText(getApplicationContext(), obj.getString("msg"), Toast.LENGTH_LONG).show();
-
-                                        if(SHARED.equals("no")) {
-                                            Intent i = new Intent(ToSharedAlbum.this, AlbumMediaDisplay.class);
-                                            i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                                            i.putExtra("Id",ID);
-                                            i.putExtra("Name",NAME);
-                                            i.putExtra("shared",SHARED);
-                                            ToSharedAlbum.this.startActivity(i);
-                                        }else{
-                                            Intent i = new Intent(ToSharedAlbum.this, SharedAlbumMediaDisplay.class);
-                                            i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                                            i.putExtra("Id",ID);
-                                            i.putExtra("Name",NAME);
-                                            i.putExtra("shared",SHARED);
-                                            ToSharedAlbum.this.startActivity(i);
-                                        }
-                                    }
-
-                                } catch (JSONException e) {
-                                    // TODO Auto-generated catch block
-                                    Toast.makeText(getApplicationContext(), "Error Occured [Server's JSON response might be invalid]!", Toast.LENGTH_LONG).show();
-                                    e.printStackTrace();
-
+                                @Override
+                                public void onStart() {
+                                    // called before request is started
                                 }
-                            }
 
-                            //@Override
-                            public void onFailure(int statusCode, PreferenceActivity.Header[] headers, byte[] errorResponse, Throwable e) {
-                                // called when response HTTP status is "4XX" (eg. 401, 403, 404)
-                            }
+                                // @Override
+                                public void onSuccess(String response) {
+                                    // called when response HTTP status is "200 OK"
+                                    try {
+                                        JSONObject obj = new JSONObject(response);
 
-                            //@Override
-                            public void onRetry(int retryNo) {
-                                // called when request is retried
-                            }
+                                        if (obj.getBoolean("error")) {
+                                            SnackbarManager.show(
+                                                    com.nispok.snackbar.Snackbar.with(getApplicationContext())
+                                                            .text("Something went wrong")
+                                                            .duration(com.nispok.snackbar.Snackbar.SnackbarDuration.LENGTH_SHORT)
+                                            );
+                                        } else {
+
+                                            SnackbarManager.show(
+                                                    com.nispok.snackbar.Snackbar.with(getApplicationContext())
+                                                            .text(obj.optString("msg"))
+                                                            .duration(Snackbar.SnackbarDuration.LENGTH_SHORT)
+                                                            .eventListener(new EventListener() {
+                                                                @Override
+                                                                public void onShow(com.nispok.snackbar.Snackbar snackbar) {
+
+                                                                }
+
+                                                                @Override
+                                                                public void onShowByReplace(com.nispok.snackbar.Snackbar snackbar) {
+
+                                                                }
+
+                                                                @Override
+                                                                public void onShown(com.nispok.snackbar.Snackbar snackbar) {
+
+                                                                }
+
+                                                                @Override
+                                                                public void onDismiss(com.nispok.snackbar.Snackbar snackbar) {
 
 
-                        });
+                                                                    if (SHARED.equals("no")) {
+                                                                        Intent i = new Intent(ToSharedAlbum.this, AlbumMediaDisplay.class);
+                                                                        i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                                                                        i.putExtra("Id", ID);
+                                                                        i.putExtra("Name", NAME);
+                                                                        i.putExtra("shared", SHARED);
+                                                                        ToSharedAlbum.this.startActivity(i);
+                                                                    } else {
+                                                                        Intent i = new Intent(ToSharedAlbum.this, SharedAlbumMediaDisplay.class);
+                                                                        i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                                                                        i.putExtra("Id", ID);
+                                                                        i.putExtra("Name", NAME);
+                                                                        i.putExtra("shared", SHARED);
+                                                                        ToSharedAlbum.this.startActivity(i);
+                                                                    }
 
-                    }catch (JSONException e) {
-                        e.printStackTrace();
-                    }catch(UnsupportedEncodingException ee){
-                        ee.printStackTrace();
+                                                                }
+
+                                                                @Override
+                                                                public void onDismissByReplace(com.nispok.snackbar.Snackbar snackbar) {
+
+                                                                }
+
+                                                                @Override
+                                                                public void onDismissed(com.nispok.snackbar.Snackbar snackbar) {
+
+                                                                }
+                                                            })
+                                                    , ToSharedAlbum.this);
+
+
+                                        }
+
+                                    } catch (JSONException e) {
+                                        // TODO Auto-generated catch block
+                                        Toast.makeText(getApplicationContext(), "Error Occured [Server's JSON response might be invalid]!", Toast.LENGTH_LONG).show();
+                                        e.printStackTrace();
+
+                                    }
+                                }
+
+                                //@Override
+                                public void onFailure(int statusCode, PreferenceActivity.Header[] headers, byte[] errorResponse, Throwable e) {
+                                    // called when response HTTP status is "4XX" (eg. 401, 403, 404)
+                                }
+
+                                //@Override
+                                public void onRetry(int retryNo) {
+                                    // called when request is retried
+                                }
+
+
+                            });
+
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        } catch (UnsupportedEncodingException ee) {
+                            ee.printStackTrace();
+                        }
+
+
+                        mode.finish();
+                        return true;
+                    }else{
+                        Log.i("ddd",ID);
+                        Log.i("ggg",albumid.toString());
+                        try {
+                            JSONArray albumids = new JSONArray(albumid);
+                            JSONObject obj = new JSONObject();
+                            obj.put("userId", "1");
+                            obj.put("albumId", albumids);
+                            obj.put("mediaId", ID);
+                            StringEntity jsonString = new StringEntity(obj.toString());
+
+
+                            AsyncHttpClient client = new AsyncHttpClient();
+
+                            client.post(getApplicationContext(), "http://52.89.2.186/project/webservice/public/Movesharedmedia", jsonString, "application/json", new AsyncHttpResponseHandler() {
+
+                                @Override
+                                public void onStart() {
+                                    // called before request is started
+                                }
+
+                                // @Override
+                                public void onSuccess(String response) {
+                                    // called when response HTTP status is "200 OK"
+                                    try {
+                                        Log.i("response",response);
+                                        JSONObject obj = new JSONObject(response);
+
+                                        if (obj.getBoolean("error")) {
+                                            SnackbarManager.show(
+                                                    com.nispok.snackbar.Snackbar.with(getApplicationContext())
+                                                            .text("Something went wrong")
+                                                            .duration(com.nispok.snackbar.Snackbar.SnackbarDuration.LENGTH_SHORT)
+                                            );
+                                        } else {
+                                            SnackbarManager.show(
+                                                    com.nispok.snackbar.Snackbar.with(getApplicationContext())
+                                                            .text(obj.getString("msg"))
+                                                            .duration(Snackbar.SnackbarDuration.LENGTH_SHORT)
+                                                            .eventListener(new EventListener() {
+                                                                @Override
+                                                                public void onShow(com.nispok.snackbar.Snackbar snackbar) {
+
+                                                                }
+
+                                                                @Override
+                                                                public void onShowByReplace(com.nispok.snackbar.Snackbar snackbar) {
+
+                                                                }
+
+                                                                @Override
+                                                                public void onShown(com.nispok.snackbar.Snackbar snackbar) {
+
+                                                                }
+
+                                                                @Override
+                                                                public void onDismiss(com.nispok.snackbar.Snackbar snackbar) {
+
+                                                                    Intent i = new Intent(ToSharedAlbum.this, HomeActivity.class);
+                                                                    i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                                                                    i.putExtra("shared_media", "2");
+                                                                    ToSharedAlbum.this.startActivity(i);
+                                                                }
+
+                                                                @Override
+                                                                public void onDismissByReplace(com.nispok.snackbar.Snackbar snackbar) {
+
+                                                                }
+
+                                                                @Override
+                                                                public void onDismissed(com.nispok.snackbar.Snackbar snackbar) {
+
+                                                                }
+                                                            })
+                                                    , ToSharedAlbum.this);
+                                        }
+
+                                    } catch (JSONException e) {
+                                        // TODO Auto-generated catch block
+                                        Toast.makeText(getApplicationContext(), "Error Occured [Server's JSON response might be invalid]!", Toast.LENGTH_LONG).show();
+                                        e.printStackTrace();
+
+                                    }
+                                }
+
+                                //@Override
+                                public void onFailure(int statusCode, PreferenceActivity.Header[] headers, byte[] errorResponse, Throwable e) {
+                                    // called when response HTTP status is "4XX" (eg. 401, 403, 404)
+                                }
+
+                                //@Override
+                                public void onRetry(int retryNo) {
+                                    // called when request is retried
+                                }
+
+
+                            });
+
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        } catch (UnsupportedEncodingException ee) {
+                            ee.printStackTrace();
+                        }
+
+
+                        mode.finish();
+                        return true;
                     }
-
-
-
-                    mode.finish();
-                    return true;
 
                 default:
                     return false;

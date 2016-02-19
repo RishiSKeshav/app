@@ -34,7 +34,7 @@ public class ToPersonalAlbumAdapter extends SelectableAdapter<ToPersonalAlbumAda
     private MyViewHolder.ClickListener clickListener;
 
 
-    public static class MyViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener,View.OnLongClickListener {
+    public static class MyViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         public TextView name, date,count;
         public ImageView thumbnail,check;
         View selectedOverlay;
@@ -43,7 +43,7 @@ public class ToPersonalAlbumAdapter extends SelectableAdapter<ToPersonalAlbumAda
         public MyViewHolder(View view, ClickListener listener) {
             super(view);
             view.setOnClickListener(this);
-            view.setOnLongClickListener(this);
+         //   view.setOnLongClickListener(this);
             this.listener = listener;
             thumbnail = (ImageView) view.findViewById(R.id.image_to_personal_album);
             name = (TextView) view.findViewById(R.id.name_to_personal_album);
@@ -58,18 +58,18 @@ public class ToPersonalAlbumAdapter extends SelectableAdapter<ToPersonalAlbumAda
             }
         }
 
-        @Override
-        public boolean onLongClick(View v) {
-            if (listener != null) {
-                return listener.onItemLongClicked(getPosition());
-            }
-
-            return false;
-        }
+//        @Override
+//        public boolean onLongClick(View v) {
+//            if (listener != null) {
+//                return listener.onItemLongClicked(getPosition());
+//            }
+//
+//            return false;
+//        }
 
         public interface ClickListener {
             public void onItemClicked(int position);
-            public boolean onItemLongClicked(int position);
+         //   public boolean onItemLongClicked(int position);
         }
     }
 

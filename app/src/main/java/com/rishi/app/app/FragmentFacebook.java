@@ -1,6 +1,7 @@
 package com.rishi.app.app;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.hardware.camera2.params.Face;
 import android.preference.PreferenceActivity;
@@ -34,6 +35,9 @@ import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.AsyncHttpResponseHandler;
+import com.nispok.snackbar.Snackbar;
+import com.nispok.snackbar.SnackbarManager;
+import com.nispok.snackbar.listeners.EventListener;
 
 import org.apache.http.entity.StringEntity;
 import org.json.JSONArray;
@@ -60,8 +64,9 @@ public class FragmentFacebook extends Fragment implements FragmentFacebookAdapte
     private Userbase u;
     private ArrayList<Integer> userIDS = new ArrayList<Integer>();
     private ArrayList<Integer> mediaIDS = new ArrayList<>();
-    String ID,NAME,ACTION,ALBUM_NAME,SHARED;
+    String ID,NAME,ACTION,ALBUM_NAME,SHARED,imagedisplay;
     SessionManager sessionManager;
+    Context context;
 
 
 
@@ -85,7 +90,11 @@ public class FragmentFacebook extends Fragment implements FragmentFacebookAdapte
         View vq = inflater.inflate(R.layout.facebook_fragment, container, false);
         sessionManager = new SessionManager(getContext());
 
+
+
         ACTION = getArguments().getString("action");
+
+
 
         if(ACTION.equals("create_shared_album"))
         {
@@ -104,6 +113,11 @@ public class FragmentFacebook extends Fragment implements FragmentFacebookAdapte
             NAME = getArguments().getString("Name");
             SHARED = getArguments().getString("shared");
         }
+        if(ACTION.equals("shared_media")){
+            mediaIDS = getArguments().getIntegerArrayList("mediaId");
+            ID = getArguments().getString("Id");
+            imagedisplay = getArguments().getString("imagedisplay");
+        }
 
         recyclerView = (RecyclerView) vq.findViewById(R.id.facebook_friends);
         ffAdapter = new FragmentFacebookAdapter(friends,this);
@@ -116,9 +130,9 @@ public class FragmentFacebook extends Fragment implements FragmentFacebookAdapte
         loginButton.setReadPermissions("user_friends");
         loginButton.setFragment(this);
        // loginButton.registerCallback(getcall());
-        loginButton.setOnClickListener(new View.OnClickListener(){
-            public void onClick(View v){
-               loginButton.registerCallback(callbackManager,mcallback);
+        loginButton.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                loginButton.registerCallback(callbackManager, mcallback);
             }
         });
 
@@ -128,6 +142,8 @@ public class FragmentFacebook extends Fragment implements FragmentFacebookAdapte
 
             }
         });
+
+        Activity Userbase;
 
         return vq;
     }
@@ -374,12 +390,80 @@ public class FragmentFacebook extends Fragment implements FragmentFacebookAdapte
                                             Toast.makeText(getContext(), obj.getString("msg"), Toast.LENGTH_LONG).show();
                                         } else {
                                             Toast.makeText(getContext(), obj.getString("msg"), Toast.LENGTH_LONG).show();
+                                            Intent i = new Intent(getContext(), SharedAlbumMediaDisplay.class);
+                                            i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                                            i.putExtra("Id", ID);
+                                            i.putExtra("Name", NAME);
+                                            getContext().startActivity(i);
+
+                                        }
+
+                                    } catch (JSONException e) {
+                                        // TODO Auto-generated catch block
+                                        Toast.makeText(getContext(), "Error Occured [Server's JSON response might be invalid]!", Toast.LENGTH_LONG).show();
+                                        e.printStackTrace();
+
+                                    }
+                                }
+
+                                //@Override
+                                public void onFailure(int statusCode, PreferenceActivity.Header[] headers, byte[] errorResponse, Throwable e) {
+                                    // called when response HTTP status is "4XX" (eg. 401, 403, 404)
+                                }
+
+                                //@Override
+                                public void onRetry(int retryNo) {
+                                    // called when request is retried
+                                }
 
 
-                                                Intent i = new Intent(getContext(), SharedAlbumMediaDisplay.class);
+                            });
+
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        } catch (UnsupportedEncodingException ee) {
+                            ee.printStackTrace();
+                        }
+
+                    }
+
+                    if(ACTION.equals("shared_media")){
+
+                        try {
+                            JSONArray a = new JSONArray(userIDS);
+                            JSONArray b = new JSONArray(mediaIDS);
+                            JSONObject obj = new JSONObject();
+                            obj.put("userId", "1");
+                            obj.put("mediaId", b);
+                            obj.put("sharedUserId", a);
+                            StringEntity jsonString = new StringEntity(obj.toString());
+
+
+                            AsyncHttpClient client = new AsyncHttpClient();
+
+                            client.post(getContext(), "http://52.89.2.186/project/webservice/public/Sharedmedia", jsonString, "application/json", new AsyncHttpResponseHandler() {
+
+                                @Override
+                                public void onStart() {
+                                    // called before request is started
+                                }
+
+                                // @Override
+                                public void onSuccess(String response) {
+                                    // called when response HTTP status is "200 OK"
+                                    try {
+                                        Log.i("zzz", response);
+                                        JSONObject obj = new JSONObject(response);
+
+                                        if (obj.getBoolean("error")) {
+                                            Toast.makeText(getContext(), obj.getString("msg"), Toast.LENGTH_LONG).show();
+                                        } else {
+                                            Toast.makeText(getContext(), obj.getString("msg"), Toast.LENGTH_LONG).show();
+
+                                                Intent i = new Intent(getContext(), SharedMediaDisplay.class);
                                                 i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                                                 i.putExtra("Id", ID);
-                                                i.putExtra("Name", NAME);
+                                                i.putExtra("image", imagedisplay);
                                                 getContext().startActivity(i);
 
 
@@ -411,7 +495,6 @@ public class FragmentFacebook extends Fragment implements FragmentFacebookAdapte
                         } catch (UnsupportedEncodingException ee) {
                             ee.printStackTrace();
                         }
-
                     }
 
                     return true;

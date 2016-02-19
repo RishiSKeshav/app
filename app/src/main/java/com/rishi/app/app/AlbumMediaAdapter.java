@@ -8,6 +8,7 @@ import android.graphics.BitmapFactory;
 import android.media.Image;
 import android.os.AsyncTask;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -32,7 +33,7 @@ public class AlbumMediaAdapter extends RecyclerView.Adapter<AlbumMediaAdapter.My
     private List<AlbumMedia> albumMediaList;
     private ArrayList<String> arrayalbumMediaList = new ArrayList<String>();
     private Bitmap bitmap;
-    String path = "";
+    String path = "",ID,NAME;
     //Context context;
 
 
@@ -58,13 +59,17 @@ public class AlbumMediaAdapter extends RecyclerView.Adapter<AlbumMediaAdapter.My
             Intent intent = new Intent(context,FullScreenMediaDisplay.class);
             intent.putExtra("Position", pos);
             intent.putStringArrayListExtra("data",arrayalbumMediaList);
+            intent.putExtra("shared","no");
+            intent.putExtra("Id",ID);
+            intent.putExtra("Name",NAME);
             context.startActivity(intent);
         }
     }
 
-    public AlbumMediaAdapter(List<AlbumMedia> albumMediaList) {
+    public AlbumMediaAdapter(List<AlbumMedia> albumMediaList,String ID,String NAME) {
         this.albumMediaList = albumMediaList;
-
+        this.ID = ID;
+        this.NAME = NAME;
     }
 
     @Override
@@ -77,6 +82,8 @@ public class AlbumMediaAdapter extends RecyclerView.Adapter<AlbumMediaAdapter.My
 
     @Override
     public void onBindViewHolder(MyViewHolder holder, int position) {
+//        StaggeredGridLayoutManager.LayoutParams layoutParams = (StaggeredGridLayoutManager.LayoutParams) holder.itemView.getLayoutParams();
+//        layoutParams.setFullSpan(true);
         AlbumMedia am = albumMediaList.get(position);
        // holder.name.setText(am.getName());
        // holder.date.setText(am.getDate());

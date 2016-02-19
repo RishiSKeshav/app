@@ -9,6 +9,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.view.ActionMode;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -20,6 +21,9 @@ import android.widget.Toast;
 
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.AsyncHttpResponseHandler;
+import com.nispok.snackbar.Snackbar;
+import com.nispok.snackbar.SnackbarManager;
+import com.nispok.snackbar.listeners.EventListener;
 
 import org.apache.http.entity.StringEntity;
 import org.json.JSONArray;
@@ -50,16 +54,16 @@ public class AddMoreMedia extends AppCompatActivity implements AddMoreMediaAdapt
         //Displays Home Screen
         setContentView(R.layout.add_more_media);
 
+        Toolbar add_more_toolbar= (Toolbar) findViewById(R.id.add_more_toolbar);
+        setSupportActionBar(add_more_toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
         Intent intent = getIntent();
 
         ids = intent.getStringArrayListExtra("albummediaids");
         ID = intent.getStringExtra("id");
         NAME = intent.getStringExtra("name");
         SHARED = intent.getStringExtra("shared");
-
-        Log.i("qqq",ids.toString());
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setTitle("Add Media");
 
         recyclerView = (RecyclerView)findViewById(R.id.recycler_add_more_media);
 
@@ -73,6 +77,8 @@ public class AddMoreMedia extends AppCompatActivity implements AddMoreMediaAdapt
 
 
     }
+
+
 
 
     @Override
@@ -115,6 +121,21 @@ public class AddMoreMedia extends AppCompatActivity implements AddMoreMediaAdapt
 
         int id = item.getItemId();
 
+        if(id == android.R.id.home){
+
+            if(SHARED.equals("no")){
+                Intent i = new Intent(AddMoreMedia.this,AlbumMediaDisplay.class);
+                i.putExtra("Id",ID);
+                i.putExtra("Name",NAME);
+                AddMoreMedia.this.startActivity(i);
+            }else{
+                Intent i = new Intent(AddMoreMedia.this,SharedAlbumMediaDisplay.class);
+                i.putExtra("Id",ID);
+                i.putExtra("Name",NAME);
+                AddMoreMedia.this.startActivity(i);
+            }
+        }
+
         if (id == R.id.done_add_more) {
 
 
@@ -145,23 +166,68 @@ public class AddMoreMedia extends AppCompatActivity implements AddMoreMediaAdapt
                             JSONObject obj = new JSONObject(response);
 
                             if (obj.getBoolean("error")) {
-                                Toast.makeText(getApplicationContext(), obj.getString("msg"), Toast.LENGTH_LONG).show();
+                                SnackbarManager.show(
+                                        com.nispok.snackbar.Snackbar.with(getApplicationContext())
+                                                .text("Something went wrong")
+                                                .duration(com.nispok.snackbar.Snackbar.SnackbarDuration.LENGTH_SHORT)
+                                );
                             } else {
-                                Toast.makeText(getApplicationContext(), obj.getString("msg"), Toast.LENGTH_LONG).show();
 
-                                if(SHARED.equals("no")) {
-                                    Intent i = new Intent(AddMoreMedia.this, AlbumMediaDisplay.class);
-                                    i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                                    i.putExtra("Id", ID);
-                                    i.putExtra("Name", NAME);
-                                    AddMoreMedia.this.startActivity(i);
-                                }else{
-                                    Intent i = new Intent(AddMoreMedia.this, SharedAlbumMediaDisplay.class);
-                                    i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                                    i.putExtra("Id", ID);
-                                    i.putExtra("Name", NAME);
-                                    AddMoreMedia.this.startActivity(i);
-                                }
+
+//
+
+                                SnackbarManager.show(
+                                        com.nispok.snackbar.Snackbar.with(getApplicationContext())
+                                                .text(obj.optString("msg"))
+                                                .duration(Snackbar.SnackbarDuration.LENGTH_SHORT)
+                                                .eventListener(new EventListener() {
+                                                    @Override
+                                                    public void onShow(com.nispok.snackbar.Snackbar snackbar) {
+
+                                                    }
+
+                                                    @Override
+                                                    public void onShowByReplace(com.nispok.snackbar.Snackbar snackbar) {
+
+                                                    }
+
+                                                    @Override
+                                                    public void onShown(com.nispok.snackbar.Snackbar snackbar) {
+
+                                                    }
+
+                                                    @Override
+                                                    public void onDismiss(com.nispok.snackbar.Snackbar snackbar) {
+                                                        if(SHARED.equals("no")) {
+                                                        Intent i = new Intent(AddMoreMedia.this, AlbumMediaDisplay.class);
+                                                        i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                                                        i.putExtra("Id", ID);
+                                                        i.putExtra("Name", NAME);
+                                                        AddMoreMedia.this.startActivity(i);
+                                                        }else{
+                                                        Intent i = new Intent(AddMoreMedia.this, SharedAlbumMediaDisplay.class);
+                                                        i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                                                        i.putExtra("Id", ID);
+                                                        i.putExtra("Name", NAME);
+                                                        AddMoreMedia.this.startActivity(i);
+                                                    }
+
+                                                    }
+
+                                                    @Override
+                                                    public void onDismissByReplace(com.nispok.snackbar.Snackbar snackbar) {
+
+                                                    }
+
+                                                    @Override
+                                                    public void onDismissed(com.nispok.snackbar.Snackbar snackbar) {
+
+                                                    }
+                                                })
+                                        ,AddMoreMedia.this);
+
+
+
                             }
                         } catch (JSONException e) {
                             // TODO Auto-generated catch block

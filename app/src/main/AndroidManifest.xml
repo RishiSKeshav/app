@@ -26,7 +26,6 @@
     <application
         android:name=".MyApplication"
         android:allowBackup="false"
-        android:label="@string/app_name"
         android:supportsRtl="true"
 
         android:theme="@style/AppTheme">
@@ -79,16 +78,25 @@
            />
         <activity android:name=".ToPersonalAlbum" />
         <activity android:name=".ToSharedAlbum" />
-        <activity android:name=".SharedAlbumMediaDisplay" />
+        <activity android:name=".SharedAlbumMediaDisplay"
+            android:parentActivityName=".HomeActivity"/>
         <activity android:name=".SharedAlbumMediaSelect" />
         <activity android:name=".Userbase" />
-        <activity android:name=".HomeSettings" />
-        <activity android:name=".EditProfile" />
-        <activity android:name=".EditEmail" />
-        <activity android:name=".EditPassword" />
+        <activity android:name=".HomeSettings"
+            android:parentActivityName=".HomeActivity"/>
+        <activity android:name=".EditProfile"
+            android:parentActivityName=".HomeSettings"/>
+        <activity android:name=".EditEmail"
+            android:parentActivityName=".EditProfile"/>
+        <activity android:name=".EditPassword"
+            android:parentActivityName=".EditProfile"/>
         <activity
             android:name=".CameraFullImageDisplayActivity"
             android:label="@string/title_activity_camera_full_image_display" />
+
+        <activity
+            android:name=".SharedMediaDisplay"
+             />
 
         <activity
             android:name=".SampleSync"

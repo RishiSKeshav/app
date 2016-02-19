@@ -9,6 +9,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -30,7 +31,8 @@ public class Userbase extends AppCompatActivity {
     private ViewPager viewPager;
     private FragmentFacebookAdapter fAdapter;
     ArrayList<Integer> mediaIDS = new ArrayList<>();
-    String ID,NAME,ACTION,ALBUM_NAME,SHARED;
+    private ArrayList<AlbumMedia> albummediaList = new ArrayList<>();
+    String ID,NAME,ACTION,ALBUM_NAME,SHARED,imagedisplay;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,8 +40,13 @@ public class Userbase extends AppCompatActivity {
 
         setContentView(R.layout.userbase);
 
+        Toolbar toolbar= (Toolbar) findViewById(R.id.userbase_toolbar);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
         Intent i = getIntent();
         ACTION = i.getStringExtra("action");
+
         if(ACTION.equals("create_shared_album"))
         {
             ALBUM_NAME = i.getStringExtra("album_name");
@@ -51,6 +58,9 @@ public class Userbase extends AppCompatActivity {
             ID = i.getStringExtra("Id");
             NAME = i.getStringExtra("Name");
             SHARED = i.getStringExtra("shared");
+            if(SHARED.equals("no")){
+                albummediaList = i.getParcelableArrayListExtra("al");
+            }
         }
 
         if(ACTION.equals("add_user")){
@@ -59,19 +69,67 @@ public class Userbase extends AppCompatActivity {
             SHARED = i.getStringExtra("shared");
         }
 
+        if(ACTION.equals("shared_media")){
+            ID = i.getStringExtra("Id");
+            imagedisplay = i.getStringExtra("imagedisplay");
+            mediaIDS = i. getIntegerArrayListExtra("mediaId");
+
+        }
+
          viewPager = (ViewPager) findViewById(R.id.userbase_viewpager);
         setupViewPager(viewPager);
 
         tabLayout = (TabLayout) findViewById(R.id.userbase_tabs);
         tabLayout.setupWithViewPager(viewPager);
 
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setTitle("Find Users");
-
         setupTabIcons();
 
 
 
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+
+        if (id == android.R.id.home) {
+
+            if(ACTION.equals("create_shared_album")){
+                Intent i = new Intent(Userbase.this,NewAlbum.class);
+                i.putExtra("shared","yes");
+                Userbase.this.startActivity(i);
+            }else if(ACTION.equals("add_user")){
+
+                Intent i = new Intent(Userbase.this,SharedAlbumMediaDisplay.class);
+                i.putExtra("Id",ID);
+                i.putExtra("Name",NAME);
+                Userbase.this.startActivity(i);
+
+            }else if(ACTION.equals("shared_media")){
+                Intent i = new Intent(Userbase.this,SharedMediaDisplay.class);
+                i.putExtra("Id",ID);
+                i.putExtra("image",imagedisplay);
+                Userbase.this.startActivity(i);
+            }
+            else{
+                if(SHARED.equals("no")) {
+                    Intent i = new Intent(Userbase.this, AlbumMediaSelect.class);
+                    i.putParcelableArrayListExtra("al", albummediaList);
+                    i.putExtra("id", ID);
+                    i.putExtra("name", NAME);
+                    Userbase.this.startActivity(i);
+                }else{
+                    Intent i = new Intent(Userbase.this, SharedAlbumMediaSelect.class);
+                    i.putExtra("Id", ID);
+                    i.putExtra("Name", NAME);
+                    Userbase.this.startActivity(i);
+                }
+            }
+
+
+        }
+
+        return super.onOptionsItemSelected(item);
     }
 
 
@@ -80,7 +138,7 @@ public class Userbase extends AppCompatActivity {
         ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
         adapter.addFrag(new FragmentFacebook(),"One");
         adapter.addFrag(new ContactsFragment(), "TWO");
-        adapter.addFrag(new MoreFragment(), "THREE");
+       // adapter.addFrag(new MoreFragment(), "THREE");
         viewPager.setAdapter(adapter);
     }
 
@@ -96,10 +154,10 @@ public class Userbase extends AppCompatActivity {
         tabTwo.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.ic_person_black_48dp, 0, 0);
         tabLayout.getTabAt(1).setCustomView(tabTwo);
 
-        TextView tabThree = (TextView) LayoutInflater.from(this).inflate(R.layout.userbase_custom_tab, null);
-        tabThree.setText("More Share");
-        tabThree.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.ic_alarm_on_black_48dp, 0, 0);
-        tabLayout.getTabAt(2).setCustomView(tabThree);
+//        TextView tabThree = (TextView) LayoutInflater.from(this).inflate(R.layout.userbase_custom_tab, null);
+//        tabThree.setText("More Share");
+//        tabThree.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.ic_alarm_on_black_48dp, 0, 0);
+//        tabLayout.getTabAt(2).setCustomView(tabThree);
     }
 
 
@@ -151,6 +209,14 @@ public class Userbase extends AppCompatActivity {
                 bundle.putString("Name", NAME);
                 bundle.putString("Id",ID);
                 bundle.putString("shared",SHARED);
+                fragment.setArguments(bundle);
+            }
+
+            if(ACTION.equals("shared_media")) {
+                bundle.putString("action",ACTION);
+                bundle.putIntegerArrayList("mediaId",mediaIDS);
+                bundle.putString("Id",ID);
+                bundle.putString("imagedisplay",imagedisplay);
                 fragment.setArguments(bundle);
             }
         }

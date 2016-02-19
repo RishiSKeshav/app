@@ -3,14 +3,44 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:id="@+id/main_layout"
     android:orientation="vertical">
+
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/shared_album_media_toolbar"
+        android:minHeight="?attr/actionBarSize"
+        android:background="@color/color_primary"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:theme="@style/ToolBarStyle"
+        >
+
+        <TextView
+            android:id="@+id/tv_ld_header"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="18dp"
+            android:textColor="#fff"
+            />
+    </android.support.v7.widget.Toolbar>
+
+<LinearLayout
+    android:id="@+id/shared_user_image"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="10dp"
+    android:padding="5dp"
+    android:orientation="horizontal">
+
+
+
+</LinearLayout>
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/shared_album_media_recycler_view"
         xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
-
         android:layout_height="match_parent"
         tools:context=".MainActivity$PlaceholderFragment"/>
 

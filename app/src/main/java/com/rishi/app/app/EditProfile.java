@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.preference.PreferenceActivity;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -36,7 +37,10 @@ public class EditProfile extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.edit_profile);
 
-        getSupportActionBar().setTitle("Edit Profile");
+        Toolbar toolbar= (Toolbar) findViewById(R.id.edit_profile_toolbar);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
         sessionManager = new SessionManager(getApplicationContext());
 
         CircleImageView imageView = (CircleImageView) findViewById(R.id.edit_profile_image);

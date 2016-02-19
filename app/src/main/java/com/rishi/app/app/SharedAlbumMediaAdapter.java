@@ -35,25 +35,42 @@ public class SharedAlbumMediaAdapter extends RecyclerView.Adapter<SharedAlbumMed
     private ArrayList<String> arrayalbumMediaList = new ArrayList<String>();
     public SharedAlbumMediaListImageAdapter samliAdapter;
     private Context mcontext;
+    String pathfullscreen="",ID,NAME;
 
 
 
-    public class MyViewHolder extends RecyclerView.ViewHolder  {
+    public class MyViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         public TextView name, date;
         public ImageView path;
-        public RecyclerView recyclerView;
+        //public RecyclerView recyclerView;
 
       //  public SharedAlbumMediaListImageAdapter samliAdapter;
 
         public MyViewHolder(View view) {
             super(view);
-
-            recyclerView = (RecyclerView) view.findViewById(R.id.shared_album_media_recycler_view2);
-            samliAdapter = new SharedAlbumMediaListImageAdapter(mediaList);
-            name = (TextView) view.findViewById(R.id.shared_album_user);
+            view.setOnClickListener(this);
+            path = (ImageView) view.findViewById(R.id.shared_album_media_image);
+//            recyclerView = (RecyclerView) view.findViewById(R.id.shared_album_media_recycler_view2);
+//            samliAdapter = new SharedAlbumMediaListImageAdapter(mediaList);
+       //     name = (TextView) view.findViewById(R.id.shared_album_user);
 
         }
 
+        @Override
+        public void onClick(View view) {
+
+            int position = getAdapterPosition();
+
+            String pos = Integer.toString(position);
+            Context context = view.getContext();
+            Intent intent = new Intent(context,FullScreenMediaDisplay.class);
+            intent.putExtra("Position", pos);
+            intent.putStringArrayListExtra("data",arrayalbumMediaList);
+            intent.putExtra("Id",ID);
+            intent.putExtra("Name",NAME);
+            intent.putExtra("shared","yes");
+            context.startActivity(intent);
+        }
 
     }
 
@@ -61,9 +78,10 @@ public class SharedAlbumMediaAdapter extends RecyclerView.Adapter<SharedAlbumMed
         this.mcontext = mcontext;
     }
 
-    public SharedAlbumMediaAdapter(List<SharedAlbumMedia> sharedalbumMediaList) {
-        this.sharedalbumMediaList = sharedalbumMediaList;
-
+    public SharedAlbumMediaAdapter(List<Media> mediaList,String ID,String NAME) {
+        this.mediaList = mediaList;
+        this.ID = ID;
+        this.NAME = NAME;
     }
 
     @Override
@@ -71,14 +89,14 @@ public class SharedAlbumMediaAdapter extends RecyclerView.Adapter<SharedAlbumMed
         View itemView = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.shared_album_media_list, parent, false);
 
-        MyViewHolder h = new MyViewHolder(itemView);
-        h.recyclerView.setHasFixedSize(true);
-
-       // Context c = h.recyclerView.getContext();
-        RecyclerView.LayoutManager mLayoutManager = new GridLayoutManager(mcontext,4);
-        h.recyclerView.setHorizontalScrollBarEnabled(true);
-        h.recyclerView.setLayoutManager(mLayoutManager);
-        h.recyclerView.setAdapter(samliAdapter);
+     //   MyViewHolder h = new MyViewHolder(itemView);
+//        h.recyclerView.setHasFixedSize(true);
+//
+//       // Context c = h.recyclerView.getContext();
+//        RecyclerView.LayoutManager mLayoutManager = new GridLayoutManager(mcontext,4);
+//        h.recyclerView.setHorizontalScrollBarEnabled(true);
+//        h.recyclerView.setLayoutManager(mLayoutManager);
+//        h.recyclerView.setAdapter(samliAdapter);
 
 
         return new MyViewHolder(itemView);
@@ -86,27 +104,21 @@ public class SharedAlbumMediaAdapter extends RecyclerView.Adapter<SharedAlbumMed
 
     @Override
     public void onBindViewHolder(MyViewHolder holder, int position) {
-        SharedAlbumMedia sam = sharedalbumMediaList.get(position);
-        holder.name.setText(sam.getName());
+        Media m = mediaList.get(position);
 
-        mediaList.clear();
+        Context context = holder.path.getContext();
+        Picasso.with(context).load(m.getPath()).error(R.mipmap.ic_launcher).placeholder(R.mipmap.ic_launcher)
+                .into(holder.path);
 
-        for (int i = 0; i < sam.getMedia().size(); i++) {
+        pathfullscreen = mediaList.get(position).getPath();
+        arrayalbumMediaList.add(pathfullscreen);
 
-
-      mediaList.add(sam.getMedia().get(i));
-            samliAdapter.notifyDataSetChanged();
 
     }
-}
-
-
-
-
 
 
     @Override
     public int getItemCount() {
-        return sharedalbumMediaList.size();
+        return mediaList.size();
     }
 }

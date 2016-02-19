@@ -25,6 +25,9 @@ import android.widget.Toast;
 
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.AsyncHttpResponseHandler;
+import com.nispok.snackbar.Snackbar;
+import com.nispok.snackbar.SnackbarManager;
+import com.nispok.snackbar.listeners.EventListener;
 
 import org.apache.http.entity.StringEntity;
 import org.json.JSONArray;
@@ -67,7 +70,7 @@ public class AlbumMediaDisplay extends AppCompatActivity{
         edit_album_title = (EditText)findViewById(R.id.edit_album_title);
 
         recyclerView = (RecyclerView)findViewById(R.id.album_media_recycler_view);
-        amAdapter = new AlbumMediaAdapter(albumMediaList);
+        amAdapter = new AlbumMediaAdapter(albumMediaList,ID,NAME);
         recyclerView.setHasFixedSize(true);
         RecyclerView.LayoutManager mLayoutManager = new GridLayoutManager(this,3);
         recyclerView.setLayoutManager(mLayoutManager);
@@ -170,15 +173,58 @@ public class AlbumMediaDisplay extends AppCompatActivity{
                                 JSONObject obj = new JSONObject(response);
 
                                 if (obj.getBoolean("error")) {
-                                    Toast.makeText(getApplicationContext(), obj.getString("msg"), Toast.LENGTH_LONG).show();
+                                    SnackbarManager.show(
+                                            com.nispok.snackbar.Snackbar.with(getApplicationContext())
+                                                    .text("Something went wrong")
+                                                    .duration(com.nispok.snackbar.Snackbar.SnackbarDuration.LENGTH_SHORT)
+                                    );
                                 } else {
-                                    Toast.makeText(getApplicationContext(), obj.getString("msg"), Toast.LENGTH_LONG).show();
 
-                                    Intent i = new Intent(AlbumMediaDisplay.this,AlbumMediaDisplay.class);
-                                    i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                                    i.putExtra("Id", ID);
-                                    i.putExtra("Name",edt1.getText().toString());
-                                    AlbumMediaDisplay.this.startActivity(i);
+                                    SnackbarManager.show(
+                                            com.nispok.snackbar.Snackbar.with(getApplicationContext())
+                                                    .text("Album title updated")
+                                                    .duration(Snackbar.SnackbarDuration.LENGTH_SHORT)
+                                                    .eventListener(new EventListener() {
+                                                        @Override
+                                                        public void onShow(com.nispok.snackbar.Snackbar snackbar) {
+
+                                                        }
+
+                                                        @Override
+                                                        public void onShowByReplace(com.nispok.snackbar.Snackbar snackbar) {
+
+                                                        }
+
+                                                        @Override
+                                                        public void onShown(com.nispok.snackbar.Snackbar snackbar) {
+
+                                                        }
+
+                                                        @Override
+                                                        public void onDismiss(com.nispok.snackbar.Snackbar snackbar) {
+
+
+                                                            Intent i = new Intent(AlbumMediaDisplay.this,AlbumMediaDisplay.class);
+                                                            i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                                                            i.putExtra("Id", ID);
+                                                            i.putExtra("Name",edt1.getText().toString());
+                                                            AlbumMediaDisplay.this.startActivity(i);
+
+                                                        }
+
+                                                        @Override
+                                                        public void onDismissByReplace(com.nispok.snackbar.Snackbar snackbar) {
+
+                                                        }
+
+                                                        @Override
+                                                        public void onDismissed(com.nispok.snackbar.Snackbar snackbar) {
+
+                                                        }
+                                                    })
+                                            , AlbumMediaDisplay.this);
+
+
 
                                 }
 
@@ -254,13 +300,54 @@ public class AlbumMediaDisplay extends AppCompatActivity{
                                 JSONObject obj = new JSONObject(response);
 
                                 if (obj.getBoolean("error")) {
-                                    Toast.makeText(getApplicationContext(), obj.getString("msg"), Toast.LENGTH_LONG).show();
+                                    SnackbarManager.show(
+                                            com.nispok.snackbar.Snackbar.with(getApplicationContext())
+                                                    .text("Something went wrong")
+                                                    .duration(com.nispok.snackbar.Snackbar.SnackbarDuration.LENGTH_SHORT)
+                                    );
                                 } else {
-                                    Toast.makeText(getApplicationContext(), obj.getString("msg"), Toast.LENGTH_LONG).show();
 
-                                    Intent i = new Intent(getApplicationContext(),HomeActivity.class);
-                                    i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                                    getApplicationContext().startActivity(i);
+                                    SnackbarManager.show(
+                                            com.nispok.snackbar.Snackbar.with(getApplicationContext())
+                                                    .text("Album Deleted")
+                                                    .duration(Snackbar.SnackbarDuration.LENGTH_SHORT)
+                                                    .eventListener(new EventListener() {
+                                                        @Override
+                                                        public void onShow(com.nispok.snackbar.Snackbar snackbar) {
+
+                                                        }
+
+                                                        @Override
+                                                        public void onShowByReplace(com.nispok.snackbar.Snackbar snackbar) {
+
+                                                        }
+
+                                                        @Override
+                                                        public void onShown(com.nispok.snackbar.Snackbar snackbar) {
+
+                                                        }
+
+                                                        @Override
+                                                        public void onDismiss(com.nispok.snackbar.Snackbar snackbar) {
+
+                                                            Intent i = new Intent(getApplicationContext(),HomeActivity.class);
+                                                            i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                                                            getApplicationContext().startActivity(i);
+
+
+                                                        }
+
+                                                        @Override
+                                                        public void onDismissByReplace(com.nispok.snackbar.Snackbar snackbar) {
+
+                                                        }
+
+                                                        @Override
+                                                        public void onDismissed(com.nispok.snackbar.Snackbar snackbar) {
+
+                                                        }
+                                                    })
+                                            , AlbumMediaDisplay.this);
 
                                 }
 

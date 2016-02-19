@@ -10,7 +10,7 @@ import java.sql.Timestamp;
  */
 public class SharedMedia {
 
-    private String name,path;
+    private String id,name,path;
     private String date;
 
 
@@ -18,14 +18,22 @@ public class SharedMedia {
 
     }
 
-    public SharedMedia(String name,String path,String date){
+    public SharedMedia(String id,String name,String path,String date){
 
+        this.id= id;
         this.name = name;
         this.path = path;
 
         this.date = date;
     }
 
+    public void setId(String id){
+        this.id = id;
+    }
+
+    public String getId(){
+        return id;
+    }
     public void setName(String album_name){
         this.name = album_name;
     }

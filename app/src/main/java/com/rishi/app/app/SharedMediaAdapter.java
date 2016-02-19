@@ -2,6 +2,7 @@ package com.rishi.app.app;
 
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.media.Image;
@@ -32,14 +33,29 @@ public class SharedMediaAdapter extends RecyclerView.Adapter<SharedMediaAdapter.
     private Bitmap bitmap;
     //Context context;
 
-    public class MyViewHolderSharedMedia extends RecyclerView.ViewHolder {
+    public class MyViewHolderSharedMedia extends RecyclerView.ViewHolder implements View.OnClickListener {
         public TextView name, date;
         public ImageView path;
 
         public MyViewHolderSharedMedia(View view) {
             super(view);
+            view.setOnClickListener(this);
             path = (ImageView) view.findViewById(R.id.path);
 
+        }
+
+
+        @Override
+        public void onClick(View view) {
+
+            int position = getAdapterPosition();
+            SharedMedia sm = sharedMediaList.get(position);
+
+            Context context = view.getContext();
+            Intent intent = new Intent(context,SharedMediaDisplay.class);
+            intent.putExtra("image",sm.getPath());
+            intent.putExtra("Id",sm.getId());
+            context.startActivity(intent);
         }
     }
 

@@ -3,6 +3,7 @@ package com.rishi.app.app;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -21,7 +22,10 @@ public class HomeSettings extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.home_settings);
 
-        getSupportActionBar().setTitle("Settings");
+        Toolbar toolbar= (Toolbar) findViewById(R.id.home_settings_toolbar);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
         sessionManager = new SessionManager(getApplicationContext());
 
         editprofilelayout = (LinearLayout) findViewById(R.id.edit_profile_layout);

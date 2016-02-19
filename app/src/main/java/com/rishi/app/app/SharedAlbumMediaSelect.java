@@ -10,6 +10,7 @@ import android.support.v7.view.ActionMode;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -69,36 +70,53 @@ public class SharedAlbumMediaSelect extends AppCompatActivity implements SharedA
         ID = intent.getStringExtra("Id");
         NAME = intent.getStringExtra("Name");
 
-
-
+        Toolbar toolbar= (Toolbar) findViewById(R.id.shared_album_media_select_toolbar);
+        TextView tv = (TextView) findViewById(R.id.tv_ld_header);
+        tv.setText(NAME);
+        setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setTitle("Select Media");
 
         preapareSharedAlbumMedia();
 
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+
+        if (id == android.R.id.home) {
+            Intent i = new Intent(SharedAlbumMediaSelect.this,SharedAlbumMediaDisplay.class);
+            i.putExtra("Id",ID);
+            i.putExtra("Name",NAME);
+            SharedAlbumMediaSelect.this.startActivity(i);
+
+        }
+
+        return super.onOptionsItemSelected(item);
     }
 
 
 
     @Override
     public void onItemClicked(int position) {
-        if (actionMode != null) {
-            toggleSelection(position);
-        }
-    }
-
-    @Override
-    public boolean onItemLongClicked(int position) {
         if (actionMode == null) {
             actionMode = startSupportActionMode(actionModeCallback);
         }
-
         toggleSelection(position);
-
-        return true;
     }
-
-
+//
+//    @Override
+//    public boolean onItemLongClicked(int position) {
+//        if (actionMode == null) {
+//            actionMode = startSupportActionMode(actionModeCallback);
+//        }
+//
+//        toggleSelection(position);
+//
+//        return true;
+//    }
+//
+//
 
     private void toggleSelection(int position) {
         samsAdapter.toggleSelection(position);

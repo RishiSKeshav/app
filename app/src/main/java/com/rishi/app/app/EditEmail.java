@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.preference.PreferenceActivity;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -32,7 +33,9 @@ public class EditEmail extends AppCompatActivity {
         setContentView(R.layout.edit_email);
 
         sessionManager = new SessionManager(getApplicationContext());
-        getSupportActionBar().setTitle("Edit EmailId");
+        Toolbar toolbar= (Toolbar) findViewById(R.id.edit_email_toolbar);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         emailTV = (TextView)findViewById(R.id.edit_emailId);
         emailTV.setText(sessionManager.getEmailId());

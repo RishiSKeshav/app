@@ -90,11 +90,19 @@ public class PageFragment extends Fragment {
         if (mPage == 2){
             recyclerView = (RecyclerView) view.findViewById(R.id.recycler_view);
             sAdapter = new SharedAlbumAdapter(sharealbumlist);
+            aswipeRefreshLayout = (SwipeRefreshLayout)view.findViewById(R.id.pager_refresh_layout);
             recyclerView.setHasFixedSize(true);
             RecyclerView.LayoutManager sLayoutManager = new LinearLayoutManager(getContext());
             recyclerView.setLayoutManager(sLayoutManager);
             recyclerView.setAdapter(sAdapter);
             prepareShareAlbumData();
+
+            aswipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+                @Override
+                public void onRefresh() {
+                    prepareShareAlbumData();
+                }
+            });
 
         }
 
@@ -226,7 +234,7 @@ public class PageFragment extends Fragment {
                                     }
                                 }
                             }
-
+                            aswipeRefreshLayout.setRefreshing(false);
                         } catch (JSONException e) {
                             // TODO Auto-generated catch block
                             Toast.makeText(context, "Error Occured [Server's JSON response might be invalid]!", Toast.LENGTH_LONG).show();
@@ -293,7 +301,8 @@ public class PageFragment extends Fragment {
                                         JSONObject mediadetails = mediaaaray.optJSONObject(i);
 
 
-                                        SharedMedia sm = new SharedMedia(mediadetails.optString("name"), mediadetails.optString("path"),
+                                        SharedMedia sm = new SharedMedia(mediadetails.optString("id"),
+                                                mediadetails.optString("name"), mediadetails.optString("path"),
                                                 mediadetails.optString("date"));
                                         sharedMediaList.add(sm);
                                         smAdapter.notifyDataSetChanged();
