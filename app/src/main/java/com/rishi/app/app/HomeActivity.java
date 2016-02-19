@@ -182,7 +182,8 @@ public class HomeActivity extends AppCompatActivity {
         nav4.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                Intent i = new Intent(HomeActivity.this,Sync.class);
+                HomeActivity.this.startActivity(i);
             }
         });
 

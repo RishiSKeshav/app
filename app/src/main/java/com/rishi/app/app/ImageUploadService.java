@@ -1,37 +1,20 @@
 package com.rishi.app.app;
 
-import android.annotation.TargetApi;
-import android.app.Activity;
 import android.app.Service;
-import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
-import android.os.Build;
 import android.os.Environment;
 import android.os.IBinder;
-import android.preference.PreferenceActivity;
-import android.support.annotation.Nullable;
 import android.util.Base64;
 import android.util.Log;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.widget.ProgressBar;
-import android.widget.TextView;
 import android.widget.Toast;
-
-import com.loopj.android.http.AsyncHttpClient;
-import com.loopj.android.http.AsyncHttpResponseHandler;
-import com.loopj.android.http.RequestParams;
-
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpPost;
-import org.apache.http.entity.StringEntity;
-import org.apache.http.entity.mime.content.FileBody;
 import org.apache.http.entity.mime.content.StringBody;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.util.EntityUtils;
@@ -39,33 +22,20 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.ByteArrayOutputStream;
-import java.io.DataOutputStream;
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
-import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.GregorianCalendar;
-
 
 /**
  * Created by RishiS on 2/14/2016.
  */
 public class ImageUploadService extends Service {
 
-    private TextView txtPercentage;
-    private ProgressBar progressBar;
     ArrayList<Image> unSyncedImageList;
     SessionManager sessionManager;
     ImageDatabaseHandler db;
-    private LayoutInflater inflater;
-    private Activity _activity;
     long totalSize=0;
+    AsyncTask<Void,Integer,Void>  uploadTask;
 
     @Override
     public IBinder onBind(Intent intent) {
@@ -85,38 +55,47 @@ public class ImageUploadService extends Service {
         Log.d("service", " service started");
         unSyncedImageList = intent.getParcelableArrayListExtra("unSyncedImageList");
 
-        Log.d("Service: count ", String.valueOf(unSyncedImageList.size()));
-
-        int i=0;
-        for(Image img: unSyncedImageList){
-
-            if(i<10) {
-                uploadFile(img.getPath(), img.getName());
-                i++;
-            }
-        }
-        db = new ImageDatabaseHandler(getApplicationContext(),Environment.getExternalStorageDirectory().toString()+ "/app");
-        Log.d("Db count",String.valueOf(db.getCount()));
-
+        startUpload(unSyncedImageList);
     }
 
     @Override
     public void onDestroy() {
 
+        super.onDestroy();
+        unSyncedImageList.clear();
+        uploadTask.cancel(true);
+        stopSelf();
         Log.d("service", " service ended");
 
         Toast.makeText(this, "Service Destroyed", Toast.LENGTH_LONG).show();
     }
 
+    public void startUpload(ArrayList<Image> unSyncedImageList)
+    {
+        Log.d("Service: count ", String.valueOf(unSyncedImageList.size()));
+
+        int i=0;
+        for(Image img: unSyncedImageList){
+
+            if(i<4) {
+                uploadFile(img.getPath(), img.getName());
+
+                i++;
+                Log.e("i",String.valueOf(i));
+            }
+        }
+        db = new ImageDatabaseHandler(getApplicationContext(),Environment.getExternalStorageDirectory().toString()+ "/app");
+        Log.d("Db count",String.valueOf(db.getCount()));
+    }
+
     @SuppressWarnings("deprecation")
     private void uploadFile(final String filePath,final String filename) {
 
-        new AsyncTask<Void,Integer,Void>(){
+        uploadTask =  new AsyncTask<Void,Integer,Void>(){
 
             @Override
             protected void onPreExecute() {
-                // setting progress bar to zero
-                //progressBar.setProgress(0);
+
                 super.onPreExecute();
             }
 
@@ -126,16 +105,7 @@ public class ImageUploadService extends Service {
                 i.putExtra("totalsize",totalSize);
                 i.putExtra("NUMBER", progress[0]);
                 sendBroadcast(i);
-/*
-                // Making progress bar visible
-                progressBar.setVisibility(View.VISIBLE);
-                // updating progress bar value
-                progressBar.setProgress(progress[0]);
-                // updating percentage value
-                txtPercentage.setText(String.valueOf(progress[0]) + "%");
-*/
             }
-
 
             @Override
             protected Void doInBackground(Void... params) {
@@ -158,15 +128,9 @@ public class ImageUploadService extends Service {
 
                                 @Override
                                 public void transferred(long num) {
-                                    //float x = (num/totalSize)*100;
-                                    Log.e("n",String.valueOf(num));
-                                    Log.e("t",String.valueOf(totalSize));
-                                    /*Log.d("n/t",String.valueOf(num/totalSize));
-*/
+
                                     double y = (long)(((float)num/totalSize)*100);
 
-                                    //Long y = (100/totalSize)*num;
-                                    Log.d("y",String.valueOf(y));
                                     publishProgress((int) y);
                                 }
                             });

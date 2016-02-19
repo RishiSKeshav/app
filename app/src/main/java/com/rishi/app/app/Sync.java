@@ -84,8 +84,6 @@ public class Sync extends Activity {
                 }
             }
         });
-
-
     }
 
         private void initializeImageLists() {
