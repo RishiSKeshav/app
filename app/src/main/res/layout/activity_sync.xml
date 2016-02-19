@@ -6,8 +6,6 @@
     android:orientation="vertical"
     android:weightSum="1">
 
-
-
     <RelativeLayout
         android:id="@+id/sync_sub_layout"
         android:layout_width="match_parent"
@@ -15,8 +13,8 @@
 
         <ImageView
             android:id="@+id/imgView"
-            android:layout_width="100dp"
-            android:layout_height="100dp"
+            android:layout_width="150dp"
+            android:layout_height="150dp"
             android:src="@drawable/ic_alarm_on_black_48dp"
             android:layout_alignParentLeft="true"/>
 
@@ -24,13 +22,12 @@
             android:id="@+id/switchButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-
             android:text="Sync "
-            android:layout_centerVertical="true"
-            android:layout_alignRight="@+id/progressBar"
-            android:layout_alignEnd="@+id/progressBar"
-            android:layout_marginRight="33dp"
-            android:layout_marginEnd="33dp" />
+            android:layout_alignParentRight="true"
+            android:layout_marginTop="5dp"
+            android:layout_marginRight="15dp"/>
+
+
 
         <ProgressBar
             android:id="@+id/progressBar"
@@ -42,12 +39,14 @@
             android:layout_toRightOf="@+id/imgView"
             android:visibility="gone"/>
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/uploadLeftTxt"
-            android:layout_centerVertical="true"
-            android:layout_toRightOf="@+id/imgView"
-            android:layout_toEndOf="@+id/imgView" />
+
+
     </RelativeLayout>
+
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/uploadLeftTxt"
+        android:layout_centerVertical="true"/>
 </RelativeLayout>

@@ -7,6 +7,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
@@ -15,11 +17,14 @@ import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CompoundButton;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.Switch;
+import android.widget.TextView;
 
+import java.security.PrivateKey;
 import java.util.ArrayList;
 import java.util.Iterator;
 
@@ -33,21 +38,31 @@ public class Sync extends Activity {
 
     ProgressBar pBar;
     RelativeLayout layout;
+    RelativeLayout mainLayout;
 
     Intent serviceIntent;
 
     Switch switchButton;
+    TextView uploadLeftTxt;
+    ImageView imgView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sync);
 
+        uploadLeftTxt =(TextView) findViewById(R.id.uploadLeftTxt);
         pBar = (ProgressBar) findViewById(R.id.progressBar);
+        imgView =(ImageView)findViewById(R.id.imgView);
+
         layout =(RelativeLayout) findViewById(R.id.sync_sub_layout);
+        mainLayout =(RelativeLayout) findViewById(R.id.sync_main_layout);
 
         IntentFilter filter = new IntentFilter("PROGRESS_ACTION");
         registerReceiver(myReceiver,filter);
+
+        IntentFilter finalFilter = new IntentFilter("FINAL_ACTION");
+        registerReceiver(finalCountReceiver,finalFilter);
 
         initializeImageLists();
 
@@ -166,20 +181,54 @@ public class Sync extends Activity {
             if(pBar.getParent()!=null)
                 ((ViewGroup)pBar.getParent()).removeView(pBar);
 
+            if(uploadLeftTxt.getParent()!=null)
+                ((ViewGroup)uploadLeftTxt.getParent()).removeView(uploadLeftTxt);
+
+            int countLeft = intent.getIntExtra("leftCount", 0);
+            String imgPath = intent.getStringExtra("imgPath");
+
+            Bitmap bmp = BitmapFactory.decodeFile(imgPath);
+
+            if(imgView.getParent()!=null)
+                ((ViewGroup)imgView.getParent()).removeView(imgView);
+
+
             if(ola==100)
             {
                 pBar.setVisibility(View.VISIBLE);
                 pBar.setProgress(ola);
                 pBar.setVisibility(View.INVISIBLE);
                 layout.addView(pBar);
+
+                imgView.setImageBitmap(bmp);
+                imgView.setVisibility(View.INVISIBLE);
+                layout.addView(imgView);
+
+                uploadLeftTxt.setText("Backing up:" + countLeft + " left");
+                uploadLeftTxt.setVisibility(View.INVISIBLE);
+                mainLayout.addView(uploadLeftTxt);
             }
 
             else {
                 pBar.setVisibility(View.VISIBLE);
                 pBar.setProgress(ola);
                 layout.addView(pBar);
+
+                imgView.setImageBitmap(bmp);
+                layout.addView(imgView);
+
+                uploadLeftTxt.setText("Backing up:"+countLeft+" left");
+                mainLayout.addView(uploadLeftTxt);
             }
             //Log.d("dddReceiver", String.valueOf(ola));   //can't see
+        }
+    };
+
+    private BroadcastReceiver finalCountReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+
+
         }
     };
 
@@ -188,6 +237,6 @@ public class Sync extends Activity {
         super.onDestroy();
 
         unregisterReceiver(myReceiver);
-
+        unregisterReceiver(finalCountReceiver);
     }
 }
