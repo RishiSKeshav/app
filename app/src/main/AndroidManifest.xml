@@ -72,7 +72,8 @@
         <activity android:name=".AlbumMediaDisplay"
             android:parentActivityName=".HomeActivity"/>
         <activity android:name=".FullScreenMediaDisplay" />
-        <activity android:name=".NewAlbum" />
+        <activity android:name=".NewAlbum"
+            android:parentActivityName=".HomeActivity"/>
         <activity android:name=".AddMoreMedia" />
         <activity android:name=".AlbumMediaSelect"
            />
