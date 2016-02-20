@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#fff"
+    >
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="50dp"
+        >
+        <TextView
+            android:id="@+id/name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="What's your Name?"
+            android:textColor="@color/color_primary"
+            android:gravity="center"
+            android:layout_marginTop="15dp"
+            android:layout_marginBottom="10dp"
+            android:textSize="14dp"/>
+
+        <EditText
+            android:id="@+id/registername"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/name"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:paddingLeft="10dp"
+            android:paddingTop="10dp"
+            android:paddingBottom="10dp"
+            android:background="@drawable/border"
+            android:text=""/>
+
+
+        <TextView
+            android:id="@+id/mobileNo"
+            android:layout_below="@+id/registername"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="What's your Mobile Number?"
+            android:textColor="@color/color_primary"
+            android:gravity="center"
+            android:layout_marginTop="30dp"
+            android:layout_marginBottom="10dp"
+            android:textSize="14dp"/>
+
+        <EditText
+            android:id="@+id/registermobileNo"
+            android:layout_below="@+id/mobileNo"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:paddingLeft="10dp"
+            android:paddingTop="10dp"
+            android:paddingBottom="10dp"
+            android:inputType="number"
+            android:background="@drawable/border"
+            android:text=""/>
+
+        <TextView
+            android:id="@+id/mobile_info"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/registermobileNo"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="6dp"
+            android:textColor="@color/color_primary"
+            android:text="Entering Mobile No makes it easy for friends to recognize you"/>
+
+
+        <TextView
+            android:id="@+id/password"
+            android:layout_below="@+id/mobile_info"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Create a Password"
+            android:textColor="@color/color_primary"
+            android:gravity="center"
+            android:layout_marginTop="30dp"
+            android:layout_marginBottom="10dp"
+            android:textSize="14dp"/>
+
+        <EditText
+            android:id="@+id/registerPassword"
+            android:layout_below="@+id/password"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:paddingLeft="10dp"
+            android:paddingTop="10dp"
+            android:paddingBottom="10dp"
+            android:inputType="textPassword"
+            android:background="@drawable/border"
+            android:text=""/>
+
+
+        <Button android:id="@+id/btnRegister" style="?android:textAppearanceSmall"
+            android:layout_width="match_parent" android:layout_height="wrap_content"
+            android:layout_marginTop="20dp" android:text="Continue"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_below="@id/registerPassword"
+            android:textStyle="bold"
+            android:onClick="registerUser"
+            android:textColor="#ffffffff"
+            android:background="#00838F" />
+
+
+
+
+
+    </RelativeLayout>
+
+</LinearLayout>

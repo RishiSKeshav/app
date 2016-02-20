@@ -57,6 +57,10 @@ public class UploadDP extends AppCompatActivity {
         setContentView(R.layout.uploaddp);
         sessionManager = new SessionManager(getApplicationContext());
 
+
+        Toolbar uploaddp= (Toolbar) findViewById(R.id.uploaddp_toolbar);
+        setSupportActionBar(uploaddp);
+
         take_photo = (Button) findViewById(R.id.take_photo);
         choose_gallery = (Button) findViewById(R.id.choose_gallery);
 

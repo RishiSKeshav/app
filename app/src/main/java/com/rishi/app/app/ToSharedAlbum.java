@@ -86,27 +86,27 @@ public class ToSharedAlbum extends AppCompatActivity implements ToSharedAlbumAda
         int id = item.getItemId();
 
         if (id == android.R.id.home) {
-//            if(imagedisplay.equals("")) {
-//                if (SHARED.equals("no")) {
-//                    Intent i = new Intent(ToSharedAlbum.this, AlbumMediaSelect.class);
-//                    i.putParcelableArrayListExtra("al", albummediaList);
-//                    i.putExtra("id", ID);
-//                    i.putExtra("name", NAME);
-//                    ToSharedAlbum.this.startActivity(i);
-//                } else {
-//                    Intent i = new Intent(ToSharedAlbum.this, SharedAlbumMediaSelect.class);
-//                    i.putExtra("Id", ID);
-//                    i.putExtra("Name", NAME);
-//                    ToSharedAlbum.this.startActivity(i);
-//                }
-//            }else{
-//                Intent i = new Intent(ToSharedAlbum.this, SharedMediaDisplay.class);
-//                i.putExtra("image", imagedisplay);
-//                i.putExtra("Id",ID);
-//                ToSharedAlbum.this.startActivity(i);
-//            }
+            if(imagedisplay.equals("")) {
+                if (SHARED.equals("no")) {
+                    Intent i = new Intent(ToSharedAlbum.this, AlbumMediaSelect.class);
+                    i.putParcelableArrayListExtra("al", albummediaList);
+                    i.putExtra("id", ID);
+                    i.putExtra("name", NAME);
+                    ToSharedAlbum.this.startActivity(i);
+                } else {
+                    Intent i = new Intent(ToSharedAlbum.this, SharedAlbumMediaSelect.class);
+                    i.putExtra("Id", ID);
+                    i.putExtra("Name", NAME);
+                    ToSharedAlbum.this.startActivity(i);
+                }
+            }else{
+                Intent i = new Intent(ToSharedAlbum.this, SharedMediaDisplay.class);
+                i.putExtra("image", imagedisplay);
+                i.putExtra("Id",ID);
+                ToSharedAlbum.this.startActivity(i);
+            }
 
-            onBackPressed();
+      //      onBackPressed();
             return true;
         }
 

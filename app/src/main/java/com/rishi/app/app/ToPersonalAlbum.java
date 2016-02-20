@@ -84,27 +84,27 @@ public class ToPersonalAlbum extends AppCompatActivity implements ToPersonalAlbu
         int id = item.getItemId();
 
         if (id == android.R.id.home) {
-//            if(imagedisplay.equals("")){
-//
-//                if (SHARED.equals("no")) {
-//                    Intent i = new Intent(ToPersonalAlbum.this, AlbumMediaSelect.class);
-//                    i.putParcelableArrayListExtra("al", albummediaList);
-//                    i.putExtra("id", ID);
-//                    i.putExtra("name", NAME);
-//                    ToPersonalAlbum.this.startActivity(i);
-//                } else {
-//                    Intent i = new Intent(ToPersonalAlbum.this, SharedAlbumMediaSelect.class);
-//                    i.putExtra("Id", ID);
-//                    i.putExtra("Name", NAME);
-//                    ToPersonalAlbum.this.startActivity(i);
-//                }
-//            }else {
-//                Intent i = new Intent(ToPersonalAlbum.this, SharedMediaDisplay.class);
-//                i.putExtra("image", imagedisplay);
-//                i.putExtra("Id",ID);
-//                ToPersonalAlbum.this.startActivity(i);
-//            }
-            onBackPressed();
+            if(imagedisplay.equals("")){
+
+                if (SHARED.equals("no")) {
+                    Intent i = new Intent(ToPersonalAlbum.this, AlbumMediaSelect.class);
+                    i.putParcelableArrayListExtra("al", albummediaList);
+                    i.putExtra("id", ID);
+                    i.putExtra("name", NAME);
+                    ToPersonalAlbum.this.startActivity(i);
+                } else {
+                    Intent i = new Intent(ToPersonalAlbum.this, SharedAlbumMediaSelect.class);
+                    i.putExtra("Id", ID);
+                    i.putExtra("Name", NAME);
+                    ToPersonalAlbum.this.startActivity(i);
+                }
+            }else {
+                Intent i = new Intent(ToPersonalAlbum.this, SharedMediaDisplay.class);
+                i.putExtra("image", imagedisplay);
+                i.putExtra("Id",ID);
+                ToPersonalAlbum.this.startActivity(i);
+            }
+         //   onBackPressed();
             return true;
         }
 

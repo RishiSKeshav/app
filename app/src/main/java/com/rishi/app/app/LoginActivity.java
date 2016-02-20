@@ -126,10 +126,15 @@ public class LoginActivity extends ActionBarActivity {
                                                     JSONObject outputObj = obj.getJSONObject("outputObj");
                                                     JSONObject user = outputObj.getJSONObject("user");
                                                    sessionManager.createLoginSession(user);
-                                                    if (checkPlayServices()) {
-                                                      registerGCM();
+
+                                                    if(outputObj.optString("gcm").equals("")) {
+                                                        if (checkPlayServices()) {
+                                                            registerGCM();
+                                                        }
+                                                        navigatetoHomeActivity();
+                                                    }else{
+                                                        navigatetoHomeActivity();
                                                     }
-                                                    navigatetoHomeActivity();
 
                                                 }
 

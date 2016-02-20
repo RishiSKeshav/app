@@ -63,20 +63,20 @@ public class FullScreenMediaDisplay extends AppCompatActivity {
         int id = item.getItemId();
 
         if (id == android.R.id.home) {
-//            if(SHARED.equals("no")) {
-//                Intent i = new Intent(FullScreenMediaDisplay.this, AlbumMediaDisplay.class);
-//                i.putExtra("Id", ID);
-//                i.putExtra("Name", NAME);
-//                FullScreenMediaDisplay.this.startActivity(i);
-//            }else{
-//                Intent i = new Intent(FullScreenMediaDisplay.this, SharedAlbumMediaDisplay.class);
-//                i.putExtra("Id", ID);
-//                i.putExtra("Name", NAME);
-//                FullScreenMediaDisplay.this.startActivity(i);
-//                Log.i("dd",ID);
-//            }
+            if(SHARED.equals("no")) {
+                Intent i = new Intent(FullScreenMediaDisplay.this, AlbumMediaDisplay.class);
+                i.putExtra("Id", ID);
+                i.putExtra("Name", NAME);
+                FullScreenMediaDisplay.this.startActivity(i);
+            }else{
+                Intent i = new Intent(FullScreenMediaDisplay.this, SharedAlbumMediaDisplay.class);
+                i.putExtra("Id", ID);
+                i.putExtra("Name", NAME);
+                FullScreenMediaDisplay.this.startActivity(i);
+                Log.i("dd",ID);
+            }
 
-            onBackPressed();
+           // onBackPressed();
             return true;
         }
 

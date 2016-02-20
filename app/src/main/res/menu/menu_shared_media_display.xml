@@ -5,6 +5,10 @@
     xmlns:yourapp="http://schemas.android.com/apk/res-auto"
     >
 
+    <item android:id="@+id/delete_shared_media_display"
+        android:title=""
+        android:icon="@android:drawable/ic_menu_delete"
+        yourapp:showAsAction="ifRoom"/>
 
     <item android:id="@+id/move"    android:title="Move"
         yourapp:showAsAction="ifRoom">
@@ -22,6 +26,7 @@
             <item android:id="@+id/to_others"
 
                 android:title="User" />
+
 
         </menu>
 
