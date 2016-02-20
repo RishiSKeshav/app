@@ -94,37 +94,40 @@ public class Userbase extends AppCompatActivity {
 
         if (id == android.R.id.home) {
 
-            if(ACTION.equals("create_shared_album")){
-                Intent i = new Intent(Userbase.this,NewAlbum.class);
-                i.putExtra("shared","yes");
-                Userbase.this.startActivity(i);
-            }else if(ACTION.equals("add_user")){
+//            if(ACTION.equals("create_shared_album")){
+//                Intent i = new Intent(Userbase.this,NewAlbum.class);
+//                i.putExtra("shared","yes");
+//                Userbase.this.startActivity(i);
+//            }else if(ACTION.equals("add_user")){
+//
+//                Intent i = new Intent(Userbase.this,SharedAlbumMediaDisplay.class);
+//                i.putExtra("Id",ID);
+//                i.putExtra("Name",NAME);
+//                Userbase.this.startActivity(i);
+//
+//            }else if(ACTION.equals("shared_media")){
+//                Intent i = new Intent(Userbase.this,SharedMediaDisplay.class);
+//                i.putExtra("Id",ID);
+//                i.putExtra("image",imagedisplay);
+//                Userbase.this.startActivity(i);
+//            }
+//            else{
+//                if(SHARED.equals("no")) {
+//                    Intent i = new Intent(Userbase.this, AlbumMediaSelect.class);
+//                    i.putParcelableArrayListExtra("al", albummediaList);
+//                    i.putExtra("id", ID);
+//                    i.putExtra("name", NAME);
+//                    Userbase.this.startActivity(i);
+//                }else{
+//                    Intent i = new Intent(Userbase.this, SharedAlbumMediaSelect.class);
+//                    i.putExtra("Id", ID);
+//                    i.putExtra("Name", NAME);
+//                    Userbase.this.startActivity(i);
+//                }
+//            }
 
-                Intent i = new Intent(Userbase.this,SharedAlbumMediaDisplay.class);
-                i.putExtra("Id",ID);
-                i.putExtra("Name",NAME);
-                Userbase.this.startActivity(i);
-
-            }else if(ACTION.equals("shared_media")){
-                Intent i = new Intent(Userbase.this,SharedMediaDisplay.class);
-                i.putExtra("Id",ID);
-                i.putExtra("image",imagedisplay);
-                Userbase.this.startActivity(i);
-            }
-            else{
-                if(SHARED.equals("no")) {
-                    Intent i = new Intent(Userbase.this, AlbumMediaSelect.class);
-                    i.putParcelableArrayListExtra("al", albummediaList);
-                    i.putExtra("id", ID);
-                    i.putExtra("name", NAME);
-                    Userbase.this.startActivity(i);
-                }else{
-                    Intent i = new Intent(Userbase.this, SharedAlbumMediaSelect.class);
-                    i.putExtra("Id", ID);
-                    i.putExtra("Name", NAME);
-                    Userbase.this.startActivity(i);
-                }
-            }
+            onBackPressed();
+            return true;
 
 
         }

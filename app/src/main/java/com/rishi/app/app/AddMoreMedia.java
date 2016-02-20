@@ -122,18 +122,21 @@ public class AddMoreMedia extends AppCompatActivity implements AddMoreMediaAdapt
         int id = item.getItemId();
 
         if(id == android.R.id.home){
+//
+//            if(SHARED.equals("no")){
+//                Intent i = new Intent(AddMoreMedia.this,AlbumMediaDisplay.class);
+//                i.putExtra("Id",ID);
+//                i.putExtra("Name",NAME);
+//                AddMoreMedia.this.startActivity(i);
+//            }else{
+//                Intent i = new Intent(AddMoreMedia.this,SharedAlbumMediaDisplay.class);
+//                i.putExtra("Id",ID);
+//                i.putExtra("Name",NAME);
+//                AddMoreMedia.this.startActivity(i);
+//            }
 
-            if(SHARED.equals("no")){
-                Intent i = new Intent(AddMoreMedia.this,AlbumMediaDisplay.class);
-                i.putExtra("Id",ID);
-                i.putExtra("Name",NAME);
-                AddMoreMedia.this.startActivity(i);
-            }else{
-                Intent i = new Intent(AddMoreMedia.this,SharedAlbumMediaDisplay.class);
-                i.putExtra("Id",ID);
-                i.putExtra("Name",NAME);
-                AddMoreMedia.this.startActivity(i);
-            }
+            onBackPressed();
+            return true;
         }
 
         if (id == R.id.done_add_more) {

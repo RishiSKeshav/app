@@ -108,6 +108,7 @@ public class ContactsFragment extends Fragment{
 
                     while (phoneCursor.moveToNext()) {
                         phoneNumber = phoneCursor.getString(phoneCursor.getColumnIndex(NUMBER));
+                        Log.i("ggg",phoneNumber);
                         String no = phoneNumber.replaceAll("\\p{P}","");
                         String no1= no.replaceAll("\\s+","");
 

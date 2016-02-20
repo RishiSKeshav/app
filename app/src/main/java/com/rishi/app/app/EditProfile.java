@@ -71,6 +71,19 @@ public class EditProfile extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
 
         int id = item.getItemId();
+
+
+            if (id == android.R.id.home) {
+//            Intent i = new Intent(AlbumMediaSelect.this,AlbumMediaDisplay.class);
+//            i.putExtra("Id",ID);
+//            i.putExtra("Name",NAME);
+//            AlbumMediaSelect.this.startActivity(i);
+
+                onBackPressed();
+                return true;
+            }
+
+
         if (id == R.id.edit_profile_save) {
 
             try {

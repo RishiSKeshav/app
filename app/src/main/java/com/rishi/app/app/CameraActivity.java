@@ -29,24 +29,28 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
+import at.markushi.ui.CircleButton;
+
 public class CameraActivity extends Activity {
     private Camera mCamera;
     private CameraPreview mPreview;
     private PictureCallback mPicture;
-    private Button capture, switchCamera;
+    private Button switchCamera;
+    private CircleButton capture;
     private Context myContext;
-    private LinearLayout cameraPreview;
+    private FrameLayout cameraPreview;
     private boolean cameraFront = false;
-    private LinearLayout layout;
+    private RelativeLayout layout;
 
     private CameraImageAdapter adapter;
     private ArrayList<String> photoFileList;
-    ImageView imgPreview;
+    ImageView imgPreview,camera_cancel;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -55,7 +59,7 @@ public class CameraActivity extends Activity {
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
         myContext = this;
 
-        layout = (LinearLayout) findViewById(R.id.layout);
+        layout = (RelativeLayout) findViewById(R.id.layout);
         photoFileList = new ArrayList<String>();
 
         imgPreview = (ImageView) findViewById(R.id.imgPreview);
@@ -65,6 +69,14 @@ public class CameraActivity extends Activity {
                 Intent intent = new Intent(getApplicationContext(), CameraFullImageDisplayActivity.class);
                 intent.putStringArrayListExtra("photoFileList",photoFileList);
                 startActivity(intent);
+            }
+        });
+
+        camera_cancel = (ImageView) findViewById(R.id.camera_cancel);
+        camera_cancel.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onBackPressed();
             }
         });
 
@@ -125,11 +137,11 @@ public class CameraActivity extends Activity {
     }
 
     public void initialize() {
-        cameraPreview = (LinearLayout) findViewById(R.id.camera_preview);
+        cameraPreview = (FrameLayout) findViewById(R.id.camera_preview);
         mPreview = new CameraPreview(myContext, mCamera);
         cameraPreview.addView(mPreview);
 
-        capture = (Button) findViewById(R.id.button_capture);
+        capture = (CircleButton) findViewById(R.id.button_capture);
         capture.setOnClickListener(captrureListener);
 
         switchCamera = (Button) findViewById(R.id.button_ChangeCamera);

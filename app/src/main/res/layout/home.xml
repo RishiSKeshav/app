@@ -217,6 +217,7 @@
             android:layout_marginBottom="0dp"
             android:layout_marginRight="16dp"
             app:fab_elevationCompat="4dp"
+            android:src="@android:drawable/ic_menu_add"
             app:fab_colorNormal="@color/color_primary"/>
 
         <com.github.clans.fab.FloatingActionButton
@@ -227,6 +228,7 @@
             android:layout_marginBottom="0dp"
             android:visibility="invisible"
             android:layout_marginRight="16dp"
+            android:src="@android:drawable/ic_menu_add"
             app:fab_colorNormal="@color/color_primary"
             app:fab_elevationCompat="4dp"/>
 
@@ -273,31 +275,35 @@
 
                 <ImageView
                     android:id="@+id/nav1"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="20dp"
-                    android:src="@drawable/ic_photo_black_48dp"/>
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:scaleType="fitXY"
+                    android:layout_marginLeft="25dp"
+                    android:src="@android:drawable/ic_menu_help"/>
 
                 <ImageView
                     android:id="@+id/nav2"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="50dp"
-                    android:src="@drawable/ic_person_black_48dp"/>
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:scaleType="fitXY"
+                    android:layout_marginLeft="65dp"
+                    android:src="@android:drawable/ic_menu_camera"/>
 
                 <ImageView
                     android:id="@+id/nav3"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="50dp"
-                    android:src="@drawable/ic_alarm_on_black_48dp"/>
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:scaleType="fitXY"
+                    android:layout_marginLeft="80dp"
+                    android:src="@android:drawable/ic_menu_sort_by_size"/>
 
                 <ImageView
                     android:id="@+id/nav4"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="50dp"
-                    android:src="@drawable/ic_person_black_48dp"/>
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:scaleType="fitXY"
+                    android:layout_marginLeft="80dp"
+                    android:src="@android:drawable/ic_popup_sync"/>
             </LinearLayout>
 
 

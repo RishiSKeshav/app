@@ -81,7 +81,6 @@ public class AlbumMediaSelect extends AppCompatActivity implements AlbumMediaSel
         TextView tv = (TextView) findViewById(R.id.tv_ld_header);
         tv.setText(NAME);
         setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayShowHomeEnabled(true);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         recyclerView = (RecyclerView)findViewById(R.id.recycler_album_media_select);
@@ -142,11 +141,13 @@ public class AlbumMediaSelect extends AppCompatActivity implements AlbumMediaSel
         int id = item.getItemId();
 
         if (id == android.R.id.home) {
-            Intent i = new Intent(AlbumMediaSelect.this,AlbumMediaDisplay.class);
-            i.putExtra("Id",ID);
-            i.putExtra("Name",NAME);
-            AlbumMediaSelect.this.startActivity(i);
+//            Intent i = new Intent(AlbumMediaSelect.this,AlbumMediaDisplay.class);
+//            i.putExtra("Id",ID);
+//            i.putExtra("Name",NAME);
+//            AlbumMediaSelect.this.startActivity(i);
 
+            onBackPressed();
+            return true;
         }
 
         return super.onOptionsItemSelected(item);

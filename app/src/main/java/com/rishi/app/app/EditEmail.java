@@ -57,6 +57,17 @@ public class EditEmail extends AppCompatActivity {
         int id = item.getItemId();
         if (id == R.id.edit_profile_save) {
 
+            if (id == android.R.id.home) {
+//            Intent i = new Intent(AlbumMediaSelect.this,AlbumMediaDisplay.class);
+//            i.putExtra("Id",ID);
+//            i.putExtra("Name",NAME);
+//            AlbumMediaSelect.this.startActivity(i);
+
+                onBackPressed();
+                return true;
+            }
+
+
             try {
                 JSONObject obj = new JSONObject();
                 obj.put("action","edit_emailId");

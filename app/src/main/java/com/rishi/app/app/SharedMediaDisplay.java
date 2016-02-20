@@ -59,9 +59,12 @@ public class SharedMediaDisplay extends AppCompatActivity{
         int id = item.getItemId();
 
         if(id == android.R.id.home){
-            Intent i = new Intent(SharedMediaDisplay.this,HomeActivity.class);
-            i.putExtra("shared_media","2");
-            startActivity(i);
+//            Intent i = new Intent(SharedMediaDisplay.this,HomeActivity.class);
+//            i.putExtra("shared_media","2");
+//            startActivity(i);
+
+            onBackPressed();
+            return true;
         }
 
         if (id == R.id.to_personal_album) {

@@ -63,7 +63,6 @@ public class AlbumMediaDisplay extends AppCompatActivity{
         TextView tv = (TextView) findViewById(R.id.tv_ld_header);
         tv.setText(NAME);
         setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayShowHomeEnabled(true);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         mediacount = (TextView)findViewById(R.id.media_count);
@@ -96,6 +95,11 @@ public class AlbumMediaDisplay extends AppCompatActivity{
     public boolean onOptionsItemSelected(MenuItem item) {
 
         int id = item.getItemId();
+        if (id == android.R.id.home) {
+            onBackPressed();
+            return true;
+        }
+
         if (id == R.id.add_media) {
             ArrayList<String> ids = new ArrayList<String>();
             for(int i=0;i<albumMediaList.size();i++){

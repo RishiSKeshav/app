@@ -85,11 +85,12 @@ public class SharedAlbumMediaSelect extends AppCompatActivity implements SharedA
         int id = item.getItemId();
 
         if (id == android.R.id.home) {
-            Intent i = new Intent(SharedAlbumMediaSelect.this,SharedAlbumMediaDisplay.class);
-            i.putExtra("Id",ID);
-            i.putExtra("Name",NAME);
-            SharedAlbumMediaSelect.this.startActivity(i);
-
+//            Intent i = new Intent(SharedAlbumMediaSelect.this,SharedAlbumMediaDisplay.class);
+//            i.putExtra("Id",ID);
+//            i.putExtra("Name",NAME);
+//            SharedAlbumMediaSelect.this.startActivity(i);
+            onBackPressed();
+            return true;
         }
 
         return super.onOptionsItemSelected(item);

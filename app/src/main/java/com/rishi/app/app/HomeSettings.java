@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -56,4 +57,21 @@ public class HomeSettings extends AppCompatActivity {
         });
 
         }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+
+        if (id == android.R.id.home) {
+//            Intent i = new Intent(AlbumMediaSelect.this,AlbumMediaDisplay.class);
+//            i.putExtra("Id",ID);
+//            i.putExtra("Name",NAME);
+//            AlbumMediaSelect.this.startActivity(i);
+
+            onBackPressed();
+            return true;
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
     }

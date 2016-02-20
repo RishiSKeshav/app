@@ -31,7 +31,7 @@ import java.util.ArrayList;
  */
 public class ImageUploadService extends Service {
 
-    ArrayList<Image> unSyncedImageList;
+    ArrayList<Image> unSyncedImageList = new ArrayList<>();
     SessionManager sessionManager;
     ImageDatabaseHandler db;
     long totalSize=0;
@@ -40,7 +40,9 @@ public class ImageUploadService extends Service {
     String imgPath="";
 
     @Override
-    public IBinder onBind(Intent intent) {
+    public IBinder onBind(Intent intent)
+    {
+        Log.i("ee",intent.toString());
         return null;
     }
 
@@ -48,17 +50,22 @@ public class ImageUploadService extends Service {
     public void onCreate() {
         super.onCreate();
 
-        Log.d("service", " service created");
+        Log.d("service", "");
     }
 
     @Override
-    public void onStart(Intent intent, int startId) {
-
-        Log.d("service", " service started");
+    public int onStartCommand(Intent intent, int flags, int startId) {
         unSyncedImageList = intent.getParcelableArrayListExtra("unSyncedImageList");
-
         startUpload(unSyncedImageList);
+        return START_STICKY;
     }
+
+//    @Override
+//    public void onStart(Intent intent, int startId) {
+//
+//        Log.d("service", " service started");
+//
+//    }
 
     @Override
     public void onDestroy() {
@@ -99,8 +106,6 @@ public class ImageUploadService extends Service {
        protected void onPostExecute(Integer leftCount) {
            super.onPostExecute(leftCount);
 
-           Intent i = new Intent("FINAL_ACTION");
-           //sendBroadcast(i);
        }
 
        @Override
@@ -109,6 +114,11 @@ public class ImageUploadService extends Service {
           for(int i=0;i<5;i++){
 
               imgPath=params[0].get(i).getPath();
+
+              Intent intent = new Intent("IMAGE_ACTION");
+              intent.putExtra("leftCount", count);
+              intent.putExtra("imgPath", imgPath);
+              sendBroadcast(intent);
 
               if(isCancelled())
                   break;
@@ -218,10 +228,7 @@ public class ImageUploadService extends Service {
        protected void onProgressUpdate(Integer... progress) {
 
            Intent i = new Intent("PROGRESS_ACTION");
-           //i.putExtra("totalsize", totalSize);
            i.putExtra("NUMBER", progress[0]);
-           i.putExtra("leftCount", count);
-           i.putExtra("imgPath", imgPath);
            sendBroadcast(i);
        }
    }

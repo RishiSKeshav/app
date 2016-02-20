@@ -61,7 +61,7 @@ public class Sync extends Activity {
         IntentFilter filter = new IntentFilter("PROGRESS_ACTION");
         registerReceiver(myReceiver,filter);
 
-        IntentFilter finalFilter = new IntentFilter("FINAL_ACTION");
+        IntentFilter finalFilter = new IntentFilter("IMAGE_ACTION");
         registerReceiver(finalCountReceiver,finalFilter);
 
         initializeImageLists();
@@ -86,8 +86,6 @@ public class Sync extends Activity {
                     startService(serviceIntent);
 
                     Log.d("checked", " checked reached");
-
-
                 } else {
 
                     Log.d("unchecked", " unchecked reached");
@@ -181,30 +179,24 @@ public class Sync extends Activity {
             if(pBar.getParent()!=null)
                 ((ViewGroup)pBar.getParent()).removeView(pBar);
 
-            if(uploadLeftTxt.getParent()!=null)
-                ((ViewGroup)uploadLeftTxt.getParent()).removeView(uploadLeftTxt);
-
-            int countLeft = intent.getIntExtra("leftCount", 0);
-            String imgPath = intent.getStringExtra("imgPath");
-
-            Bitmap bmp = BitmapFactory.decodeFile(imgPath);
-
-            if(imgView.getParent()!=null)
-                ((ViewGroup)imgView.getParent()).removeView(imgView);
 
 
             if(ola==100)
             {
+                if(imgView.getParent()!=null)
+                    ((ViewGroup)imgView.getParent()).removeView(imgView);
+
+                if(uploadLeftTxt.getParent()!=null)
+                    ((ViewGroup)uploadLeftTxt.getParent()).removeView(uploadLeftTxt);
+
                 pBar.setVisibility(View.VISIBLE);
                 pBar.setProgress(ola);
                 pBar.setVisibility(View.INVISIBLE);
                 layout.addView(pBar);
 
-                imgView.setImageBitmap(bmp);
                 imgView.setVisibility(View.INVISIBLE);
                 layout.addView(imgView);
 
-                uploadLeftTxt.setText("Backing up:" + countLeft + " left");
                 uploadLeftTxt.setVisibility(View.INVISIBLE);
                 layout.addView(uploadLeftTxt);
             }
@@ -213,12 +205,6 @@ public class Sync extends Activity {
                 pBar.setVisibility(View.VISIBLE);
                 pBar.setProgress(ola);
                 layout.addView(pBar);
-
-                imgView.setImageBitmap(bmp);
-                layout.addView(imgView);
-
-                uploadLeftTxt.setText("Backing up:"+countLeft+" left");
-                layout.addView(uploadLeftTxt);
             }
             //Log.d("dddReceiver", String.valueOf(ola));   //can't see
         }
@@ -228,7 +214,23 @@ public class Sync extends Activity {
         @Override
         public void onReceive(Context context, Intent intent) {
 
+            int countLeft = intent.getIntExtra("leftCount", 0);
+            String imgPath = intent.getStringExtra("imgPath");
 
+            Bitmap bmp = BitmapFactory.decodeFile(imgPath);
+
+            if(imgView.getParent()!=null)
+                ((ViewGroup)imgView.getParent()).removeView(imgView);
+
+            imgView.setImageBitmap(bmp);
+            layout.addView(imgView);
+
+
+            if(uploadLeftTxt.getParent()!=null)
+                ((ViewGroup)uploadLeftTxt.getParent()).removeView(uploadLeftTxt);
+
+            uploadLeftTxt.setText("Backing up:" + countLeft + " left");
+            layout.addView(uploadLeftTxt);
         }
     };
 
