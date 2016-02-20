@@ -13,6 +13,7 @@ import android.content.SharedPreferences.Editor;
 import android.os.Bundle;
 import android.os.Environment;
 import android.preference.PreferenceActivity;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.ActionBarActivity;
 import android.view.View;
 import android.widget.EditText;
@@ -36,6 +37,7 @@ import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.JsonHttpResponseHandler;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
+import com.nispok.snackbar.SnackbarManager;
 
 import android.preference.PreferenceActivity.Header;
 
@@ -260,6 +262,9 @@ public class LoginActivity extends ActionBarActivity {
         String email = emailET.getText().toString();
         String password = passwordET.getText().toString();
 
+        Boolean vEmail=false;
+        Boolean vPassword = false;
+
         JSONObject jsonObject = new JSONObject();
 
         if(Utility.isNotNull(email) && Utility.isNotNull(password)) {
@@ -268,11 +273,24 @@ public class LoginActivity extends ActionBarActivity {
             invokeWS(jsonObject);
         }
         else{
-            Toast.makeText(getApplicationContext(), "Proszę wypełnić wszystkie pola!", Toast.LENGTH_LONG).show();
+
+            SnackbarManager.show(
+                    com.nispok.snackbar.Snackbar.with(this)
+                            .text("Invalid Email or Password")
+                            .duration(com.nispok.snackbar.Snackbar.SnackbarDuration.LENGTH_SHORT)
+            );
+
+            //Toast.makeText(getApplicationContext(), "Email or Password is empty", Toast.LENGTH_LONG).show();
         }
     }
 
     private void invokeWS(JSONObject jsonObject) throws UnsupportedEncodingException {
+
+        final ProgressDialog progressDialog = new ProgressDialog(LoginActivity.this,
+                R.style.AppTheme_Dark_Dialog);
+        progressDialog.setIndeterminate(true);
+        progressDialog.setMessage("Authenticating...");
+        progressDialog.show();
 
         StringEntity jsonString = new StringEntity(jsonObject.toString());
 
@@ -292,7 +310,14 @@ public class LoginActivity extends ActionBarActivity {
                     JSONObject obj = new JSONObject(response);
 
                     if(obj.getBoolean("error")){
-                        Toast.makeText(getApplicationContext(), obj.getString("msg"), Toast.LENGTH_LONG).show();
+
+                        SnackbarManager.show(
+                                com.nispok.snackbar.Snackbar.with(LoginActivity.this)
+                                        .text("Wrong Credentials")
+                                        .duration(com.nispok.snackbar.Snackbar.SnackbarDuration.LENGTH_SHORT)
+                        );
+
+                        //Toast.makeText(getApplicationContext(), obj.getString("msg"), Toast.LENGTH_LONG).show();
                     }else{
 
                         JSONObject userObj = obj.getJSONObject("user");

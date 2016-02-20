@@ -23,6 +23,7 @@ import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
 import com.loopj.android.http.JsonHttpResponseHandler;
+import com.nispok.snackbar.SnackbarManager;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
@@ -38,6 +39,7 @@ public class RegisterActivity extends Activity {
     EditText nameET;
     EditText emailET;
     EditText passwordET;
+    EditText mobilenoET;
     private String TAG = RegisterActivity.class.getSimpleName();
     private static final int PLAY_SERVICES_RESOLUTION_REQUEST = 9000;
 
@@ -46,14 +48,12 @@ public class RegisterActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.register);
 
-
         sessionManager = new SessionManager(getApplicationContext());
 
-
         nameET = (EditText)findViewById(R.id.registername);
-
         emailET = (EditText)findViewById(R.id.registerEmail);
         passwordET = (EditText)findViewById(R.id.registerPassword);
+        mobilenoET = (EditText)findViewById(R.id.registermobileNo);
 
     }
 
@@ -66,21 +66,55 @@ public class RegisterActivity extends Activity {
 
 
         String name = nameET.getText().toString();
+        String mobileNo = mobilenoET.getText().toString();
         String emailId = emailET.getText().toString();
         String password = passwordET.getText().toString();
 
         JSONObject jsonObject = new JSONObject();
 
-        if(Utility.isNotNull(emailId) && Utility.isNotNull(password)) {
-            jsonObject.put("name", name);
-            jsonObject.put("emailId", emailId);
-            jsonObject.put("password", password);
-            jsonObject.put("mobileNo","6263203932");
-            jsonObject.put("displayPicture","displayPicture");
-            invokeWS(jsonObject);
+        if(Utility.isNotNull(emailId) && Utility.isNotNull(password) && Utility.isNotNull(name) && Utility.isNotNull(mobileNo) ) {
+
+            if(Utility.validateEmail(emailId)) {
+
+                if(Utility.validatePassword(password)){
+
+                    jsonObject.put("name", name);
+                    jsonObject.put("emailId", emailId);
+                    jsonObject.put("password", password);
+                    jsonObject.put("mobileNo",mobileNo);
+                    jsonObject.put("displayPicture","displayPicture");
+                    invokeWS(jsonObject);
+                }
+                else
+                {
+                    SnackbarManager.show(
+                            com.nispok.snackbar.Snackbar.with(RegisterActivity.this)
+                                    .text("Password should contain 6-8 characters")
+                                    .duration(com.nispok.snackbar.Snackbar.SnackbarDuration.LENGTH_SHORT)
+                    );
+
+                    //Toast.makeText(getApplicationContext(), "Password should contain 6-8 characters", Toast.LENGTH_LONG).show();
+                }
+
+            }
+            else
+            {
+                SnackbarManager.show(
+                        com.nispok.snackbar.Snackbar.with(RegisterActivity.this)
+                                .text("Email is not valid!!")
+                                .duration(com.nispok.snackbar.Snackbar.SnackbarDuration.LENGTH_SHORT)
+                );
+                      //  Toast.makeText(getApplicationContext(), "Email is not valid!!", Toast.LENGTH_LONG).show();
+            }
         }
         else{
-            Toast.makeText(getApplicationContext(), "Proszę wypełnić wszystkie pola!", Toast.LENGTH_LONG).show();
+            SnackbarManager.show(
+                    com.nispok.snackbar.Snackbar.with(RegisterActivity.this)
+                            .text("Please enter all values")
+                            .duration(com.nispok.snackbar.Snackbar.SnackbarDuration.LENGTH_SHORT)
+            );
+
+            //Toast.makeText(getApplicationContext(), "Email or Password is Empty!", Toast.LENGTH_LONG).show();
         }
     }
 
@@ -90,6 +124,13 @@ public class RegisterActivity extends Activity {
      //* @param params
      */
     public void invokeWS(JSONObject object) throws UnsupportedEncodingException{
+
+        final ProgressDialog progressDialog = new ProgressDialog(RegisterActivity.this,
+                R.style.AppTheme_Dark_Dialog);
+        progressDialog.setIndeterminate(true);
+        progressDialog.setMessage("Creating Account...");
+        progressDialog.show();
+
 
         StringEntity jsonString = new StringEntity(object.toString());
         AsyncHttpClient client = new AsyncHttpClient();
@@ -103,7 +144,14 @@ public class RegisterActivity extends Activity {
                         JSONObject obj = new JSONObject(response);
 
                         if (obj.getBoolean("error")) {
-                            Toast.makeText(getApplicationContext(), obj.getString("msg"), Toast.LENGTH_LONG).show();
+
+                            SnackbarManager.show(
+                                    com.nispok.snackbar.Snackbar.with(RegisterActivity.this)
+                                            .text("Oops. Something went wrong !!")
+                                            .duration(com.nispok.snackbar.Snackbar.SnackbarDuration.LENGTH_SHORT)
+                            );
+
+                            //Toast.makeText(getApplicationContext(), obj.getString("msg"), Toast.LENGTH_LONG).show();
                         } else {
 
                             JSONObject userObj = obj.getJSONObject("user");
@@ -120,7 +168,6 @@ public class RegisterActivity extends Activity {
                         // TODO Auto-generated catch block
                         Toast.makeText(getApplicationContext(), "Error Occured [Server's JSON response might be invalid]!", Toast.LENGTH_LONG).show();
                         e.printStackTrace();
-
                     }
 
                 }
@@ -130,8 +177,13 @@ public class RegisterActivity extends Activity {
                 public void onFailure(int statusCode, Throwable error,
                                       String content) {
 
-                    Toast.makeText(getApplicationContext(), "Error Occured [", Toast.LENGTH_LONG).show();
+                    SnackbarManager.show(
+                            com.nispok.snackbar.Snackbar.with(RegisterActivity.this)
+                                    .text("Oops. Something went wrong")
+                                    .duration(com.nispok.snackbar.Snackbar.SnackbarDuration.LENGTH_SHORT)
+                    );
 
+                    //Toast.makeText(getApplicationContext(), "Error Occured [", Toast.LENGTH_LONG).show();
                 }
 
             });
