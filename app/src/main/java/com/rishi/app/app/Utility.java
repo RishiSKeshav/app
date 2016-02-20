@@ -31,8 +31,11 @@ public class Utility {
     private ArrayList<AlbumMedia> albummedia= new ArrayList<AlbumMedia>();
     //Email Pattern
     private static final String EMAIL_PATTERN =
-            "^[_A-Za-z0-9-+]+(.[_A-Za-z0-9-]+)*@"
-                    + "[A-Za-z0-9-]+(.[A-Za-z0-9]+)*(.[A-Za-z]{2,})$";
+            "^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@"
+                    + "[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$";
+
+
+    private static final String PASSWORD_PATTERN ="^.{6,20}";
 
     /**
      * Validate Email with regular expression
@@ -48,12 +51,26 @@ public class Utility {
         this._context = context;
     }
 
-    public static boolean validate(String email) {
+    public static boolean validateEmail(String email) {
         pattern = Pattern.compile(EMAIL_PATTERN);
         matcher = pattern.matcher(email);
         return matcher.matches();
-
     }
+
+    public static boolean validatePassword(String password) {
+        pattern = Pattern.compile(PASSWORD_PATTERN);
+        matcher = pattern.matcher(password);
+        return matcher.matches();
+    }
+
+    public static boolean validateMobile(String mobileNo) {
+        pattern = Pattern.compile(PASSWORD_PATTERN);
+        matcher = pattern.matcher(mobileNo);
+        return matcher.matches();
+    }
+
+
+
     /**
      * Checks for Null String object
      *
@@ -63,10 +80,4 @@ public class Utility {
     public static boolean isNotNull(String txt){
         return txt!=null && txt.trim().length()>0 ? true: false;
     }
-
-
-
-
-
-
 }
