@@ -6,6 +6,26 @@
     android:layout_height="match_parent"
     >
 
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/uploaddp_toolbar"
+        android:minHeight="?attr/actionBarSize"
+        android:background="@color/color_primary"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:theme="@style/ToolBarStyle"
+        >
+
+        <TextView
+            android:id="@+id/tv_ld_header"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Display Picture"
+            android:textSize="18dp"
+            android:textColor="#fff"
+            />
+    </android.support.v7.widget.Toolbar>
+
+
 
     <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/diplayPicture"

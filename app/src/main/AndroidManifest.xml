@@ -69,9 +69,11 @@
             android:label="@string/app_name" />
         <activity android:name=".CameraActivity" />
         <activity android:name=".AlbumMediaDisplay"
+            android:parentActivityName=".HomeActivity"
             />
         <activity android:name=".FullScreenMediaDisplay" />
         <activity android:name=".NewAlbum"
+            android:parentActivityName=".HomeActivity"
             />
         <activity android:name=".AddMoreMedia" />
         <activity android:name=".AlbumMediaSelect"
@@ -79,10 +81,12 @@
         <activity android:name=".ToPersonalAlbum" />
         <activity android:name=".ToSharedAlbum" />
         <activity android:name=".SharedAlbumMediaDisplay"
+            android:parentActivityName=".HomeActivity"
           />
         <activity android:name=".SharedAlbumMediaSelect" />
         <activity android:name=".Userbase" />
         <activity android:name=".HomeSettings"
+            android:parentActivityName=".HomeActivity"
            />
         <activity android:name=".EditProfile"
             />
@@ -96,6 +100,7 @@
 
         <activity
             android:name=".SharedMediaDisplay"
+            android:parentActivityName=".HomeActivity"
              />
 
         <activity
@@ -121,6 +126,15 @@
         <activity android:name=".Notification" >
 
         </activity>
+
+        <activity android:name=".EmailAuthentication" >
+
+        </activity>
+
+        <activity android:name=".RegistrationDetails" >
+
+        </activity>
+
 
 
 

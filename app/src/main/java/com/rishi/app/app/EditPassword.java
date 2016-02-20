@@ -82,7 +82,7 @@ public class EditPassword extends AppCompatActivity {
 //            i.putExtra("Name",NAME);
 //            AlbumMediaSelect.this.startActivity(i);
 
-            onBackPressed();
+//            onBackPressed();
             return true;
         }
 

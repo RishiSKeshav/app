@@ -74,13 +74,7 @@ public class EditProfile extends AppCompatActivity {
 
 
             if (id == android.R.id.home) {
-//            Intent i = new Intent(AlbumMediaSelect.this,AlbumMediaDisplay.class);
-//            i.putExtra("Id",ID);
-//            i.putExtra("Name",NAME);
-//            AlbumMediaSelect.this.startActivity(i);
 
-                onBackPressed();
-                return true;
             }
 
 
