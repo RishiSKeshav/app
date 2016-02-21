@@ -4,6 +4,8 @@
 
     <uses-permission android:name="android.permission.WAKE_LOCK" />
     <uses-permission android:name="com.google.android.c2dm.permission.RECEIVE" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+    <uses-permission android:name="android.permission.READ_PHONE_STATE"/>
 
     <permission
         android:name="com.rishi.app.app.permission.C2D_MESSAGE"
@@ -39,17 +41,21 @@
             android:configChanges="keyboard|keyboardHidden|screenLayout|screenSize|orientation"
             android:label="@string/app_name"
             android:theme="@android:style/Theme.Translucent.NoTitleBar" />
-        <activity
-            android:name=".LoginActivity"
 
-            android:label=""
-            >
+        <activity android:name=".LaunchScreen">
+
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
 
+
+        </activity>
+        <activity
+            android:name=".LoginActivity"
+            android:label=""
+            >
 
         </activity>
         <activity
@@ -89,10 +95,13 @@
             android:parentActivityName=".HomeActivity"
            />
         <activity android:name=".EditProfile"
+            android:parentActivityName=".HomeSettings"
             />
         <activity android:name=".EditEmail"
+            android:parentActivityName=".HomeSettings"
          />
         <activity android:name=".EditPassword"
+            android:parentActivityName=".HomeSettings"
             />
         <activity
             android:name=".CameraFullImageDisplayActivity"

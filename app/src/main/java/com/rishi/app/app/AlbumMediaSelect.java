@@ -1,12 +1,20 @@
 package com.rishi.app.app;
 
 import android.app.AlertDialog;
+import android.app.ProgressDialog;
+import android.content.ComponentName;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
+import android.content.pm.PackageManager;
+import android.content.pm.ResolveInfo;
+import android.graphics.Bitmap;
 import android.graphics.drawable.ShapeDrawable;
 import android.graphics.drawable.shapes.OvalShape;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Environment;
 import android.os.Handler;
 import android.preference.PreferenceActivity;
 import android.support.v7.app.AppCompatActivity;
@@ -39,11 +47,24 @@ import com.nispok.snackbar.SnackbarManager;
 import com.nispok.snackbar.listeners.EventListener;
 
 import org.apache.http.entity.StringEntity;
+import org.apache.http.util.ByteArrayBuffer;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.BufferedInputStream;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.io.UnsupportedEncodingException;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.net.URL;
+import java.net.URLConnection;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -66,6 +87,8 @@ public class AlbumMediaSelect extends AppCompatActivity implements AlbumMediaSel
     private FloatingActionButton menu_fab1;
     private FloatingActionButton menu_fab2;
     private FloatingActionButton menu_fab3;
+
+
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -143,7 +166,7 @@ public class AlbumMediaSelect extends AppCompatActivity implements AlbumMediaSel
         if (id == android.R.id.home) {
             Intent i = new Intent(AlbumMediaSelect.this,AlbumMediaDisplay.class);
             i.putExtra("Id",ID);
-            i.putExtra("Name",NAME);
+            i.putExtra("Name", NAME);
             AlbumMediaSelect.this.startActivity(i);
 
          //   onBackPressed();
@@ -248,6 +271,17 @@ public class AlbumMediaSelect extends AppCompatActivity implements AlbumMediaSel
                     AlbumMediaSelect.this.startActivity(i2);
                     return true;
 
+                case R.id.download:
+
+                    new ImageDownloadAndSave().execute("");
+
+                    SnackbarManager.show(
+                            com.nispok.snackbar.Snackbar.with(AlbumMediaSelect.this)
+                                    .text("Images downloaded to App folder")
+                                    .duration(com.nispok.snackbar.Snackbar.SnackbarDuration.LENGTH_SHORT)
+                    );
+                    return true;
+
                 default:
                     return false;
             }
@@ -261,7 +295,114 @@ public class AlbumMediaSelect extends AppCompatActivity implements AlbumMediaSel
         }
     }
 
-    private void confirmdeletealbummedia(){
+    private class ImageDownloadAndSave extends AsyncTask<String, Void, Bitmap>
+    {
+        private ProgressDialog progressDialog;
+
+
+
+        @Override
+        protected void onPreExecute() {
+
+            progressDialog = new ProgressDialog(AlbumMediaSelect.this);
+            progressDialog.setIndeterminate(true);
+            progressDialog.setMessage("Images Downloading...");
+            progressDialog.show();
+
+
+        }
+
+            @Override
+        protected Bitmap doInBackground(String... arg0)
+        {
+
+            List<Integer> cnt = amsAdapter.getSelectedItems();
+
+            for(int j=0;j<cnt.size();j++){
+                AlbumMedia am = albummediaList.get(cnt.get(j));
+                downloadImagesToSdCard(am.getPath(),am.getName());
+            }
+
+
+
+
+            return null;
+        }
+
+        private void downloadImagesToSdCard(String downloadUrl,String imageName)
+        {
+            Log.i("qqq",downloadUrl);
+            try
+            {
+                URL url = new URL(downloadUrl);
+                        /* making a directory in sdcard */
+                String sdCard=Environment.getExternalStorageDirectory().toString();
+                File myDir = new File(sdCard,"App");
+
+                        /*  if specified not exist create new */
+                if(!myDir.exists())
+                {
+                    myDir.mkdir();
+                    Log.v("", "inside mkdir");
+                }
+
+                        /* checks the file and if it already exist delete */
+                String fname = imageName;
+                File file = new File (myDir, fname);
+                if (file.exists ())
+                    file.delete ();
+
+                             /* Open a connection */
+                URLConnection ucon = url.openConnection();
+                InputStream inputStream = null;
+                HttpURLConnection httpConn = (HttpURLConnection)ucon;
+                httpConn.setRequestMethod("GET");
+                httpConn.connect();
+
+                if (httpConn.getResponseCode() == HttpURLConnection.HTTP_OK)
+                {
+                    inputStream = httpConn.getInputStream();
+                }
+
+                FileOutputStream fos = new FileOutputStream(file);
+                int totalSize = httpConn.getContentLength();
+                int downloadedSize = 0;
+                byte[] buffer = new byte[1024];
+                int bufferLength = 0;
+                while ( (bufferLength = inputStream.read(buffer)) >0 )
+                {
+                    fos.write(buffer, 0, bufferLength);
+                    downloadedSize += bufferLength;
+                   // Log.i("Progress:","downloadedSize:"+downloadedSize+"totalSize:"+ totalSize) ;
+                }
+
+                fos.close();
+                Log.d("test", "Image Saved in sdcard..");
+            }
+            catch(IOException io)
+            {
+                io.printStackTrace();
+            }
+            catch(Exception e)
+            {
+                e.printStackTrace();
+            }
+        }
+
+        @Override
+        protected void onPostExecute(Bitmap bitmap) {
+            super.onPostExecute(bitmap);
+            if (progressDialog.isShowing()) {
+                progressDialog.dismiss();
+            }
+
+
+        }
+    }
+
+
+
+    private void confirmdeletealbummedia() {
 
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
         alertDialogBuilder.setTitle("Discard Media?");
