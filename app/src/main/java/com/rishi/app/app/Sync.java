@@ -16,6 +16,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -39,10 +40,13 @@ public class Sync extends Activity {
     ProgressBar pBar;
     RelativeLayout layout;
     RelativeLayout mainLayout;
+    RelativeLayout sync_sub_layout;
 
     Intent serviceIntent;
 
     Switch switchButton;
+    CheckBox photoChk;
+    CheckBox videoChk;
     TextView uploadLeftTxt;
     ImageView imgView;
 
@@ -50,6 +54,8 @@ public class Sync extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sync);
+
+        sync_sub_layout =(RelativeLayout) findViewById(R.id.sync_sub_layout2);
 
         uploadLeftTxt =(TextView) findViewById(R.id.uploadLeftTxt);
         pBar = (ProgressBar) findViewById(R.id.progressBar);
@@ -59,20 +65,47 @@ public class Sync extends Activity {
         mainLayout =(RelativeLayout) findViewById(R.id.sync_main_layout);
 
         IntentFilter filter = new IntentFilter("PROGRESS_ACTION");
-        registerReceiver(myReceiver,filter);
+        registerReceiver(myReceiver, filter);
 
         IntentFilter finalFilter = new IntentFilter("IMAGE_ACTION");
-        registerReceiver(finalCountReceiver,finalFilter);
+        registerReceiver(finalCountReceiver, finalFilter);
 
-        initializeImageLists();
-
-        serviceIntent = new Intent(Sync.this,ImageUploadService.class);
-        serviceIntent.putParcelableArrayListExtra("unSyncedImageList", unSyncedImageList);
-        startService(serviceIntent);
+        Boolean synced = false;
 
         switchButton = (Switch) findViewById(R.id.switchButton);
+        photoChk =(CheckBox) findViewById(R.id.chkPhoto);
+        videoChk =(CheckBox)findViewById(R.id.chkVideo);
 
-        switchButton.setChecked(true);
+        if(synced) {
+            switchButton.setChecked(true);
+
+            initializeImageLists();
+
+            serviceIntent = new Intent(Sync.this,ImageUploadService.class);
+            serviceIntent.putParcelableArrayListExtra("unSyncedImageList", unSyncedImageList);
+            startService(serviceIntent);
+        }
+        else{
+            switchButton.setChecked(false);
+        }
+
+        if(switchButton.isChecked())
+        {
+
+            videoChk.setVisibility(View.VISIBLE);
+            photoChk.setVisibility(View.VISIBLE);
+            sync_sub_layout.addView(photoChk);
+            sync_sub_layout.addView(videoChk);
+
+        }
+        else{
+            videoChk.setVisibility(View.INVISIBLE);
+            photoChk.setVisibility(View.INVISIBLE);
+            sync_sub_layout.addView(photoChk);
+            sync_sub_layout.addView(videoChk);
+
+        }
+
 
         switchButton.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
@@ -222,6 +255,7 @@ public class Sync extends Activity {
             if(imgView.getParent()!=null)
                 ((ViewGroup)imgView.getParent()).removeView(imgView);
 
+            imgView.setVisibility(View.VISIBLE);
             imgView.setImageBitmap(bmp);
             layout.addView(imgView);
 
@@ -229,6 +263,7 @@ public class Sync extends Activity {
             if(uploadLeftTxt.getParent()!=null)
                 ((ViewGroup)uploadLeftTxt.getParent()).removeView(uploadLeftTxt);
 
+            uploadLeftTxt.setVisibility(View.VISIBLE);
             uploadLeftTxt.setText("Backing up:" + countLeft + " left");
             layout.addView(uploadLeftTxt);
         }

@@ -50,18 +50,38 @@
     </RelativeLayout>
 
     <RelativeLayout
-        android:id="@+id/sync_recycle_layout"
+        android:id="@+id/sync_sub_layout2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/sync_sub_layout"
         android:layout_margin="10dp">
 
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/sync_media_recycler_view"
-            xmlns:android="http://schemas.android.com/apk/res/android"
-            xmlns:tools="http://schemas.android.com/tools"
+        <TextView
+            android:id="@+id/txtView"
+            android:layout_marginTop="20dp"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            tools:context=".MainActivity$PlaceholderFragment"/>
+            android:layout_height="wrap_content"
+            android:textSize="20dp"
+            android:text="When to back up"/>
+
+
+        <CheckBox
+            android:id="@+id/chkPhoto"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignTop="@+id/txtView"
+            android:layout_marginTop="40dp"
+            android:text="Photo back up using Cellular Data"
+            />
+
+        <CheckBox
+            android:id="@+id/chkVideo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignTop="@+id/chkPhoto"
+            android:layout_marginTop="40dp"
+            android:text="Video back up using Cellular Data"
+            />
+
     </RelativeLayout>
 </RelativeLayout>
