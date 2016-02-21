@@ -11,6 +11,12 @@
     yourapp:showAsAction="ifRoom"
         />
 
+    <item android:id="@+id/download"
+        android:title=""
+        android:icon="@android:drawable/stat_sys_download_done"
+        yourapp:showAsAction="ifRoom"
+        />
+
     <item android:id="@+id/save"    android:title="Forward"
         >
 

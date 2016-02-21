@@ -24,13 +24,17 @@ public class SessionManager {
     int PRIVATE_MODE = 0;
 
     // Sharedpref file name
-    private static final String PREF_NAME = "AndroidHivePref";
+    private static final String PREF_NAME = "App";
+    private static final String PREF_NAME1 = "login_status_key";
 
     // Constructor
     public SessionManager(Context context) {
         this._context = context;
         pref = _context.getSharedPreferences(PREF_NAME, PRIVATE_MODE);
         editor = pref.edit();
+
+
+
     }
 
 
@@ -44,7 +48,9 @@ public class SessionManager {
                 editor.putString("emailId",userObj.getString("emailId"));
                 editor.putString("password",userObj.getString("password"));
                 editor.putString("mobileNo",userObj.getString("mobileNo"));
-                editor.putString("displayPicture",userObj.getString("displayPicture"));
+                editor.putString("displayPicture", userObj.getString("displayPicture"));
+
+                editor.putBoolean("login_status_value",true).commit();
 
                 editor.commit();
 
@@ -68,6 +74,11 @@ public class SessionManager {
 
     public void changedisplayPicture(String displayPicture){
         editor.putString("displayPicture",displayPicture);
+        editor.commit();
+    }
+
+    public void logoutUser(){
+        editor.putBoolean("login_status_value",false);
         editor.commit();
     }
 
@@ -95,4 +106,9 @@ public class SessionManager {
     public String getDisplayPicture(){
         return pref.getString("displayPicture",null);
     }
+
+    public Boolean LoginValue(){
+        return pref.getBoolean("login_status_value", false);
+    }
+
 }

@@ -57,13 +57,6 @@ public class EditEmail extends AppCompatActivity {
         int id = item.getItemId();
         if (id == R.id.edit_profile_save) {
 
-            if (id == android.R.id.home) {
-
-
-                return true;
-            }
-
-
             try {
                 JSONObject obj = new JSONObject();
                 obj.put("action","edit_emailId");

@@ -72,12 +72,6 @@ public class EditProfile extends AppCompatActivity {
 
         int id = item.getItemId();
 
-
-            if (id == android.R.id.home) {
-
-            }
-
-
         if (id == R.id.edit_profile_save) {
 
             try {

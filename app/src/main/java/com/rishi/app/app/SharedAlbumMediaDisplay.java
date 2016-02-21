@@ -195,6 +195,7 @@ public class SharedAlbumMediaDisplay extends AppCompatActivity {
                     obj.put("userId", "1");
                     obj.put("shared","yes");
                     obj.put("albumId",ID);
+                    obj.put("userName",sessionManager.getName());
                     obj.put("name",edt1.getText().toString());
                     StringEntity jsonString = new StringEntity(obj.toString());
 
