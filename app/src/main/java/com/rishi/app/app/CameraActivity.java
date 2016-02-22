@@ -334,7 +334,7 @@ public class CameraActivity extends Activity {
                 mediaFile = new File(folder.getPath() + File.separator
                         + fileName);
             } else {
-                Toast.makeText(getApplicationContext(), "Picture cannot be Saved", Toast.LENGTH_LONG).show();
+            //    Toast.makeText(getApplicationContext(), "Picture cannot be Saved", Toast.LENGTH_LONG).show();
                 mediaFile=null;
             }
 

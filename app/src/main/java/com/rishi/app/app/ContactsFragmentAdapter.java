@@ -34,44 +34,59 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ContactsFragmentAdapter extends RecyclerView.Adapter<ContactsFragmentAdapter.MyViewHolder> {
+public class ContactsFragmentAdapter extends SelectableAdapter<ContactsFragmentAdapter.MyViewHolder> {
 
     //private List<AlbumMedia> albumMediaList;
     private ArrayList<ContactsFriends> contactsfriends = new ArrayList<ContactsFriends>();
     private Bitmap bitmap;
+    private MyViewHolder.ClickListener clickListener;
     //String path = "";
     //Context context;
 
 
-    public class MyViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+    public static class MyViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         public TextView name;
-        public ImageView path;
+        public ImageView path,check;
+        private ClickListener listener;
+        View selectedOverlay;
 
-        public MyViewHolder(View view) {
+        public MyViewHolder(View view,ClickListener listener) {
             super(view);
             view.setOnClickListener(this);
+            this.listener = listener;
             // name = (TextView) view.findViewById(R.id.name);
             path =  (ImageView) view.findViewById(R.id.contacts_displayPicture);
             name = (TextView) view.findViewById(R.id.contacts_name);
+            check = (ImageView) view.findViewById(R.id.contacts_image_check);
+            selectedOverlay = view.findViewById(R.id.contacts_selected_overlay);
             //date = (TextView) view.findViewById(R.id.date);
         }
 
         @Override
-        public void onClick(View view) {
+        public void onClick(View v) {
+            if (listener != null) {
+                listener.onItemClicked(getPosition());
+            }
+        }
 
-//            int position = getAdapterPosition();
+//        @Override
+//        public boolean onLongClick(View v) {
+//            if (listener != null) {
+//                return listener.onItemLongClicked(getPosition());
+//            }
 //
-//            String pos = Integer.toString(position);
-//            Context context = view.getContext();
-//            Intent intent = new Intent(context,FullScreenMediaDisplay.class);
-//            intent.putExtra("Position", pos);
-//            intent.putStringArrayListExtra("data",arrayalbumMediaList);
-//            context.startActivity(intent);
+//            return false;
+//        }
+
+        public interface ClickListener {
+            public void onItemClicked(int position);
+            //     public boolean onItemLongClicked(int position);
         }
     }
 
-    public ContactsFragmentAdapter(ArrayList<ContactsFriends> contactsfriends) {
+    public ContactsFragmentAdapter(ArrayList<ContactsFriends> contactsfriends,MyViewHolder.ClickListener clickListener) {
         this.contactsfriends = contactsfriends;
+        this.clickListener = clickListener;
 
     }
 
@@ -80,7 +95,7 @@ public class ContactsFragmentAdapter extends RecyclerView.Adapter<ContactsFragme
         View itemView = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.contacts_fragment_list, parent, false);
 
-        return new MyViewHolder(itemView);
+        return new MyViewHolder(itemView,clickListener);
     }
 
     @Override
@@ -93,6 +108,9 @@ public class ContactsFragmentAdapter extends RecyclerView.Adapter<ContactsFragme
         Context context = holder.path.getContext();
         Picasso.with(context).load(cf.getDisplayPicture()).error(R.mipmap.ic_launcher).placeholder(R.mipmap.ic_launcher)
                 .into(holder.path);
+
+        holder.selectedOverlay.setVisibility(isSelected(position) ? View.VISIBLE : View.INVISIBLE);
+        holder.check.setVisibility(isSelected(position) ? View.VISIBLE : View.INVISIBLE);
     }
 
 
@@ -104,28 +122,6 @@ public class ContactsFragmentAdapter extends RecyclerView.Adapter<ContactsFragme
 
 
 
-    private Bitmap getCircleBitmap(Bitmap bitmap) {
-        final Bitmap output = Bitmap.createBitmap(bitmap.getWidth(),
-                bitmap.getHeight(), Bitmap.Config.ARGB_8888);
-        final Canvas canvas = new Canvas(output);
 
-        final int color = Color.RED;
-        final Paint paint = new Paint();
-        final Rect rect = new Rect(0, 0, bitmap.getWidth(), bitmap.getHeight());
-        final RectF rectF = new RectF(rect);
-
-        paint.setAntiAlias(true);
-        canvas.drawARGB(0, 0, 0, 0);
-        paint.setColor(color);
-        canvas.drawOval(rectF, paint);
-
-        paint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.SRC_IN));
-
-        canvas.drawBitmap(bitmap, rect, rect, paint);
-
-        bitmap.recycle();
-
-        return output;
-    }
 }
 

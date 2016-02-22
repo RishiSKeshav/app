@@ -6,16 +6,40 @@
     android:orientation="vertical"
     android:weightSum="1">
 
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/sync_toolbar"
+        android:minHeight="?attr/actionBarSize"
+        android:background="@color/color_primary"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:theme="@style/ToolBarStyle"
+        >
+
+        <TextView
+            android:id="@+id/tv_ld_header"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Sync"
+            android:textSize="18dp"
+            android:textColor="#fff"
+            />
+    </android.support.v7.widget.Toolbar>
+
     <RelativeLayout
         android:id="@+id/sync_sub_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dp">
+        android:layout_marginTop="10dp"
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="5dp"
+        android:layout_below="@id/sync_toolbar"
+        android:background="@drawable/border">
 
         <ImageView
             android:id="@+id/imgView"
             android:layout_width="100dp"
-            android:layout_height="100dp"
+            android:layout_height="90dp"
+            android:scaleType="fitXY"
             android:src="@drawable/ic_alarm_on_black_48dp"
             android:layout_alignParentLeft="true"/>
 
@@ -23,7 +47,7 @@
             android:id="@+id/switchButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Sync "
+            android:text="Sync"
             android:layout_alignParentRight="true"
             android:layout_marginTop="5dp"
             android:layout_marginRight="15dp"/>
@@ -34,17 +58,18 @@
             android:id="@+id/uploadLeftTxt"
             android:text=""
             android:layout_toRightOf="@+id/imgView"
+            android:layout_marginLeft="5dp"
             android:layout_marginTop="40dp"/>
 
         <ProgressBar
             android:id="@+id/progressBar"
             style="?android:attr/progressBarStyleHorizontal"
-            android:layout_width="fill_parent"
+            android:layout_width="match_parent"
             android:layout_height="25dp"
             android:layout_alignBottom="@+id/imgView"
             android:layout_toEndOf="@+id/imgView"
             android:layout_toRightOf="@+id/imgView"
-            android:layout_marginRight="15dp"
+            android:layout_marginLeft="5dp"
             />
 
     </RelativeLayout>

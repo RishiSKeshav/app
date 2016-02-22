@@ -15,6 +15,7 @@ import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
@@ -31,7 +32,7 @@ import java.security.PrivateKey;
 import java.util.ArrayList;
 import java.util.Iterator;
 
-public class Sync extends Activity {
+public class Sync extends AppCompatActivity {
 
     SessionManager sessionManager;
 
@@ -60,6 +61,9 @@ public class Sync extends Activity {
         setContentView(R.layout.activity_sync);
 
         sessionManager = new SessionManager(getApplicationContext());
+
+        Toolbar toolbar= (Toolbar) findViewById(R.id.sync_toolbar);
+        setSupportActionBar(toolbar);
 
         sync_sub_layout =(RelativeLayout) findViewById(R.id.sync_sub_layout2);
 
