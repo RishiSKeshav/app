@@ -36,17 +36,11 @@ public class SessionManager {
         this._context = context;
         pref = _context.getSharedPreferences(PREF_NAME, PRIVATE_MODE);
         editor = pref.edit();
-
-
-
     }
-
 
     public  void createLoginSession(JSONObject userObj)
     {
-
         try {
-
                 editor.putString("id",userObj.getString("id"));
                 editor.putString("name",userObj.getString("name"));
                 editor.putString("emailId",userObj.getString("emailId"));
@@ -54,10 +48,12 @@ public class SessionManager {
                 editor.putString("mobileNo",userObj.getString("mobileNo"));
                 editor.putString("displayPicture", userObj.getString("displayPicture"));
 
+                editor.putBoolean("syncStatus", true);
+                editor.putBoolean("photoSyncStatus",false);
+
                 editor.putBoolean("login_status_value",true).commit();
 
                 editor.commit();
-
 
         } catch (JSONException e) {
             Toast.makeText(_context, "Error ", Toast.LENGTH_LONG).show();
@@ -65,9 +61,19 @@ public class SessionManager {
         }
     }
 
+    public void changeSyncStatus(Boolean status){
+        editor.putBoolean("syncStatus", status);
+        editor.commit();
+    }
+
+    public void changePhotoSyncStatus(Boolean status){
+        editor.putBoolean("photoSyncStatus", status);
+        editor.commit();
+    }
+
     public void changeNameMobileNo(String name,String mobileNo){
         editor.putString("name",name);
-        editor.putString("mobileNo",mobileNo);
+        editor.putString("mobileNo", mobileNo);
         editor.commit();
     }
 
@@ -117,5 +123,9 @@ public class SessionManager {
     public Boolean LoginValue(){
         return pref.getBoolean("login_status_value", false);
     }
+
+    public Boolean getSyncStatus(){ return  pref.getBoolean("syncStatus",true);}
+
+    public Boolean getPhotoSyncStatus(){ return  pref.getBoolean("photoSyncStatus",false);}
 
 }

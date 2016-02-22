@@ -66,25 +66,6 @@ public class CameraImageAdapter extends PagerAdapter
 
         imgDisplay.setImageBitmap(bitmap);
 
-
-        // Picasso.with(c).load(f).into(imgDisplay);
-
-        //RelativeLayout layout = (RelativeLayout) viewLayout.findViewById(R.id.layout);
-
-       // BitmapFactory.Options options = new BitmapFactory.Options();
-       // options.inPreferredConfig = Bitmap.Config.ARGB_8888;
-       // Bitmap bitmap = BitmapFactory.decodeFile(_imagePaths.get(position), options);
-        //imgDisplay.setImageBitmap(bitmap);
-
-       /// if(imgDisplay.getParent()!=null)
-          //  ((ViewGroup)imgDisplay.getParent()).removeView(imgDisplay); // <- fix
-        //imgDisplay.setImageBitmap(bitmap);
-        //layout.addView(imgDisplay);
-
-       /* Picasso.with(context).load(_imagePaths.get(position)).error(R.mipmap.ic_launcher).placeholder(R.mipmap.ic_launcher)
-                .into(imgDisplay);
-*/
-
         ((ViewPager) container).addView(viewLayout);
 
         return viewLayout;

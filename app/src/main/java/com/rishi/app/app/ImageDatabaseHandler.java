@@ -36,7 +36,8 @@ public class ImageDatabaseHandler extends SQLiteOpenHelper {
 
         String CREATE_CONTACTS_TABLE = "CREATE TABLE IF NOT EXISTS " + TABLE_SyncedMedia + "( media_id INTEGER PRIMARY KEY,"
                 + " name TEXT,"
-                + " path TEXT"
+                + " path TEXT,"
+                + " link TEXT"
                  + ")";
 
         db.execSQL(CREATE_CONTACTS_TABLE);
@@ -55,6 +56,7 @@ public class ImageDatabaseHandler extends SQLiteOpenHelper {
         values.put("media_id", img.getId());
         values.put("name", img.getName());
         values.put("path", img.getPath());
+        values.put("link", img.getLink());
 
         // Inserting Row
         db.insert(TABLE_SyncedMedia, null, values);
@@ -74,8 +76,8 @@ public class ImageDatabaseHandler extends SQLiteOpenHelper {
         return count;
     }
 
-    public ArrayList<Image> getAllImages() {
-        ArrayList<Image> syncedImageList = new ArrayList<Image>();
+    public ArrayList<SyncImages> getAllImages() {
+        ArrayList<SyncImages> syncedImageList = new ArrayList<SyncImages>();
         // Select All Query
         String selectQuery = "SELECT  * FROM " + TABLE_SyncedMedia;
 
@@ -85,11 +87,13 @@ public class ImageDatabaseHandler extends SQLiteOpenHelper {
         // looping through all rows and adding to list
         if (cursor.moveToFirst()) {
             do {
-                Image img = new Image();
+                SyncImages img = new SyncImages();
 
                 img.setId(Integer.parseInt(cursor.getString(0)));
                 img.setName(cursor.getString(1));
                 img.setPath(cursor.getString(2));
+                img.setLink(cursor.getString(3));
+                img.setSyncStatus(true);
 
                 // Adding contact to list
                 syncedImageList.add(img);
