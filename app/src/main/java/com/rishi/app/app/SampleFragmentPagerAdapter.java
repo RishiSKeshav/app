@@ -10,7 +10,7 @@ import android.support.v4.app.FragmentPagerAdapter;
  */
 public class SampleFragmentPagerAdapter extends FragmentPagerAdapter {
     final int PAGE_COUNT = 3;
-    private String tabTitles[] = new String[] { "Albums", "Shared Albums", "Shared Media" };
+    private String tabTitles[] = new String[] { "Personal Albums", "Shared Albums", "Shared Media" };
     private Context context;
 
     public SampleFragmentPagerAdapter(FragmentManager fm, Context context) {

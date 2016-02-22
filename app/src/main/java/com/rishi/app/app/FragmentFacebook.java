@@ -3,8 +3,12 @@ package com.rishi.app.app;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageInstaller;
 import android.hardware.camera2.params.Face;
+import android.media.tv.TvInputService;
+import android.os.Handler;
 import android.preference.PreferenceActivity;
+import android.service.textservice.SpellCheckerService;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -22,6 +26,7 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.facebook.AccessToken;
+import com.facebook.AccessTokenTracker;
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
@@ -30,7 +35,9 @@ import com.facebook.GraphRequest;
 import com.facebook.GraphRequestAsyncTask;
 import com.facebook.GraphResponse;
 import com.facebook.HttpMethod;
+
 import com.facebook.Profile;
+import com.facebook.login.LoginManager;
 import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
 import com.loopj.android.http.AsyncHttpClient;
@@ -47,6 +54,7 @@ import org.json.JSONObject;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Timer;
 
 /**
  * Created by amitrajula on 2/9/16.
@@ -68,6 +76,9 @@ public class FragmentFacebook extends Fragment implements FragmentFacebookAdapte
     SessionManager sessionManager;
     Context context;
 
+    AccessTokenTracker at;
+    AccessToken a ;
+
 
 
     public FragmentFacebook() {
@@ -80,7 +91,111 @@ public class FragmentFacebook extends Fragment implements FragmentFacebookAdapte
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         FacebookSdk.sdkInitialize(getActivity().getApplicationContext());
-        callbackManager=CallbackManager.Factory.create();
+        callbackManager = CallbackManager.Factory.create();
+
+       //  a = AccessToken.getCurrentAccessToken();
+        at = new AccessTokenTracker() {
+
+            @Override
+            protected void onCurrentAccessTokenChanged(AccessToken oldAccessToken, AccessToken currentAccessToken) {
+                a= currentAccessToken;
+
+                callFacebook();
+
+            }
+        };
+
+//        if(a.getToken().equals("")){
+//
+//        }else {
+//            //loginButton.setVisibility(View.INVISIBLE);
+//            GraphRequestAsyncTask graphRequestAsyncTask = new GraphRequest(
+//                    a,
+//                    "/me/friends",
+//                    null,
+//                    HttpMethod.GET,
+//                    new GraphRequest.Callback() {
+//                        public void onCompleted(GraphResponse response) {
+//
+//
+//                            try {
+//                                JSONArray rawName = response.getJSONObject().getJSONArray("data");
+//
+//
+//                                for (int i = 0; i < rawName.length(); i++) {
+//                                    JSONObject obj = new JSONObject();
+//                                    obj.put("facebookId", rawName.getJSONObject(i).getString("id"));
+//                                    StringEntity jsonString = new StringEntity(obj.toString());
+//
+//                                    AsyncHttpClient client = new AsyncHttpClient();
+//
+//                                    client.post(getContext(), "http://52.89.2.186/project/webservice/public/Getfacebookuser", jsonString, "application/json", new AsyncHttpResponseHandler() {
+//
+//                                        @Override
+//                                        public void onStart() {
+//                                            // called before request is started
+//                                        }
+//
+//                                        // @Override
+//                                        public void onSuccess(String response) {
+//                                            // called when response HTTP status is "200 OK"
+//                                            try {
+//                                                JSONObject obj = new JSONObject(response);
+//
+//                                                if (obj.getBoolean("error")) {
+//                                                    Toast.makeText(getContext(), obj.getString("msg"), Toast.LENGTH_LONG).show();
+//                                                } else {
+//                                                    JSONObject userObj = obj.getJSONObject("outputObj");
+//                                                    JSONObject userDetails = userObj.getJSONObject("user");
+//
+//                                                    FacebookFriends ff = new FacebookFriends(userDetails.optString("id"), userDetails.optString("name"), userDetails.optString("emailId"),
+//                                                            userDetails.optString("mobileNo"), userDetails.optString("displayPicture"),
+//                                                            userDetails.optString("facebookId"), false);
+//
+//                                                    friends.add(ff);
+//                                                    ffAdapter.notifyDataSetChanged();
+//
+//                                                }
+//
+//                                            } catch (JSONException e) {
+//                                                // TODO Auto-generated catch block
+//                                                Toast.makeText(getContext(), "Error Occured [Server's JSON response might be invalid]!", Toast.LENGTH_LONG).show();
+//                                                e.printStackTrace();
+//
+//                                            }
+//                                        }
+//
+//                                        //@Override
+//                                        public void onFailure(int statusCode, PreferenceActivity.Header[] headers, byte[] errorResponse, Throwable e) {
+//                                            // called when response HTTP status is "4XX" (eg. 401, 403, 404)
+//                                        }
+//
+//                                        //@Override
+//                                        public void onRetry(int retryNo) {
+//                                            // called when request is retried
+//                                        }
+//
+//
+//                                    });
+//
+//                                }
+//
+//                                aswipeRefreshLayout.setRefreshing(false);
+//
+//
+//                            } catch (JSONException e) {
+//                                e.printStackTrace();
+//                            } catch (UnsupportedEncodingException ee) {
+//                                ee.printStackTrace();
+//                            }
+//
+//                        }
+//                    }
+//            ).executeAsync();
+//        }
+
+
+
     }
 
 
@@ -90,11 +205,7 @@ public class FragmentFacebook extends Fragment implements FragmentFacebookAdapte
         View vq = inflater.inflate(R.layout.facebook_fragment, container, false);
         sessionManager = new SessionManager(getContext());
 
-
-
         ACTION = getArguments().getString("action");
-
-
 
         if(ACTION.equals("create_shared_album"))
         {
@@ -126,15 +237,16 @@ public class FragmentFacebook extends Fragment implements FragmentFacebookAdapte
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getContext());
         recyclerView.setLayoutManager(mLayoutManager);
         recyclerView.setAdapter(ffAdapter);
-        loginButton= (LoginButton)vq.findViewById(R.id.login_button);
-        loginButton.setReadPermissions("user_friends");
-        loginButton.setFragment(this);
-       // loginButton.registerCallback(getcall());
-        loginButton.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                loginButton.registerCallback(callbackManager, mcallback);
-            }
-        });
+
+
+            loginButton = (LoginButton) vq.findViewById(R.id.login_button);
+            loginButton.setReadPermissions("user_friends", "public_profile");
+            loginButton.setFragment(this);
+            loginButton.setOnClickListener(new View.OnClickListener() {
+                public void onClick(View v) {
+                    loginButton.registerCallback(callbackManager, mcallback);
+                }
+            });
 
         aswipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
@@ -142,11 +254,213 @@ public class FragmentFacebook extends Fragment implements FragmentFacebookAdapte
 
             }
         });
-
-        Activity Userbase;
-
         return vq;
     }
+
+
+
+
+
+
+    private void callFacebook(){
+        final AccessToken accessToken = AccessToken.getCurrentAccessToken();
+        if(accessToken.equals("")){
+
+        Log.i("fff","reached");
+
+        }else {
+
+            loginButton.setVisibility(View.INVISIBLE);
+
+            GraphRequestAsyncTask graphRequestAsyncTask = new GraphRequest(
+                    a,
+                    "/me/friends",
+                    null,
+                    HttpMethod.GET,
+                    new GraphRequest.Callback() {
+                        public void onCompleted(GraphResponse response) {
+
+
+                            try {
+                                JSONArray rawName = response.getJSONObject().getJSONArray("data");
+
+
+
+                                for (int i = 0; i < rawName.length(); i++) {
+                                    JSONObject obj = new JSONObject();
+                                    obj.put("facebookId", rawName.getJSONObject(i).getString("id"));
+                                    StringEntity jsonString = new StringEntity(obj.toString());
+
+                                    AsyncHttpClient client = new AsyncHttpClient();
+
+                                    client.post(getContext(), "http://52.89.2.186/project/webservice/public/Getfacebookuser", jsonString, "application/json", new AsyncHttpResponseHandler() {
+
+                                        @Override
+                                        public void onStart() {
+                                            // called before request is started
+                                        }
+
+                                        // @Override
+                                        public void onSuccess(String response) {
+                                            // called when response HTTP status is "200 OK"
+                                            try {
+                                                JSONObject obj = new JSONObject(response);
+
+                                                if (obj.getBoolean("error")) {
+                                                    Toast.makeText(getContext(), obj.getString("msg"), Toast.LENGTH_LONG).show();
+                                                } else {
+                                                    JSONObject userObj = obj.getJSONObject("outputObj");
+                                                    JSONObject userDetails = userObj.getJSONObject("user");
+
+                                                    FacebookFriends ff = new FacebookFriends(userDetails.optString("id"), userDetails.optString("name"), userDetails.optString("emailId"),
+                                                            userDetails.optString("mobileNo"), userDetails.optString("displayPicture"),
+                                                            userDetails.optString("facebookId"), false);
+
+                                                    friends.add(ff);
+                                                    ffAdapter.notifyDataSetChanged();
+
+                                                }
+
+                                            } catch (JSONException e) {
+                                                // TODO Auto-generated catch block
+                                                Toast.makeText(getContext(), "Error Occured [Server's JSON response might be invalid]!", Toast.LENGTH_LONG).show();
+                                                e.printStackTrace();
+
+                                            }
+                                        }
+
+                                        //@Override
+                                        public void onFailure(int statusCode, PreferenceActivity.Header[] headers, byte[] errorResponse, Throwable e) {
+                                            // called when response HTTP status is "4XX" (eg. 401, 403, 404)
+                                        }
+
+                                        //@Override
+                                        public void onRetry(int retryNo) {
+                                            // called when request is retried
+                                        }
+
+
+                                    });
+
+                                }
+
+                                aswipeRefreshLayout.setRefreshing(false);
+
+
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            } catch (UnsupportedEncodingException ee) {
+                                ee.printStackTrace();
+                            }
+
+                        }
+                    }
+            ).executeAsync();
+        }
+    }
+
+
+    private FacebookCallback<LoginResult> mcallback = new FacebookCallback<LoginResult>() {
+
+        @Override
+        public void onSuccess(LoginResult login_result) {
+            //GraphRequestAsyncTask graphRequestAsyncTask = new GraphRequest(
+              //      login_result.getAccessToken(),
+                //    //AccessToken.getCurrentAccessToken(),
+                  //  "/me/friends",
+                  //  null,
+                    //HttpMethod.GET,
+                    //new GraphRequest.Callback() {
+                      //  public void onCompleted(GraphResponse response) {
+                          //  Log.i("qqq", response.toString());
+//                            try {
+//                                JSONArray rawName = response.getJSONObject().getJSONArray("data");
+//
+//
+//
+//                                for (int i = 0; i < rawName.length(); i++) {
+//                                    JSONObject obj = new JSONObject();
+//                                    obj.put("facebookId", rawName.getJSONObject(i).getString("id"));
+//                                    StringEntity jsonString = new StringEntity(obj.toString());
+//
+//                                    AsyncHttpClient client = new AsyncHttpClient();
+//
+//                                    client.post(getContext(), "http://52.89.2.186/project/webservice/public/Getfacebookuser", jsonString, "application/json", new AsyncHttpResponseHandler() {
+//
+//                                        @Override
+//                                        public void onStart() {
+//                                            // called before request is started
+//                                        }
+//
+//                                        // @Override
+//                                        public void onSuccess(String response) {
+//                                            // called when response HTTP status is "200 OK"
+//                                            try {
+//                                                JSONObject obj = new JSONObject(response);
+//
+//                                                if (obj.getBoolean("error")) {
+//                                                    Toast.makeText(getContext(), obj.getString("msg"), Toast.LENGTH_LONG).show();
+//                                                } else {
+//                                                    JSONObject userObj = obj.getJSONObject("outputObj");
+//                                                    JSONObject userDetails = userObj.getJSONObject("user");
+//
+//                                                    FacebookFriends ff = new FacebookFriends(userDetails.optString("id"), userDetails.optString("name"), userDetails.optString("emailId"),
+//                                                            userDetails.optString("mobileNo"), userDetails.optString("displayPicture"),
+//                                                            userDetails.optString("facebookId"), false);
+//
+//                                                    friends.add(ff);
+//                                                    ffAdapter.notifyDataSetChanged();
+//
+//                                                }
+//
+//                                            } catch (JSONException e) {
+//                                                // TODO Auto-generated catch block
+//                                                Toast.makeText(getContext(), "Error Occured [Server's JSON response might be invalid]!", Toast.LENGTH_LONG).show();
+//                                                e.printStackTrace();
+//
+//                                            }
+//                                        }
+//
+//                                        //@Override
+//                                        public void onFailure(int statusCode, PreferenceActivity.Header[] headers, byte[] errorResponse, Throwable e) {
+//                                            // called when response HTTP status is "4XX" (eg. 401, 403, 404)
+//                                        }
+//
+//                                        //@Override
+//                                        public void onRetry(int retryNo) {
+//                                            // called when request is retried
+//                                        }
+//
+//
+//                                    });
+//
+//                                }
+//
+//                                aswipeRefreshLayout.setRefreshing(false);
+//
+//
+//                            } catch (JSONException e) {
+//                                e.printStackTrace();
+//                            } catch (UnsupportedEncodingException ee) {
+//                                ee.printStackTrace();
+//                            }
+                       // }
+                    //}
+ //           ).executeAsync();
+
+        }
+
+        @Override
+        public void onCancel() {
+            // code for cancellation
+        }
+
+        @Override
+        public void onError(FacebookException exception) {
+            //  code to handle error
+        }
+    };
+
 
 
     @Override
@@ -157,17 +471,6 @@ public class FragmentFacebook extends Fragment implements FragmentFacebookAdapte
 
         toggleSelection(position);
     }
-
-//    @Override
-//    public boolean onItemLongClicked(int position) {
-//
-//
-//        toggleSelection(position);
-//
-//        return true;
-//    }
-
-
 
     private void toggleSelection(int position) {
         ffAdapter.toggleSelection(position);
@@ -365,8 +668,10 @@ public class FragmentFacebook extends Fragment implements FragmentFacebookAdapte
                             JSONArray a = new JSONArray(userIDS);
                             JSONObject obj = new JSONObject();
                             obj.put("userId", "1");
+                            obj.put("name",NAME);
                             obj.put("sharedUserId", a);
                             obj.put("albumId",ID);
+                            obj.put("userName",sessionManager.getName());
                             StringEntity jsonString = new StringEntity(obj.toString());
 
 
@@ -513,118 +818,6 @@ public class FragmentFacebook extends Fragment implements FragmentFacebookAdapte
 
 
 
-
-
-
-    // private FacebookCallback<LoginResult> getcall() {
-         private FacebookCallback<LoginResult> mcallback = new FacebookCallback<LoginResult>() {
-
-                @Override
-                public void onSuccess(LoginResult login_result) {
-                    GraphRequestAsyncTask graphRequestAsyncTask = new GraphRequest(
-                            login_result.getAccessToken(),
-                            //AccessToken.getCurrentAccessToken(),
-                            "/me/friends",
-                            null,
-                            HttpMethod.GET,
-                            new GraphRequest.Callback() {
-                                public void onCompleted(GraphResponse response) {
-                                    try {
-                                        JSONArray rawName = response.getJSONObject().getJSONArray("data");
-
-                                        Log.i("qqq", rawName.toString());
-
-                                        for (int i = 0; i < rawName.length(); i++) {
-                                            JSONObject obj = new JSONObject();
-                                            obj.put("facebookId", rawName.getJSONObject(i).getString("id"));
-                                            StringEntity jsonString = new StringEntity(obj.toString());
-
-                                            AsyncHttpClient client = new AsyncHttpClient();
-
-                                            client.post(getContext(), "http://52.89.2.186/project/webservice/public/Getfacebookuser", jsonString, "application/json", new AsyncHttpResponseHandler() {
-
-                                                @Override
-                                                public void onStart() {
-                                                    // called before request is started
-                                                }
-
-                                                // @Override
-                                                public void onSuccess(String response) {
-                                                    // called when response HTTP status is "200 OK"
-                                                    try {
-                                                        JSONObject obj = new JSONObject(response);
-
-                                                        if (obj.getBoolean("error")) {
-                                                            Toast.makeText(getContext(), obj.getString("msg"), Toast.LENGTH_LONG).show();
-                                                        } else {
-                                                            JSONObject userObj = obj.getJSONObject("outputObj");
-                                                            JSONObject userDetails = userObj.getJSONObject("user");
-
-                                                            FacebookFriends ff = new FacebookFriends(userDetails.optString("id"), userDetails.optString("name"), userDetails.optString("emailId"),
-                                                                    userDetails.optString("mobileNo"), userDetails.optString("displayPicture"),
-                                                                    userDetails.optString("facebookId"), false);
-
-                                                            friends.add(ff);
-                                                            ffAdapter.notifyDataSetChanged();
-
-                                                        }
-
-                                                    } catch (JSONException e) {
-                                                        // TODO Auto-generated catch block
-                                                        Toast.makeText(getContext(), "Error Occured [Server's JSON response might be invalid]!", Toast.LENGTH_LONG).show();
-                                                        e.printStackTrace();
-
-                                                    }
-                                                }
-
-                                                //@Override
-                                                public void onFailure(int statusCode, PreferenceActivity.Header[] headers, byte[] errorResponse, Throwable e) {
-                                                    // called when response HTTP status is "4XX" (eg. 401, 403, 404)
-                                                }
-
-                                                //@Override
-                                                public void onRetry(int retryNo) {
-                                                    // called when request is retried
-                                                }
-
-
-                                            });
-
-                                        }
-
-                                        aswipeRefreshLayout.setRefreshing(false);
-
-
-                                    } catch (JSONException e) {
-                                        e.printStackTrace();
-                                    } catch (UnsupportedEncodingException ee) {
-                                        ee.printStackTrace();
-                                    }
-                                }
-                            }
-                    ).executeAsync();
-
-                }
-
-                @Override
-                public void onCancel() {
-                    // code for cancellation
-                }
-
-                @Override
-                public void onError(FacebookException exception) {
-                    //  code to handle error
-                }
-            };
-
-      //  }
-
-
-    @Override
-    public void onViewCreated(View view, Bundle savedInstanceState){
-        super.onViewCreated(view, savedInstanceState);
-
-    }
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {

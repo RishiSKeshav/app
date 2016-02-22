@@ -45,6 +45,7 @@ public class AddMoreMedia extends AppCompatActivity implements AddMoreMediaAdapt
     private List<Integer> pos = new ArrayList<Integer>();
     ArrayList<String> ids= new ArrayList<String>();
     String ID,NAME,SHARED;
+    SessionManager sessionManager;
 
 
 
@@ -57,6 +58,8 @@ public class AddMoreMedia extends AppCompatActivity implements AddMoreMediaAdapt
         Toolbar add_more_toolbar= (Toolbar) findViewById(R.id.add_more_toolbar);
         setSupportActionBar(add_more_toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+        sessionManager = new SessionManager(getApplicationContext());
 
         Intent intent = getIntent();
 
@@ -148,6 +151,8 @@ public class AddMoreMedia extends AppCompatActivity implements AddMoreMediaAdapt
                 JSONObject obj = new JSONObject();
                 obj.put("userId", "1");
                 obj.put("albumId", ID);
+                obj.put("name",NAME);
+                obj.put("userName",sessionManager.getName());
                 obj.put("mediaId",a);
                 obj.put("previousmedia",previous);
                 StringEntity jsonString = new StringEntity(obj.toString());
@@ -166,6 +171,7 @@ public class AddMoreMedia extends AppCompatActivity implements AddMoreMediaAdapt
                     public void onSuccess(String response) {
                         // called when response HTTP status is "200 OK"
                         try {
+                            Log.i("eee",response);
                             JSONObject obj = new JSONObject(response);
 
                             if (obj.getBoolean("error")) {

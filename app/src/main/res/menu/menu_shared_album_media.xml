@@ -5,12 +5,12 @@
     xmlns:yourapp="http://schemas.android.com/apk/res-auto" >
 
     <item android:id="@+id/add_media"
-        android:title=""
+        android:title="Add Media"
         android:icon="@android:drawable/ic_input_add"
         yourapp:showAsAction="ifRoom"/>
 
     <item android:id="@+id/add_user"
-        android:title=""
+        android:title="Add User"
         android:icon="@android:drawable/ic_menu_share"
         yourapp:showAsAction="ifRoom"/>
 

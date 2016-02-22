@@ -162,123 +162,128 @@ public class ToPersonalAlbum extends AppCompatActivity implements ToPersonalAlbu
                 case R.id.done_to_personal_album:
 
                     if(imagedisplay.equals("")){
-                        try {
-                            JSONArray mediapos = new JSONArray(pos);
-                            JSONArray albumids = new JSONArray(albumid);
-                            JSONObject obj = new JSONObject();
-                            obj.put("userId", "1");
-                            obj.put("mediaId", mediapos);
-                            obj.put("albumId", albumids);
-                            obj.put("shared", "no");
-                            StringEntity jsonString = new StringEntity(obj.toString());
+
+                       // if(SHARED.equals("no")) {
+                            try {
+                                JSONArray mediapos = new JSONArray(pos);
+                                JSONArray albumids = new JSONArray(albumid);
+                                JSONObject obj = new JSONObject();
+                                obj.put("userId", "1");
+                                obj.put("mediaId", mediapos);
+                                obj.put("albumId", albumids);
+                                obj.put("shared", "no");
+                                StringEntity jsonString = new StringEntity(obj.toString());
 
 
-                            AsyncHttpClient client = new AsyncHttpClient();
+                                AsyncHttpClient client = new AsyncHttpClient();
 
-                            client.post(getApplicationContext(), "http://52.89.2.186/project/webservice/public/Sharetoalbum", jsonString, "application/json", new AsyncHttpResponseHandler() {
+                                client.post(getApplicationContext(), "http://52.89.2.186/project/webservice/public/Sharetoalbum", jsonString, "application/json", new AsyncHttpResponseHandler() {
 
-                                @Override
-                                public void onStart() {
-                                    // called before request is started
-                                }
+                                    @Override
+                                    public void onStart() {
+                                        // called before request is started
+                                    }
 
-                                // @Override
-                                public void onSuccess(String response) {
-                                    // called when response HTTP status is "200 OK"
-                                    try {
-                                        JSONObject obj = new JSONObject(response);
+                                    // @Override
+                                    public void onSuccess(String response) {
+                                        // called when response HTTP status is "200 OK"
+                                        try {
+                                            JSONObject obj = new JSONObject(response);
 
-                                        if (obj.getBoolean("error")) {
-                                            SnackbarManager.show(
-                                                    com.nispok.snackbar.Snackbar.with(getApplicationContext())
-                                                            .text("Something went wrong")
-                                                            .duration(com.nispok.snackbar.Snackbar.SnackbarDuration.LENGTH_SHORT)
-                                            );
-                                        } else {
-                                            SnackbarManager.show(
-                                                    com.nispok.snackbar.Snackbar.with(getApplicationContext())
-                                                            .text(obj.getString("msg"))
-                                                            .duration(Snackbar.SnackbarDuration.LENGTH_SHORT)
-                                                            .eventListener(new EventListener() {
-                                                                @Override
-                                                                public void onShow(com.nispok.snackbar.Snackbar snackbar) {
+                                            if (obj.getBoolean("error")) {
+                                                SnackbarManager.show(
+                                                        com.nispok.snackbar.Snackbar.with(getApplicationContext())
+                                                                .text("Something went wrong")
+                                                                .duration(com.nispok.snackbar.Snackbar.SnackbarDuration.LENGTH_SHORT)
+                                                );
+                                            } else {
+                                                SnackbarManager.show(
+                                                        com.nispok.snackbar.Snackbar.with(getApplicationContext())
+                                                                .text(obj.getString("msg"))
+                                                                .duration(Snackbar.SnackbarDuration.LENGTH_SHORT)
+                                                                .eventListener(new EventListener() {
+                                                                    @Override
+                                                                    public void onShow(com.nispok.snackbar.Snackbar snackbar) {
 
-                                                                }
-
-                                                                @Override
-                                                                public void onShowByReplace(com.nispok.snackbar.Snackbar snackbar) {
-
-                                                                }
-
-                                                                @Override
-                                                                public void onShown(com.nispok.snackbar.Snackbar snackbar) {
-
-                                                                }
-
-                                                                @Override
-                                                                public void onDismiss(com.nispok.snackbar.Snackbar snackbar) {
-
-                                                                    if (SHARED.equals("no")) {
-                                                                        Intent i = new Intent(ToPersonalAlbum.this, AlbumMediaDisplay.class);
-                                                                        i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                                                                        i.putExtra("Id", ID);
-                                                                        i.putExtra("Name", NAME);
-                                                                        i.putExtra("shared", SHARED);
-                                                                        ToPersonalAlbum.this.startActivity(i);
-                                                                    } else {
-                                                                        Intent i = new Intent(ToPersonalAlbum.this, SharedAlbumMediaDisplay.class);
-                                                                        i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                                                                        i.putExtra("Id", ID);
-                                                                        i.putExtra("Name", NAME);
-                                                                        i.putExtra("shared", SHARED);
-                                                                        ToPersonalAlbum.this.startActivity(i);
                                                                     }
 
-                                                                }
+                                                                    @Override
+                                                                    public void onShowByReplace(com.nispok.snackbar.Snackbar snackbar) {
 
-                                                                @Override
-                                                                public void onDismissByReplace(com.nispok.snackbar.Snackbar snackbar) {
+                                                                    }
 
-                                                                }
+                                                                    @Override
+                                                                    public void onShown(com.nispok.snackbar.Snackbar snackbar) {
 
-                                                                @Override
-                                                                public void onDismissed(com.nispok.snackbar.Snackbar snackbar) {
+                                                                    }
 
-                                                                }
-                                                            })
-                                                    , ToPersonalAlbum.this);
+                                                                    @Override
+                                                                    public void onDismiss(com.nispok.snackbar.Snackbar snackbar) {
+
+                                                                        if (SHARED.equals("no")) {
+                                                                            Intent i = new Intent(ToPersonalAlbum.this, AlbumMediaDisplay.class);
+                                                                            i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                                                                            i.putExtra("Id", ID);
+                                                                            i.putExtra("Name", NAME);
+                                                                            i.putExtra("shared", SHARED);
+                                                                            ToPersonalAlbum.this.startActivity(i);
+                                                                        } else {
+                                                                            Intent i = new Intent(ToPersonalAlbum.this, SharedAlbumMediaDisplay.class);
+                                                                            i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                                                                            i.putExtra("Id", ID);
+                                                                            i.putExtra("Name", NAME);
+                                                                            i.putExtra("shared", SHARED);
+                                                                            ToPersonalAlbum.this.startActivity(i);
+                                                                        }
+
+                                                                    }
+
+                                                                    @Override
+                                                                    public void onDismissByReplace(com.nispok.snackbar.Snackbar snackbar) {
+
+                                                                    }
+
+                                                                    @Override
+                                                                    public void onDismissed(com.nispok.snackbar.Snackbar snackbar) {
+
+                                                                    }
+                                                                })
+                                                        , ToPersonalAlbum.this);
+                                            }
+
+                                        } catch (JSONException e) {
+                                            // TODO Auto-generated catch block
+                                            Toast.makeText(getApplicationContext(), "Error Occured [Server's JSON response might be invalid]!", Toast.LENGTH_LONG).show();
+                                            e.printStackTrace();
+
                                         }
-
-                                    } catch (JSONException e) {
-                                        // TODO Auto-generated catch block
-                                        Toast.makeText(getApplicationContext(), "Error Occured [Server's JSON response might be invalid]!", Toast.LENGTH_LONG).show();
-                                        e.printStackTrace();
-
                                     }
-                                }
 
-                                //@Override
-                                public void onFailure(int statusCode, PreferenceActivity.Header[] headers, byte[] errorResponse, Throwable e) {
-                                    // called when response HTTP status is "4XX" (eg. 401, 403, 404)
-                                }
+                                    //@Override
+                                    public void onFailure(int statusCode, PreferenceActivity.Header[] headers, byte[] errorResponse, Throwable e) {
+                                        // called when response HTTP status is "4XX" (eg. 401, 403, 404)
+                                    }
 
-                                //@Override
-                                public void onRetry(int retryNo) {
-                                    // called when request is retried
-                                }
-
-
-                            });
-
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        } catch (UnsupportedEncodingException ee) {
-                            ee.printStackTrace();
-                        }
+                                    //@Override
+                                    public void onRetry(int retryNo) {
+                                        // called when request is retried
+                                    }
 
 
-                        mode.finish();
-                        return true;
+                                });
+
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            } catch (UnsupportedEncodingException ee) {
+                                ee.printStackTrace();
+                            }
+
+
+                            mode.finish();
+                            return true;
+//                        }else{
+//
+//                        }
                     }else{
                         try {
                             JSONArray albumids = new JSONArray(albumid);

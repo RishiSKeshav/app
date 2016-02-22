@@ -24,17 +24,20 @@
             />
     </android.support.v7.widget.Toolbar>
 
+    <HorizontalScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
 <LinearLayout
     android:id="@+id/shared_user_image"
-    android:layout_width="match_parent"
+    android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:layout_margin="10dp"
     android:padding="5dp"
     android:orientation="horizontal">
 
-
-
 </LinearLayout>
+
+    </HorizontalScrollView>
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/shared_album_media_recycler_view"

@@ -7,6 +7,10 @@ import android.content.SharedPreferences.Editor;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.facebook.AccessToken;
+import com.facebook.FacebookSdk;
+import com.facebook.login.LoginManager;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -68,18 +72,21 @@ public class SessionManager {
     }
 
     public void changeEmailId(String emailId){
-        editor.putString("emailId",emailId);
+        editor.putString("emailId", emailId);
         editor.commit();
     }
 
     public void changedisplayPicture(String displayPicture){
-        editor.putString("displayPicture",displayPicture);
+        editor.putString("displayPicture", displayPicture);
         editor.commit();
     }
 
     public void logoutUser(){
-        editor.putBoolean("login_status_value",false);
+        editor.putBoolean("login_status_value", false);
         editor.commit();
+
+       // LoginManager.getInstance().logOut();
+//
     }
 
     public String getId()

@@ -472,7 +472,8 @@ public class SharedAlbumMediaDisplay extends AppCompatActivity {
                                     JSONObject usermediadetails = usermediaarray.optJSONObject(i);
 
                                     CircleImageView image = new CircleImageView(getApplicationContext());
-                                    image.setLayoutParams(new android.view.ViewGroup.LayoutParams(130,130));
+                                    image.setPadding(15,15,15,15);
+                                    image.setLayoutParams(new android.view.ViewGroup.LayoutParams(70,70));
                                     image.setMaxHeight(40);
                                     image.setMaxWidth(40);
                                     Picasso.with(getApplicationContext()).load(usermediadetails.optString("displayPicture"))

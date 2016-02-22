@@ -7,6 +7,7 @@ import org.json.JSONObject;
 import org.apache.http.entity.StringEntity;
 import android.app.Activity;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
@@ -16,6 +17,7 @@ import android.preference.PreferenceActivity;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.ActionBarActivity;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -82,13 +84,14 @@ public class LoginActivity extends ActionBarActivity {
         loginButton.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
             @Override
             public void onSuccess(LoginResult loginResult) {
+
                 GraphRequest request = GraphRequest.newMeRequest(loginResult.getAccessToken(), new GraphRequest.GraphJSONObjectCallback() {
                             @Override
                             public void onCompleted(
                                     JSONObject object,
                                     GraphResponse response) {
 
-                                Log.e("response: ", response + "");
+                                Log.e("responsefrom login: ", response + "");
                                 try {
 //                                    user.email = object.getString("email").toString();
 
@@ -264,6 +267,9 @@ public class LoginActivity extends ActionBarActivity {
 
     public void  loginUser(View view) throws JSONException, UnsupportedEncodingException {
 
+        InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
+        imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+
         String email = emailET.getText().toString();
         String password = passwordET.getText().toString();
 
@@ -315,6 +321,8 @@ public class LoginActivity extends ActionBarActivity {
                     JSONObject obj = new JSONObject(response);
 
                     if(obj.getBoolean("error")){
+
+                        progressDialog.hide();
 
                         SnackbarManager.show(
                                 com.nispok.snackbar.Snackbar.with(LoginActivity.this)
