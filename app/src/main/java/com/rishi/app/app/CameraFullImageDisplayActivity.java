@@ -72,10 +72,7 @@ public class CameraFullImageDisplayActivity extends AppCompatActivity {
             case R.id.camera_upload:
                 Log.i("eee","reached");
                 return true;
-
         }
-
         return(super.onOptionsItemSelected(item));
     }
-
 }
