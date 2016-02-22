@@ -50,6 +50,7 @@ public class CameraActivity extends Activity {
 
     private CameraImageAdapter adapter;
     private ArrayList<String> photoFileList;
+    private ArrayList<Image> photoImageList;
     ImageView imgPreview,camera_cancel;
 
     @Override
@@ -61,6 +62,7 @@ public class CameraActivity extends Activity {
 
         layout = (RelativeLayout) findViewById(R.id.layout);
         photoFileList = new ArrayList<String>();
+        photoImageList = new ArrayList<Image>();
 
         imgPreview = (ImageView) findViewById(R.id.imgPreview);
 
@@ -68,6 +70,7 @@ public class CameraActivity extends Activity {
             public void onClick(View v) {
                 Intent intent = new Intent(getApplicationContext(), CameraFullImageDisplayActivity.class);
                 intent.putStringArrayListExtra("photoFileList",photoFileList);
+                intent.putParcelableArrayListExtra("photoImageList", photoImageList);
                 startActivity(intent);
             }
         });
@@ -249,7 +252,8 @@ public class CameraActivity extends Activity {
                 thePicture.compress(Bitmap.CompressFormat.JPEG, 100, bos);
                 pictureBytes = bos.toByteArray();
 
-                File myPath = getOutputMediaFile();
+                String fileName = getFileName();
+                File myPath = getOutputMediaFile(fileName);
 
                 FileOutputStream outStream = null;
                 try {
@@ -259,6 +263,12 @@ public class CameraActivity extends Activity {
                     outStream.write(pictureBytes);
                     outStream.close();
 
+                    Image img = new Image();
+                    img.setName(fileName);
+                    img.setPath(myPath.toString());
+                    img.setLink("localPath");
+
+                    photoImageList.add(img);
                     photoFileList.add(myPath.toString());
 
                     Log.d("Log", "onPictureTaken - wrote bytes: " + data.length);
@@ -311,7 +321,7 @@ public class CameraActivity extends Activity {
     };
 
     //make picture and save to a folder
-    private  File getOutputMediaFile() {
+    private  File getOutputMediaFile(String fileName) {
         //make a new file directory inside the "sdcard" folder
 
         File mediaFile=null;
@@ -321,39 +331,22 @@ public class CameraActivity extends Activity {
             success = folder.mkdir();
         }
         if (success) {
-
-            String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss",
-                    Locale.getDefault()).format(new Date());
-
                 mediaFile = new File(folder.getPath() + File.separator
-                        + "IMG_" + timeStamp + ".jpg");
+                        + fileName);
             } else {
                 Toast.makeText(getApplicationContext(), "Picture cannot be Saved", Toast.LENGTH_LONG).show();
                 mediaFile=null;
             }
 
         return mediaFile;
+    }
 
+    private String getFileName(){
 
-    /*File mediaStorageDir = new File("/sdcard/", "JCG Camera");
+        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss",
+                Locale.getDefault()).format(new Date());
 
-        //if this "JCGCamera folder does not exist
-        if (!mediaStorageDir.exists()) {
-            //if you cannot make this folder return
-            if (!mediaStorageDir.mkdirs()) {
-                return null;
-            }
-        }
-
-        //take the current timeStamp
-        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
-        File mediaFile;
-        //and make a media file:
-        mediaFile = new File(mediaStorageDir.getPath() + File.separator + "IMG_" + timeStamp + ".jpg");
-
-        return mediaFile;
-    */
-
+        return "IMG_" + timeStamp + ".jpg";
     }
 
     private void releaseCamera() {
