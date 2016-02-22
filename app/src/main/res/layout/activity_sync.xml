@@ -62,8 +62,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textSize="20dp"
-            android:text="When to back up"/>
-
+            android:text="When to back up"
+            android:visibility="gone"/>
 
         <CheckBox
             android:id="@+id/chkPhoto"
@@ -72,16 +72,7 @@
             android:layout_alignTop="@+id/txtView"
             android:layout_marginTop="40dp"
             android:text="Photo back up using Cellular Data"
+            android:visibility="gone"
             />
-
-        <CheckBox
-            android:id="@+id/chkVideo"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignTop="@+id/chkPhoto"
-            android:layout_marginTop="40dp"
-            android:text="Video back up using Cellular Data"
-            />
-
     </RelativeLayout>
 </RelativeLayout>

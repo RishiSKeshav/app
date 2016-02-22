@@ -9,6 +9,8 @@ import android.content.IntentFilter;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
@@ -31,6 +33,8 @@ import java.util.Iterator;
 
 public class Sync extends Activity {
 
+    SessionManager sessionManager;
+
     private ArrayList<com.rishi.app.app.Image> imageList;
     private ArrayList<com.rishi.app.app.Image> syncedImageList;
     private ArrayList<com.rishi.app.app.Image> unSyncedImageList;
@@ -44,9 +48,9 @@ public class Sync extends Activity {
 
     Intent serviceIntent;
 
+    TextView txtview;
     Switch switchButton;
     CheckBox photoChk;
-    CheckBox videoChk;
     TextView uploadLeftTxt;
     ImageView imgView;
 
@@ -54,6 +58,8 @@ public class Sync extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sync);
+
+        sessionManager = new SessionManager(getApplicationContext());
 
         sync_sub_layout =(RelativeLayout) findViewById(R.id.sync_sub_layout2);
 
@@ -70,14 +76,14 @@ public class Sync extends Activity {
         IntentFilter finalFilter = new IntentFilter("IMAGE_ACTION");
         registerReceiver(finalCountReceiver, finalFilter);
 
-        Boolean synced = false;
-
         switchButton = (Switch) findViewById(R.id.switchButton);
         photoChk =(CheckBox) findViewById(R.id.chkPhoto);
-        videoChk =(CheckBox)findViewById(R.id.chkVideo);
+        txtview =(TextView) findViewById(R.id.txtView);
 
-        if(synced) {
+        if(sessionManager.getSyncStatus()) {
             switchButton.setChecked(true);
+
+            setPhotoVideoStatusVisibile();
 
             initializeImageLists();
 
@@ -87,30 +93,20 @@ public class Sync extends Activity {
         }
         else{
             switchButton.setChecked(false);
+            imgView.setVisibility(View.INVISIBLE);
+            pBar.setVisibility(View.INVISIBLE);
+
+            setPhotoVideoStatusInvisibile();
         }
-
-        if(switchButton.isChecked())
-        {
-
-            videoChk.setVisibility(View.VISIBLE);
-            photoChk.setVisibility(View.VISIBLE);
-            sync_sub_layout.addView(photoChk);
-            sync_sub_layout.addView(videoChk);
-
-        }
-        else{
-            videoChk.setVisibility(View.INVISIBLE);
-            photoChk.setVisibility(View.INVISIBLE);
-            sync_sub_layout.addView(photoChk);
-            sync_sub_layout.addView(videoChk);
-
-        }
-
 
         switchButton.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean bChecked) {
                 if (bChecked) {
+
+                    setPhotoVideoStatusVisibile();
+
+                    sessionManager.changeSyncStatus(bChecked);
 
                     initializeImageLists();
 
@@ -123,13 +119,48 @@ public class Sync extends Activity {
 
                     Log.d("unchecked", " unchecked reached");
 
-                    serviceIntent = new Intent(Sync.this, ImageUploadService.class);
+                    sessionManager.changeSyncStatus(bChecked);
 
+                    setPhotoVideoStatusInvisibile();
+                    imgView.setVisibility(View.INVISIBLE);
+                    pBar.setVisibility(View.INVISIBLE);
+
+                    serviceIntent = new Intent(Sync.this, ImageUploadService.class);
                     stopService(serviceIntent);
 
                 }
             }
         });
+
+        photoChk.setOnCheckedChangeListener((new CompoundButton.OnCheckedChangeListener() {
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+
+                if(isChecked){
+                    sessionManager.changePhotoSyncStatus(true);
+                }
+                else{
+                    sessionManager.changePhotoSyncStatus(false);
+                }
+            }
+        }));
+    }
+
+    private void setPhotoVideoStatusInvisibile(){
+
+        photoChk.setVisibility(View.INVISIBLE);
+        txtview.setVisibility(View.INVISIBLE);
+
+        photoChk.setChecked(sessionManager.getPhotoSyncStatus());
+
+    }
+
+    private void setPhotoVideoStatusVisibile(){
+
+        photoChk.setVisibility(View.VISIBLE);
+        txtview.setVisibility(View.VISIBLE);
+
+        photoChk.setChecked(sessionManager.getPhotoSyncStatus());
+
     }
 
         private void initializeImageLists() {
@@ -275,5 +306,31 @@ public class Sync extends Activity {
 
         unregisterReceiver(myReceiver);
         unregisterReceiver(finalCountReceiver);
+    }
+
+    public class NetworkChangeReceiver extends BroadcastReceiver {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+
+            ConnectivityManager cm =
+                    (ConnectivityManager)context.getSystemService(Context.CONNECTIVITY_SERVICE);
+
+            NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
+
+            boolean isMobileData = activeNetwork.getType() == ConnectivityManager.TYPE_MOBILE;
+            boolean isWIFI = activeNetwork.getType() == ConnectivityManager.TYPE_WIFI;
+
+            if(isMobileData && sessionManager.getPhotoSyncStatus()==false ) {
+                serviceIntent = new Intent(Sync.this, ImageUploadService.class);
+                stopService(serviceIntent);
+            }
+
+            if(isWIFI){
+                initializeImageLists();
+                serviceIntent = new Intent(Sync.this, ImageUploadService.class);
+                serviceIntent.putParcelableArrayListExtra("unSyncedImageList", unSyncedImageList);
+                startService(serviceIntent);
+            }
+        }
     }
 }

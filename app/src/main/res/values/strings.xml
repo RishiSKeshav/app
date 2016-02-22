@@ -86,4 +86,5 @@
 
     <string name="pref_title_vibrate">Vibrate</string>
     <string name="title_activity_sample_sync">SampleSync</string>
+    <string name="title_activity_sync_media_display">SyncMediaDisplayActivity</string>
 </resources>

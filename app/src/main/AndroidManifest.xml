@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.rishi.app.app">
+    package="com.rishi.app.app" >
 
     <uses-permission android:name="android.permission.WAKE_LOCK" />
     <uses-permission android:name="com.google.android.c2dm.permission.RECEIVE" />
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
-    <uses-permission android:name="android.permission.READ_PHONE_STATE"/>
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
 
     <permission
         android:name="com.rishi.app.app.permission.C2D_MESSAGE"
@@ -28,11 +28,9 @@
     <application
         android:name=".MyApplication"
         android:allowBackup="false"
-        android:supportsRtl="true"
         android:largeHeap="true"
-
-        android:theme="@style/AppTheme">
-
+        android:supportsRtl="true"
+        android:theme="@style/AppTheme" >
         <meta-data
             android:name="com.facebook.sdk.ApplicationId"
             android:value="@string/facebook_app_id" />
@@ -42,77 +40,63 @@
             android:configChanges="keyboard|keyboardHidden|screenLayout|screenSize|orientation"
             android:label="@string/app_name"
             android:theme="@android:style/Theme.Translucent.NoTitleBar" />
-
-        <activity android:name=".LaunchScreen">
-
+        <activity android:name=".LaunchScreen" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-
-
         </activity>
         <activity
             android:name=".LoginActivity"
-            android:label=""
-            >
-
+            android:label="" >
         </activity>
         <activity
             android:name=".HomeActivity"
             android:label=""
-            android:uiOptions="splitActionBarWhenNarrow"
-            >
-            <meta-data android:name="android.support.UI_OPTIONS"
+            android:uiOptions="splitActionBarWhenNarrow" >
+            <meta-data
+                android:name="android.support.UI_OPTIONS"
                 android:value="splitActionBarWhenNarrow" />
-
         </activity>
-
-
-
         <activity
             android:name=".RegisterActivity"
             android:label="@string/app_name" />
         <activity android:name=".CameraActivity" />
-        <activity android:name=".AlbumMediaDisplay"
-            android:parentActivityName=".HomeActivity"
-            />
+        <activity
+            android:name=".AlbumMediaDisplay"
+            android:parentActivityName=".HomeActivity" />
         <activity android:name=".FullScreenMediaDisplay" />
-        <activity android:name=".NewAlbum"
-            android:parentActivityName=".HomeActivity"
-            />
+        <activity
+            android:name=".NewAlbum"
+            android:parentActivityName=".HomeActivity" />
         <activity android:name=".AddMoreMedia" />
-        <activity android:name=".AlbumMediaSelect"
-           />
+        <activity android:name=".AlbumMediaSelect" />
         <activity android:name=".ToPersonalAlbum" />
         <activity android:name=".ToSharedAlbum" />
-        <activity android:name=".SharedAlbumMediaDisplay"
-            android:parentActivityName=".HomeActivity"
-          />
+        <activity
+            android:name=".SharedAlbumMediaDisplay"
+            android:parentActivityName=".HomeActivity" />
         <activity android:name=".SharedAlbumMediaSelect" />
         <activity android:name=".Userbase" />
-        <activity android:name=".HomeSettings"
-            android:parentActivityName=".HomeActivity"
-           />
-        <activity android:name=".EditProfile"
-            android:parentActivityName=".HomeSettings"
-            />
-        <activity android:name=".EditEmail"
-            android:parentActivityName=".HomeSettings"
-         />
-        <activity android:name=".EditPassword"
-            android:parentActivityName=".HomeSettings"
-            />
+        <activity
+            android:name=".HomeSettings"
+            android:parentActivityName=".HomeActivity" />
+        <activity
+            android:name=".EditProfile"
+            android:parentActivityName=".HomeSettings" />
+        <activity
+            android:name=".EditEmail"
+            android:parentActivityName=".HomeSettings" />
+        <activity
+            android:name=".EditPassword"
+            android:parentActivityName=".HomeSettings" />
         <activity
             android:name=".CameraFullImageDisplayActivity"
             android:label="@string/title_activity_camera_full_image_display" />
-
         <activity
             android:name=".SharedMediaDisplay"
-            android:parentActivityName=".HomeActivity"
-             />
-
+            android:parentActivityName=".HomeActivity" />
         <activity
             android:name=".SampleSync"
             android:label="@string/title_activity_sample_sync"
@@ -128,35 +112,20 @@
             </intent-filter>
         </receiver>
 
-
         <activity android:name=".Sync" >
-
         </activity>
-
         <activity android:name=".Notification" >
-
         </activity>
-
         <activity android:name=".EmailAuthentication" >
-
         </activity>
-
         <activity android:name=".RegistrationDetails" >
-
         </activity>
-
-
-
-
-
-        <activity
-            android:name=".UploadDP"
-             />
+        <activity android:name=".UploadDP" />
 
         <receiver
             android:name="com.google.android.gms.gcm.GcmReceiver"
             android:exported="true"
-            android:permission="com.google.android.c2dm.permission.SEND">
+            android:permission="com.google.android.c2dm.permission.SEND" >
             <intent-filter>
                 <action android:name="com.google.android.c2dm.intent.RECEIVE" />
 
@@ -164,26 +133,38 @@
             </intent-filter>
         </receiver>
 
+        <!--
+        <receiver android:name=".Sync$NetworkChangeReceiver" >
+            <intent-filter>
+                <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
+            </intent-filter>
+        </receiver>
+        -->
 
         <service
             android:name=".MyGcmPushReceiver"
-            android:exported="false">
+            android:exported="false" >
             <intent-filter>
                 <action android:name="com.google.android.c2dm.intent.RECEIVE" />
             </intent-filter>
         </service>
         <service
             android:name=".GcmIntentService"
-            android:exported="false">
+            android:exported="false" >
             <intent-filter>
                 <action android:name="com.google.android.gms.iid.InstanceID" />
             </intent-filter>
         </service>
-
-
-        <service android:name=".ImageUploadService">
-
+        <service android:name=".ImageUploadService" >
         </service>
+
+        <activity
+            android:name=".SyncMediaDisplayActivity"
+            android:label="@string/title_activity_sync_media_display"
+            android:theme="@style/AppTheme" >
+        </activity>
+        <activity android:name=".SyncMediaFullScreenActivity" >
+        </activity>
     </application>
 
 </manifest>

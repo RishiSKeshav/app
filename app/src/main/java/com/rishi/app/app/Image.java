@@ -13,6 +13,7 @@ public class Image implements Parcelable {
     int id;
     String name;
     String path;
+    String link;
 
     public Image(Parcel in) {
         readFromParcel(in);
@@ -26,6 +27,7 @@ public class Image implements Parcelable {
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeString(name);
         dest.writeString(path);
+        dest.writeString(link);
         dest.writeInt(id);
 
     }
@@ -37,6 +39,7 @@ public class Image implements Parcelable {
         // written to the parcel
         name = in.readString();
         path = in.readString();
+        link=in.readString();
         id = in.readInt();
 
     }
@@ -81,5 +84,13 @@ public class Image implements Parcelable {
 
     public void setId(int id) {
         this.id = id;
+    }
+
+    public String getLink() {
+        return link;
+    }
+
+    public void setLink(String link) {
+        this.link = link;
     }
 }

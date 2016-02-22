@@ -201,7 +201,7 @@
             <android.support.v4.view.ViewPager
                 android:id="@+id/viewpager"
                 android:layout_width="match_parent"
-                android:layout_height="338dp"
+                android:layout_height="330dp"
                 android:background="@android:color/white" />
 
 
@@ -239,7 +239,7 @@
 
 
 
-    <TabHost
+    <!--<TabHost
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
 
@@ -278,7 +278,7 @@
                     android:layout_width="30dp"
                     android:layout_height="30dp"
                     android:scaleType="fitXY"
-                    android:layout_marginLeft="25dp"
+                    android:layout_marginLeft="15dp"
                     android:src="@android:drawable/ic_menu_help"/>
 
                 <ImageView
@@ -286,7 +286,7 @@
                     android:layout_width="30dp"
                     android:layout_height="30dp"
                     android:scaleType="fitXY"
-                    android:layout_marginLeft="65dp"
+                    android:layout_marginLeft="35dp"
                     android:src="@android:drawable/ic_menu_camera"/>
 
                 <ImageView
@@ -294,7 +294,7 @@
                     android:layout_width="30dp"
                     android:layout_height="30dp"
                     android:scaleType="fitXY"
-                    android:layout_marginLeft="80dp"
+                    android:layout_marginLeft="35dp"
                     android:src="@android:drawable/ic_menu_sort_by_size"/>
 
                 <ImageView
@@ -302,8 +302,17 @@
                     android:layout_width="30dp"
                     android:layout_height="30dp"
                     android:scaleType="fitXY"
-                    android:layout_marginLeft="80dp"
+                    android:layout_marginLeft="35dp"
                     android:src="@android:drawable/ic_popup_sync"/>
+
+                <ImageView
+                    android:id="@+id/nav5"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:scaleType="fitXY"
+                    android:layout_marginLeft="35dp"
+                    android:src="@android:drawable/ic_popup_sync"/>
+
             </LinearLayout>
 
 
@@ -312,12 +321,55 @@
 
         </RelativeLayout>
 
-    </TabHost>
+    </TabHost>-->
 
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom">
 
+        <ImageView
+            android:id="@+id/nav1"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:scaleType="fitXY"
+            android:layout_marginLeft="15dp"
+            android:src="@android:drawable/ic_menu_help"/>
 
+        <ImageView
+            android:id="@+id/nav2"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:scaleType="fitXY"
+            android:layout_marginLeft="35dp"
+            android:src="@android:drawable/ic_menu_camera"
+            android:layout_toRightOf="@+id/nav1"/>
 
+        <ImageView
+            android:id="@+id/nav3"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:scaleType="fitXY"
+            android:layout_marginLeft="35dp"
+            android:layout_toRightOf="@+id/nav2"
+            android:src="@android:drawable/ic_menu_sort_by_size"/>
 
+        <ImageView
+            android:id="@+id/nav4"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:scaleType="fitXY"
+            android:layout_marginLeft="35dp"
+            android:layout_toRightOf="@+id/nav3"
+            android:src="@android:drawable/ic_popup_sync"/>
 
-
+        <ImageView
+            android:id="@+id/nav5"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:scaleType="fitXY"
+            android:layout_marginLeft="35dp"
+            android:layout_toRightOf="@+id/nav4"
+            android:src="@android:drawable/btn_star_big_on"/>
+    </RelativeLayout>
 </LinearLayout>

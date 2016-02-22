@@ -187,6 +187,15 @@ public class HomeActivity extends AppCompatActivity {
             }
         });
 
+        ImageView nav5 = (ImageView) findViewById(R.id.nav5);
+        nav5.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(HomeActivity.this,SyncMediaDisplayActivity.class);
+                HomeActivity.this.startActivity(i);
+            }
+        });
+
         CircleImageView imageView = (CircleImageView) findViewById(R.id.image);
 
         Picasso.with(getApplicationContext()).load(sessionManager.getDisplayPicture())
