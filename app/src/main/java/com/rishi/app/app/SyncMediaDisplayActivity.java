@@ -35,12 +35,15 @@ public class SyncMediaDisplayActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sync_media_display);
 
+        Toolbar toolbar= (Toolbar) findViewById(R.id.sync_images_toolbar);
+        setSupportActionBar(toolbar);
+
         initializeImageLists();
 
         recyclerView = (RecyclerView)findViewById(R.id.sync_media_recycler_view);
         syncAdapter = new SyncMediaAdapter(syncMediaDisplayList);
         recyclerView.setHasFixedSize(true);
-        RecyclerView.LayoutManager mLayoutManager = new GridLayoutManager(this,3);
+        RecyclerView.LayoutManager mLayoutManager = new GridLayoutManager(this,4);
         recyclerView.setLayoutManager(mLayoutManager);
         recyclerView.setAdapter(syncAdapter);
 

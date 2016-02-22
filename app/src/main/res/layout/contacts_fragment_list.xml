@@ -3,15 +3,14 @@
     android:layout_height="?android:attr/listPreferredItemHeight"
     android:padding="6dip" >
 
-    <ImageView
+    <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/contacts_displayPicture"
-        android:layout_width="wrap_content"
-        android:layout_height="match_parent"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentTop="true"
-        android:layout_marginRight="6dip"
-        android:src="@drawable/ic_alarm_on_black_48dp" />
-
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_alignParentLeft="true"
+        android:layout_marginTop="5dp"
+        android:src="@drawable/ic_alarm_on_black_48dp"
+        />
 
     <TextView
         android:id="@+id/contacts_name"
@@ -23,6 +22,23 @@
         android:gravity="center_vertical"
         android:text="Example application"
         android:textSize="16sp" />
+
+    <View
+        android:id="@+id/contacts_selected_overlay"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#8FFF"
+        android:visibility="invisible">
+    </View>
+
+    <ImageView
+        android:id="@+id/contacts_image_check"
+        android:orientation="vertical"
+        android:visibility="invisible"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:src="@android:drawable/ic_input_add"/>
 
 
 

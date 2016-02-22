@@ -33,9 +33,12 @@ import android.provider.MediaStore;
 import com.github.clans.fab.FloatingActionButton;
 import com.github.clans.fab.FloatingActionMenu;
 
+import android.support.design.widget.NavigationView;
 import android.support.design.widget.Snackbar;
 import android.support.design.widget.TabLayout;
+import android.support.v4.view.GravityCompat;
 import android.support.v4.view.ViewPager;
+import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.AppCompatActivity;
 
@@ -110,6 +113,9 @@ public class HomeActivity extends AppCompatActivity {
     private Uri mImageCaptureUri;
     private Bitmap bitmap;
     String encodedString;
+    private DrawerLayout mDrawer;
+    private NavigationView nvDrawer;
+
 
     private FloatingActionButton album;
     private FloatingActionButton share_album;
@@ -120,12 +126,28 @@ public class HomeActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.home);
+        sessionManager = new SessionManager(getApplicationContext());
 
         Toolbar home_toolbar= (Toolbar) findViewById(R.id.home_toolbar);
         setSupportActionBar(home_toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        mDrawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        nvDrawer = (NavigationView) findViewById(R.id.nvView);
+        setupDrawerContent(nvDrawer);
+
+        View hView =  nvDrawer.inflateHeaderView(R.layout.nav_header);
+        TextView tv= (TextView) hView.findViewById(R.id.nav_name);
+        tv.setText(sessionManager.getName());
+
+        CircleImageView cv = (CircleImageView) hView.findViewById(R.id.nav_circleView);
+        Picasso.with(getApplicationContext()).load(sessionManager.getDisplayPicture())
+                .placeholder(R.mipmap.ic_launcher).error(R.mipmap.ic_launcher)
+                .into(cv);
 
 
-        sessionManager = new SessionManager(getApplicationContext());
+
+
+
         name = (TextView) findViewById(R.id.name);
         name.setText(sessionManager.getName());
 
@@ -150,51 +172,6 @@ public class HomeActivity extends AppCompatActivity {
             }
         });
 
-        ImageView nav1 = (ImageView) findViewById(R.id.nav1);
-        nav1.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-            }
-        });
-
-        ImageView nav2 = (ImageView) findViewById(R.id.nav2);
-        nav2.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Log.i("qqqgg","reach");
-               Intent i = new Intent(HomeActivity.this,CameraActivity.class);
-                HomeActivity.this.startActivity(i);
-            }
-        });
-
-        ImageView nav3 = (ImageView) findViewById(R.id.nav3);
-        nav3.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent i = new Intent(HomeActivity.this,Notification.class);
-                HomeActivity.this.startActivity(i);
-
-            }
-        });
-
-        ImageView nav4 = (ImageView) findViewById(R.id.nav4);
-        nav4.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent i = new Intent(HomeActivity.this,Sync.class);
-                HomeActivity.this.startActivity(i);
-            }
-        });
-
-        ImageView nav5 = (ImageView) findViewById(R.id.nav5);
-        nav5.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent i = new Intent(HomeActivity.this,SyncMediaDisplayActivity.class);
-                HomeActivity.this.startActivity(i);
-            }
-        });
 
         CircleImageView imageView = (CircleImageView) findViewById(R.id.image);
 
@@ -275,6 +252,46 @@ public class HomeActivity extends AppCompatActivity {
         });
 
     }
+
+    private void setupDrawerContent(NavigationView navigationView) {
+        navigationView.setNavigationItemSelectedListener(
+                new NavigationView.OnNavigationItemSelectedListener() {
+                    @Override
+                    public boolean onNavigationItemSelected(MenuItem menuItem) {
+                        selectDrawerItem(menuItem);
+                        return true;
+                    }
+                });
+    }
+
+    public void selectDrawerItem(MenuItem menuItem) {
+        // Create a new fragment and specify the planet to show based on
+        // position
+        switch(menuItem.getItemId()) {
+            case R.id.nav_first_fragment:
+                Intent i = new Intent(HomeActivity.this,Sync.class);
+                startActivity(i);
+
+                break;
+            case R.id.nav_second_fragment:
+                Intent i2 = new Intent(HomeActivity.this,SyncMediaDisplayActivity.class);
+                startActivity(i2);
+
+                break;
+            case R.id.nav_third_fragment:
+
+                break;
+            default:
+
+        }
+
+
+        // Highlight the selected item, update the title, and close the drawer
+        menuItem.setChecked(true);
+        setTitle(menuItem.getTitle());
+        mDrawer.closeDrawers();
+    }
+
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -394,13 +411,13 @@ public class HomeActivity extends AppCompatActivity {
                     @Override
                     public void onSuccess(String response) {
                         try {
-                            Log.i("response",response);
+                            Log.i("response", response);
                             JSONObject obj = new JSONObject(response);
                             if (obj.getBoolean("error")) {
                                 Toast.makeText(getApplicationContext(), obj.getString("msg"), Toast.LENGTH_LONG).show();
                             } else {
                                 sessionManager.changedisplayPicture(obj.getString("displayPicture"));
-                                Intent i = new Intent(HomeActivity.this,HomeActivity.class);
+                                Intent i = new Intent(HomeActivity.this, HomeActivity.class);
                                 HomeActivity.this.startActivity(i);
                             }
                         } catch (JSONException e) {
@@ -446,7 +463,7 @@ public class HomeActivity extends AppCompatActivity {
     public boolean onCreateOptionsMenu(Menu menu){
 
        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.menu_home, menu);
+            inflater.inflate(R.menu.menu_home, menu);
 
 
         return true;
@@ -457,6 +474,11 @@ public class HomeActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
 
         int id = item.getItemId();
+
+        if(id == android.R.id.home){
+            mDrawer.openDrawer(GravityCompat.START);
+        }
+
         if (id == R.id.home_settings) {
 
             Intent i = new Intent(this,HomeSettings.class);
@@ -464,6 +486,11 @@ public class HomeActivity extends AppCompatActivity {
 
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    protected void onPostCreate(Bundle savedInstanceState) {
+        super.onPostCreate(savedInstanceState);
     }
 
 

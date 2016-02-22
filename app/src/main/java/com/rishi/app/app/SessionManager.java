@@ -8,6 +8,7 @@ import android.util.Log;
 import android.widget.Toast;
 
 import com.facebook.AccessToken;
+import com.facebook.AccessTokenTracker;
 import com.facebook.FacebookSdk;
 import com.facebook.login.LoginManager;
 
@@ -91,9 +92,37 @@ public class SessionManager {
         editor.putBoolean("login_status_value", false);
         editor.commit();
 
-       // LoginManager.getInstance().logOut();
+        LoginManager.getInstance().logOut();
+
+
+
+
+//        AccessTokenTracker at = new AccessTokenTracker() {
+//            @Override
+//            protected void onCurrentAccessTokenChanged(AccessToken oldAccessToken, AccessToken currentAccessToken) {
+//
+//
+//                updateWithToken(currentAccessToken);
+//
+//
+//            }
+//        };
+
+
+
+
+        // LoginManager.getInstance().logOut();
 //
     }
+
+//    private void updateWithToken(AccessToken token) {
+//        if(token!=null){
+//
+//            LoginManager.getInstance().logOut();
+//
+//
+//        }
+//    }
 
     public String getId()
     {

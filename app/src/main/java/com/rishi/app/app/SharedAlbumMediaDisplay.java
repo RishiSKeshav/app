@@ -473,9 +473,8 @@ public class SharedAlbumMediaDisplay extends AppCompatActivity {
 
                                     CircleImageView image = new CircleImageView(getApplicationContext());
                                     image.setPadding(15,15,15,15);
-                                    image.setLayoutParams(new android.view.ViewGroup.LayoutParams(70,70));
-                                    image.setMaxHeight(40);
-                                    image.setMaxWidth(40);
+                                    image.setLayoutParams(new android.view.ViewGroup.LayoutParams(100,100));
+
                                     Picasso.with(getApplicationContext()).load(usermediadetails.optString("displayPicture"))
                                             .placeholder(R.mipmap.ic_launcher).error(R.mipmap.ic_launcher)
                                             .into(image);

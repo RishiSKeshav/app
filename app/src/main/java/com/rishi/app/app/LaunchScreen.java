@@ -4,6 +4,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 
+import com.facebook.FacebookSdk;
+
 /**
  * Created by amitrajula on 2/20/16.
  */
@@ -15,6 +17,8 @@ public class LaunchScreen extends AppCompatActivity {
         //Displays Home Screen
         setContentView(R.layout.launch_screen);
         sessionManager = new SessionManager(getApplicationContext());
+
+        FacebookSdk.sdkInitialize(getApplicationContext());
 
 
         if (isLoggedIn()) {
