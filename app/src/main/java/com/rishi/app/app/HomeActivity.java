@@ -258,20 +258,31 @@ public class HomeActivity extends AppCompatActivity {
         // position
         switch(menuItem.getItemId()) {
             case R.id.nav_first_fragment:
-                Intent i = new Intent(HomeActivity.this,Sync.class);
+                Intent i = new Intent(HomeActivity.this,HomeActivity.class);
                 startActivity(i);
-
                 break;
+
             case R.id.nav_second_fragment:
-                Intent i2 = new Intent(HomeActivity.this,SyncMediaDisplayActivity.class);
+                Intent i2 = new Intent(HomeActivity.this,CameraActivity.class);
                 startActivity(i2);
-
                 break;
+
             case R.id.nav_third_fragment:
-
+                Intent i3 = new Intent(HomeActivity.this,Notification.class);
+                startActivity(i3);
                 break;
-            default:
 
+            case R.id.nav_fourth_fragment:
+                Intent i4 = new Intent(HomeActivity.this,Sync.class);
+                startActivity(i4);
+                break;
+
+            case R.id.nav_fifth_fragment:
+                Intent i5 = new Intent(HomeActivity.this,SyncMediaDisplayActivity.class);
+                startActivity(i5);
+                break;
+
+            default:
         }
 
 

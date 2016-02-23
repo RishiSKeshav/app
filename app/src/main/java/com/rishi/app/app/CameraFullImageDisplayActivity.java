@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.hardware.Camera;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Environment;
 import android.support.design.widget.FloatingActionButton;
@@ -26,6 +27,7 @@ import org.apache.http.HttpResponse;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpPost;
+import org.apache.http.entity.mime.content.ContentBody;
 import org.apache.http.entity.mime.content.FileBody;
 import org.apache.http.entity.mime.content.StringBody;
 import org.apache.http.impl.client.DefaultHttpClient;
@@ -97,7 +99,6 @@ public class CameraFullImageDisplayActivity extends AppCompatActivity {
             case R.id.camera_upload:
 
                 startUpload(photoImageList);
-                Log.i("eee","reached");
                 return true;
         }
         return(super.onOptionsItemSelected(item));
@@ -109,6 +110,8 @@ public class CameraFullImageDisplayActivity extends AppCompatActivity {
         Log.d("Service: count ", String.valueOf(unSyncedImageList.size()));
 
         count = unSyncedImageList.size();
+
+        //new uploadAsyncTask().execute(unSyncedImageList);
 
         Runnable r = new Runnable() {
             public void run() {
@@ -127,26 +130,13 @@ public class CameraFullImageDisplayActivity extends AppCompatActivity {
 
         Thread t = new Thread(r);
         t.start();
-
-        db = new ImageDatabaseHandler(getApplicationContext(), Environment.getExternalStorageDirectory().toString()+ "/app");
-        Log.d("Db count", String.valueOf(db.getCount()));
     }
     public void upload(Image img,int count)
     {
-        Intent intent = new Intent("IMAGE_ACTION");
-        intent.putExtra("imgPath", img.path);
-        intent.putExtra("leftCount", count);
-        sendBroadcast(intent);
-
         String filePath=img.getPath();
         String filename = img.getName();
 
-        /*Bitmap bitmap = BitmapFactory.decodeFile(filePath);
-
-        ByteArrayOutputStream stream = new ByteArrayOutputStream();
-        bitmap.compress(Bitmap.CompressFormat.PNG, 50, stream);
-        byte[] byte_arr = stream.toByteArray();
-        String encodedString = Base64.encodeToString(byte_arr, 0);*/
+        Log.d("Camera filePath",filePath);
 
         String responseString = null;
 
@@ -159,19 +149,15 @@ public class CameraFullImageDisplayActivity extends AppCompatActivity {
 
                         @Override
                         public void transferred(long num) {
-
-                            double y = (long) (((float) num / totalSize) * 100);
-
-                            Intent i = new Intent("PROGRESS_ACTION");
-                            i.putExtra("NUMBER",(int)y);
-                            sendBroadcast(i);
                         }
                     });
 
             // Adding file data to http body
             //entity.addPart("image", new StringBody(encodedString));
 
-            entity.addPart("image", new FileBody(new File(filePath)));
+            ContentBody cbFile = new FileBody(new File(filePath),"image/jpeg");
+
+            entity.addPart("image", cbFile);
             // Extra parameters if you want to pass to server
             entity.addPart("userId", new StringBody("1"));
           //  entity.addPart("name", new StringBody(filename));
@@ -241,4 +227,134 @@ public class CameraFullImageDisplayActivity extends AppCompatActivity {
             responseString = e.toString();
         }
     }
+
+
+
+   class  uploadAsyncTask extends AsyncTask<ArrayList<Image>,Integer,Integer> {
+
+       @Override
+       protected void onPostExecute(Integer leftCount) {
+           super.onPostExecute(leftCount);
+
+       }
+
+       @Override
+       protected Integer doInBackground(ArrayList<Image>... params) {
+
+          for(int i=0;i<params[0].size();i++){
+
+              String imgPath=params[0].get(i).getPath();
+
+              if(isCancelled())
+                  break;
+
+               String filePath=params[0].get(i).getPath();
+               String filename = params[0].get(i).getName();
+
+               /*Bitmap bitmap = BitmapFactory.decodeFile(filePath);
+
+               ByteArrayOutputStream stream = new ByteArrayOutputStream();
+               bitmap.compress(Bitmap.CompressFormat.PNG, 50, stream);
+               byte[] byte_arr = stream.toByteArray();
+               String encodedString = Base64.encodeToString(byte_arr, 0);*/
+
+               String responseString = null;
+
+               HttpClient httpclient = new DefaultHttpClient();
+               HttpPost httppost = new HttpPost("http://52.89.2.186/project/webservice/uploadMedia1.php");
+
+               try {
+                   AndroidMultiPartEntity entity = new AndroidMultiPartEntity(
+                           new AndroidMultiPartEntity.ProgressListener() {
+
+                               @Override
+                               public void transferred(long num) {
+
+                                   double y = (long) (((float) num / totalSize) * 100);
+
+                                   publishProgress((int) y);
+                               }
+                           });
+
+                   ContentBody cbFile = new FileBody(new File(filePath),"image/jpeg");
+
+                   entity.addPart("image", cbFile);
+
+                   // Extra parameters if you want to pass to server
+                   entity.addPart("userId", new StringBody("1"));
+                   entity.addPart("filename", new StringBody(filename));
+
+                   totalSize = entity.getContentLength();
+                   httppost.setEntity(entity);
+
+                   // Making server call
+                   HttpResponse response = httpclient.execute(httppost);
+                   HttpEntity r_entity = response.getEntity();
+
+                   int statusCode = response.getStatusLine().getStatusCode();
+                   if (statusCode == 200) {
+                       // Server response
+                       responseString = EntityUtils.toString(r_entity);
+
+                       Log.d("response",responseString);
+
+                       try {
+                           JSONObject obj = new JSONObject(responseString);
+
+                           if (obj.getBoolean("error")) {
+/*                               Toast.makeText(getApplicationContext(), obj.getString("msg"), Toast.LENGTH_LONG).show();*/
+                           } else {
+
+
+
+                               File folder = new File(Environment.getExternalStorageDirectory().toString() + "/app");
+                               boolean success = true;
+                               if (!folder.exists()) {
+                                   success = folder.mkdir();
+                               }
+
+                               /*db = new ImageDatabaseHandler(getApplicationContext(), folder.toString());
+
+                               Image image = new Image();
+
+                               image.setId(mediaId);
+                               image.setPath(filePath);
+                               image.setName(filename);
+
+                               db.addImage(image);
+*/
+                               count--;
+                           }
+
+
+                       } catch (JSONException e) {
+                           e.printStackTrace();
+                       }
+
+                   } else {
+                       responseString = "Error occurred! Http Status Code: "
+                               + statusCode;
+                   }
+
+               } catch (ClientProtocolException e) {
+                   responseString = e.toString();
+               } catch (IOException e) {
+                   responseString = e.toString();
+               }
+           }
+           return count;
+       }
+
+       @Override
+       protected void onPreExecute() {
+
+           super.onPreExecute();
+       }
+
+       protected void onProgressUpdate(Integer... progress) {
+
+       }
+   }
+
+
 }
