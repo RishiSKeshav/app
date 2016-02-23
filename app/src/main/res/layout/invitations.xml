@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/invitations_toolbar"
+        android:minHeight="?attr/actionBarSize"
+        android:background="@color/color_primary"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:theme="@style/ToolBarStyle"
+        >
+
+        <TextView
+            android:id="@+id/tv_ld_header"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="18dp"
+            android:textColor="#fff"
+            android:text="Send Invitations"
+            />
+    </android.support.v7.widget.Toolbar>
+
+    <Button android:id="@+id/invitations_sms" style="?android:textAppearanceSmall"
+        android:layout_width="match_parent" android:layout_height="wrap_content"
+        android:text="Invite via SMS"
+        android:textStyle="bold"
+        android:layout_margin="20dp"
+        android:layout_below="@+id/diplayPicture"
+        android:textColor="#ffffffff"
+        android:background="#00838F" />
+
+    <Button android:id="@+id/invitations_facebook" style="?android:textAppearanceSmall"
+        android:layout_width="match_parent" android:layout_height="wrap_content"
+        android:text="Facebook Messenger"
+        android:textStyle="bold"
+        android:layout_margin="20dp"
+        android:layout_below="@+id/take_photo"
+        android:textColor="#ffffffff"
+        android:background="#00838F" />
+
+    <Button android:id="@+id/invitations_whatsapp" style="?android:textAppearanceSmall"
+        android:layout_width="match_parent" android:layout_height="wrap_content"
+        android:text="Whatsapp Messenger"
+        android:textStyle="bold"
+        android:layout_margin="20dp"
+        android:layout_below="@+id/take_photo"
+        android:textColor="#ffffffff"
+        android:background="#00838F" />
+
+</LinearLayout>

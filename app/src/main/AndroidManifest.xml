@@ -121,6 +121,11 @@
         <activity android:name=".RegistrationDetails" >
         </activity>
         <activity android:name=".UploadDP" />
+        <activity android:name=".Invitations" />
+        <activity android:name=".InvitationsContacts" />
+        <activity android:name=".SearchUser" />
+        <activity android:name=".GetCode" />
+        <activity android:name=".PasswordReset" />
 
         <receiver
             android:name="com.google.android.gms.gcm.GcmReceiver"

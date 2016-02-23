@@ -48,6 +48,7 @@ public class CameraFullImageDisplayActivity extends AppCompatActivity {
     ImageDatabaseHandler db;
 
     ArrayList<Image> photoImageList;
+    ArrayList<String> photoList;
     long totalSize=0;
     int count=0;
 
@@ -64,7 +65,7 @@ public class CameraFullImageDisplayActivity extends AppCompatActivity {
 
         Intent intent = getIntent();
         photoImageList =intent.getParcelableArrayListExtra("photoImageList");
-        ArrayList<String> photoList = intent.getStringArrayListExtra("photoFileList");
+        photoList = intent.getStringArrayListExtra("photoFileList");
 
         Log.d("photolist size",photoList.toString());
 
@@ -98,14 +99,14 @@ public class CameraFullImageDisplayActivity extends AppCompatActivity {
                 return true;
             case R.id.camera_upload:
 
-                startUpload(photoImageList);
+                startUpload(photoList);
                 return true;
         }
         return(super.onOptionsItemSelected(item));
     }
 
 
-    public void startUpload(final ArrayList<Image> unSyncedImageList)
+    public void startUpload(final ArrayList<String> unSyncedImageList)
     {
         Log.d("Service: count ", String.valueOf(unSyncedImageList.size()));
 
@@ -131,10 +132,10 @@ public class CameraFullImageDisplayActivity extends AppCompatActivity {
         Thread t = new Thread(r);
         t.start();
     }
-    public void upload(Image img,int count)
+    public void upload(String path,int count)
     {
-        String filePath=img.getPath();
-        String filename = img.getName();
+        String filePath=path;
+
 
         Log.d("Camera filePath",filePath);
 

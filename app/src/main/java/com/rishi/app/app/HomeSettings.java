@@ -31,7 +31,7 @@ import java.io.UnsupportedEncodingException;
 public class HomeSettings extends AppCompatActivity {
 
     TextView editprofile;
-    LinearLayout editprofilelayout,change_email,change_password,logout;
+    LinearLayout editprofilelayout,change_email,change_password,logout,invite;
     SessionManager sessionManager;
 
     @Override
@@ -100,6 +100,15 @@ public class HomeSettings extends AppCompatActivity {
 
                 AlertDialog alertDialog = alertDialogBuilder.create();
                 alertDialog.show();
+            }
+        });
+
+        invite = (LinearLayout) findViewById(R.id.invite);
+        invite.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(HomeSettings.this,Invitations.class);
+                startActivity(i);
             }
         });
 

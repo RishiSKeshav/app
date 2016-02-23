@@ -1,6 +1,6 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="178dp"
+    android:layout_height="200dp"
     android:background="@color/color_primary"
     android:orientation="vertical"
     android:weightSum="1">
@@ -9,30 +9,119 @@
         android:layout_width="70dp"
         android:layout_height="70dp"
         android:src="@drawable/ic_person_black_48dp"
-        android:layout_marginLeft="16dp"
-        android:layout_marginTop="38dp"
+        android:layout_centerInParent="true"
         android:id="@+id/nav_circleView"
         />
 
     <LinearLayout
+        android:id="@+id/nav_name_layout"
+        android:layout_below="@+id/nav_circleView"
         android:layout_width="match_parent"
-        android:layout_height="56dp"
-        android:orientation="vertical"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true">
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
 
         <TextView
             android:id="@+id/nav_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="16dp"
             android:textColor="#ffffff"
+            android:layout_gravity="center"
             android:text="Amit Rajula"
+            android:layout_marginTop="2dp"
             android:textSize="14sp"
             android:textStyle="bold"
 
             />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="fill_parent"
+        android:padding="5dp"
+        android:gravity="center_vertical|center_horizontal"
+        android:layout_below="@+id/nav_name_layout"
+        android:orientation="horizontal">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_marginRight="20dp"
+            android:gravity="center_vertical|center_horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="#fff"
+                android:textSize="14sp"
+                android:textStyle="bold"
+                android:text="45"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="#fff"
+                android:textSize="11sp"
+                android:text="Photos"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_marginRight="20dp"
+            android:gravity="center_vertical|center_horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="#fff"
+                android:textSize="14sp"
+                android:textStyle="bold"
+                android:text="45"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="#fff"
+                android:textSize="11sp"
+                android:text="Personal Albums"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:gravity="center_vertical|center_horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="#fff"
+                android:textSize="14sp"
+                android:textStyle="bold"
+                android:text="45"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="#fff"
+                android:textSize="11sp"
+                android:text="Shared Albums"/>
+        </LinearLayout>
+
+
+
+
+
+
+
+
+
+
+
+
+
     </LinearLayout>
 
 

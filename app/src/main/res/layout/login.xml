@@ -74,7 +74,8 @@
             </LinearLayout>
 
             <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                >
 
                 <TextView
                     android:layout_width="match_parent"
@@ -91,8 +92,9 @@
                     android:layout_width="match_parent"
                     android:layout_marginTop="20dp"
                     android:layout_height="40dp"
-                    android:text="Need Help?"
+                    android:text="Forgot Password?"
                     android:textSize="15dp"
+                    android:onClick="goToSearchUser"
                     android:textColor="#ffffffff"
                     android:gravity="center|center_horizontal"/>
 
