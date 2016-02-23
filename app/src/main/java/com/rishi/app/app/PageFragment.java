@@ -154,12 +154,13 @@ public class PageFragment extends Fragment {
                             for (int i = 0; i < albumarray.length(); i++) {
                                 JSONObject albumdetails = albumarray.optJSONObject(i);
 
-
                                 Album al = new Album(albumdetails.optString("id"), albumdetails.optString("name"), albumdetails.optString("thumbnail"),
                                         albumdetails.optString("count"), albumdetails.optString("date"));
                                 albumList.add(al);
                                 mAdapter.notifyDataSetChanged();
                             }
+                        }else{
+
                         }
                     }
                     aswipeRefreshLayout.setRefreshing(false);

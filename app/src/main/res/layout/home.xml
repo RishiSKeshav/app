@@ -33,161 +33,161 @@
     </android.support.v7.widget.Toolbar>
 
 
-    <LinearLayout
-        android:id="@+id/upper_layout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/home_toolbar"
-        android:orientation="vertical">
+    <!--<LinearLayout-->
+        <!--android:id="@+id/upper_layout"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_below="@+id/home_toolbar"-->
+        <!--android:orientation="vertical">-->
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="60dp"
-            android:orientation="horizontal">
+        <!--<LinearLayout-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="60dp"-->
+            <!--android:orientation="horizontal">-->
 
-            <de.hdodenhof.circleimageview.CircleImageView
-                android:id="@+id/image"
-                android:layout_width="50dp"
-                android:layout_height="50dp"
-                android:layout_centerInParent="true"
-                android:layout_marginLeft="15dp"
-                android:layout_marginTop="8dp"
-                android:src="@drawable/ic_alarm_on_black_48dp"
-                />
+            <!--<de.hdodenhof.circleimageview.CircleImageView-->
+                <!--android:id="@+id/image"-->
+                <!--android:layout_width="50dp"-->
+                <!--android:layout_height="50dp"-->
+                <!--android:layout_centerInParent="true"-->
+                <!--android:layout_marginLeft="15dp"-->
+                <!--android:layout_marginTop="8dp"-->
+                <!--android:src="@drawable/ic_alarm_on_black_48dp"-->
+                <!--/>-->
 
-             
-            <TextView
-                android:id="@+id/name"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textSize="18dp"
-                android:textColor="#000"
-                android:paddingLeft="20dp"
-                android:paddingTop="20dp"
-                android:paddingBottom="8dp"
-                android:text="Amit Rajula"
-                />
-        </LinearLayout>
+            <!-- -->
+            <!--<TextView-->
+                <!--android:id="@+id/name"-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:textSize="18dp"-->
+                <!--android:textColor="#000"-->
+                <!--android:paddingLeft="20dp"-->
+                <!--android:paddingTop="20dp"-->
+                <!--android:paddingBottom="8dp"-->
+                <!--android:text="Amit Rajula"-->
+                <!--/>-->
+        <!--</LinearLayout>-->
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="40dp"
-            android:orientation="horizontal">
+        <!--<LinearLayout-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="40dp"-->
+            <!--android:orientation="horizontal">-->
 
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:layout_marginLeft="15dp"
-                android:gravity="center_vertical|center_horizontal">
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textSize="18dp"
-                    android:textColor="#000"
-                    android:text="46"/>
+            <!--<LinearLayout-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:orientation="vertical"-->
+                <!--android:layout_marginLeft="15dp"-->
+                <!--android:gravity="center_vertical|center_horizontal">-->
+                <!--<TextView-->
+                    <!--android:layout_width="wrap_content"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:textSize="18dp"-->
+                    <!--android:textColor="#000"-->
+                    <!--android:text="46"/>-->
 
-                <TextView
-                    android:id="@+id/photoCount"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textSize="10dp"
-                    android:textColor="#616161"
-                    android:paddingLeft="10dp"
-                    android:text="Photos"/>
+                <!--<TextView-->
+                    <!--android:id="@+id/photoCount"-->
+                    <!--android:layout_width="wrap_content"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:textSize="10dp"-->
+                    <!--android:textColor="#616161"-->
+                    <!--android:paddingLeft="10dp"-->
+                    <!--android:text="Photos"/>-->
 
-            </LinearLayout>
-
-
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:layout_marginLeft="35dp"
-                android:gravity="center_vertical|center_horizontal">
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textSize="18dp"
-                    android:textColor="#000"
-                    android:text="46"/>
-
-                <TextView
-                    android:id="@+id/album_count"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textSize="10dp"
-                    android:textColor="#616161"
-                    android:paddingLeft="10dp"
-                    android:text="Albums"/>
-
-            </LinearLayout>
+            <!--</LinearLayout>-->
 
 
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:layout_marginLeft="35dp"
-                android:gravity="center_vertical|center_horizontal">
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textSize="18dp"
-                    android:textColor="#000"
-                    android:text="46"/>
+            <!--<LinearLayout-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:orientation="vertical"-->
+                <!--android:layout_marginLeft="35dp"-->
+                <!--android:gravity="center_vertical|center_horizontal">-->
+                <!--<TextView-->
+                    <!--android:layout_width="wrap_content"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:textSize="18dp"-->
+                    <!--android:textColor="#000"-->
+                    <!--android:text="46"/>-->
 
-                <TextView
-                    android:id="@+id/shared_album_count"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textSize="10dp"
-                    android:textColor="#616161"
-                    android:paddingLeft="10dp"
-                    android:text="Shared Albums"/>
+                <!--<TextView-->
+                    <!--android:id="@+id/album_count"-->
+                    <!--android:layout_width="wrap_content"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:textSize="10dp"-->
+                    <!--android:textColor="#616161"-->
+                    <!--android:paddingLeft="10dp"-->
+                    <!--android:text="Albums"/>-->
 
-            </LinearLayout>
-
-
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:layout_marginLeft="35dp"
-                android:gravity="center_vertical|center_horizontal">
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textSize="18dp"
-                    android:textColor="#000"
-                    android:text="46"/>
-
-                <TextView
-                    android:id="@+id/shared_media_count"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textSize="10dp"
-                    android:textColor="#616161"
-                    android:paddingLeft="10dp"
-                    android:text="Shared Media"/>
-
-            </LinearLayout>
+            <!--</LinearLayout>-->
 
 
+            <!--<LinearLayout-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:orientation="vertical"-->
+                <!--android:layout_marginLeft="35dp"-->
+                <!--android:gravity="center_vertical|center_horizontal">-->
+                <!--<TextView-->
+                    <!--android:layout_width="wrap_content"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:textSize="18dp"-->
+                    <!--android:textColor="#000"-->
+                    <!--android:text="46"/>-->
+
+                <!--<TextView-->
+                    <!--android:id="@+id/shared_album_count"-->
+                    <!--android:layout_width="wrap_content"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:textSize="10dp"-->
+                    <!--android:textColor="#616161"-->
+                    <!--android:paddingLeft="10dp"-->
+                    <!--android:text="Shared Albums"/>-->
+
+            <!--</LinearLayout>-->
 
 
-        </LinearLayout>
+            <!--<LinearLayout-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:orientation="vertical"-->
+                <!--android:layout_marginLeft="35dp"-->
+                <!--android:gravity="center_vertical|center_horizontal">-->
+                <!--<TextView-->
+                    <!--android:layout_width="wrap_content"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:textSize="18dp"-->
+                    <!--android:textColor="#000"-->
+                    <!--android:text="46"/>-->
+
+                <!--<TextView-->
+                    <!--android:id="@+id/shared_media_count"-->
+                    <!--android:layout_width="wrap_content"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:textSize="10dp"-->
+                    <!--android:textColor="#616161"-->
+                    <!--android:paddingLeft="10dp"-->
+                    <!--android:text="Shared Media"/>-->
+
+            <!--</LinearLayout>-->
 
 
 
-    </LinearLayout>
+
+        <!--</LinearLayout>-->
+
+
+
+    <!--</LinearLayout>-->
 
 
 <RelativeLayout
     android:id="@+id/home_coordinator"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_below="@id/upper_layout">
+    android:layout_below="@id/home_toolbar">
 
     <android.support.design.widget.CoordinatorLayout
         xmlns:android="http://schemas.android.com/apk/res/android"

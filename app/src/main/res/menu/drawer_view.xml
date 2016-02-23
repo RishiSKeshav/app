@@ -3,15 +3,24 @@
     <group android:checkableBehavior="single">
         <item
             android:id="@+id/nav_first_fragment"
-
-            android:title="First" />
+            android:src="@android:drawable/ic_btn_speak_now"
+            android:title="Home" />
         <item
             android:id="@+id/nav_second_fragment"
 
-            android:title="Second" />
+            android:title="Camera" />
         <item
             android:id="@+id/nav_third_fragment"
 
-            android:title="Third" />
+            android:title="Notification" />
+
+        <item
+            android:id="@+id/nav_fourth_fragment"
+
+            android:title="Sync" />
+
+        <item
+            android:id="@+id/nav_fifth_fragment"
+            android:title="Photos" />
     </group>
 </menu>

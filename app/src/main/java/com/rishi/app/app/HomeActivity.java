@@ -145,12 +145,6 @@ public class HomeActivity extends AppCompatActivity {
                 .into(cv);
 
 
-
-
-
-        name = (TextView) findViewById(R.id.name);
-        name.setText(sessionManager.getName());
-
         album = (FloatingActionButton) findViewById(R.id.fab_album);
         share_album = (FloatingActionButton) findViewById(R.id.fab_shared_album);
         album.setOnClickListener(new View.OnClickListener(){
@@ -173,13 +167,8 @@ public class HomeActivity extends AppCompatActivity {
         });
 
 
-        CircleImageView imageView = (CircleImageView) findViewById(R.id.image);
 
-        Picasso.with(getApplicationContext()).load(sessionManager.getDisplayPicture())
-                .placeholder(R.mipmap.ic_launcher).error(R.mipmap.ic_launcher)
-                .into(imageView);
-
-        imageView.setOnClickListener(new View.OnClickListener() {
+        cv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 PopupMenu popup = new PopupMenu(HomeActivity.this, v);
@@ -512,28 +501,6 @@ public class HomeActivity extends AppCompatActivity {
         }
     }
 
-    private Bitmap getCircleBitmap(Bitmap bitmap) {
-        final Bitmap output = Bitmap.createBitmap(bitmap.getWidth(),
-                bitmap.getHeight(), Bitmap.Config.ARGB_8888);
-        final Canvas canvas = new Canvas(output);
 
-        final int color = Color.RED;
-        final Paint paint = new Paint();
-        final Rect rect = new Rect(0, 0, bitmap.getWidth(), bitmap.getHeight());
-        final RectF rectF = new RectF(rect);
-
-        paint.setAntiAlias(true);
-        canvas.drawARGB(0, 0, 0, 0);
-        paint.setColor(color);
-        canvas.drawOval(rectF, paint);
-
-        paint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.SRC_IN));
-
-        canvas.drawBitmap(bitmap, rect, rect, paint);
-
-        bitmap.recycle();
-
-        return output;
-    }
 
 }
