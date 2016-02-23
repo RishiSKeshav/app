@@ -568,7 +568,7 @@ public class ContactsFragment extends Fragment implements ContactsFragmentAdapte
 
 
                                                 ContactsFriends cf = new ContactsFriends(userdetails.optString("id"), userdetails.optString("name"),
-                                                        userdetails.optString("emailId"),
+                                                        userdetails.optString("emailId"),userdetails.optString("mobileNo"),
                                                         userdetails.optString("mobileNo"), userdetails.optString("displayPicture"),
                                                         userdetails.optString("facebookId"));
 

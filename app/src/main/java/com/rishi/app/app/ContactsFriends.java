@@ -10,18 +10,19 @@ import java.sql.Timestamp;
  */
 public class ContactsFriends {
 
-    private String id,name,emailId,mobileNo,displayPicture,facebookId;
+    private String id,name,emailId,mobileNo,displayPicture,facebookId,number;
 
 
     public ContactsFriends(){
 
     }
 
-    public ContactsFriends(String id,String name,String emailId,
+    public ContactsFriends(String id,String name,String emailId,String number,
                            String mobileNo,String displayPicture,String facebookId){
         this.id = id;
         this.name = name;
         this.emailId = emailId;
+        this.number = number;
         this.mobileNo = mobileNo;
         this.displayPicture = displayPicture;
         this.facebookId = facebookId;
@@ -53,6 +54,14 @@ public class ContactsFriends {
 
     public void setEmailId(String emailId) {
         this.emailId = emailId;
+    }
+
+    public String getNumber() {
+        return number;
+    }
+
+    public void setNumber (String number){
+        this.number= number;
     }
 
     public String getMobileNo(){

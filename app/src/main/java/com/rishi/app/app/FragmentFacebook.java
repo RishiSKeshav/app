@@ -174,7 +174,9 @@ public class FragmentFacebook extends Fragment implements FragmentFacebookAdapte
     private void updateWithToken(AccessToken currentAccessToken) {
 
         if (currentAccessToken != null) {
+            Log.i("A","A");
             callFacebook(currentAccessToken);
+
         } else {
             Log.i("B","come");
         }

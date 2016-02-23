@@ -23,7 +23,7 @@
             android:text="Amit Rajula"
             android:textColor="#fff"
             android:layout_marginTop="130dp"
-            android:textSize="15dp"
+            android:textSize="18dp"
             android:padding="16dp"/>
 
         <!--<TextView-->

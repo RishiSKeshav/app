@@ -363,15 +363,33 @@ public class LoginActivity extends ActionBarActivity {
 
     public void goToRegisterActivity(View view)
     {
-        Log.i("SER","invoked navigatetoRegisterActivity() method");
+        Log.i("SER", "invoked navigatetoRegisterActivity() method");
         Intent loginIntent = new Intent(getApplicationContext(),RegisterActivity.class);
         loginIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         startActivity(loginIntent);
     }
 
+    public void goToSearchUser(View view){
+        final ProgressDialog progressDialog = new ProgressDialog(LoginActivity.this,
+                R.style.AppTheme_Dark_Dialog);
+        progressDialog.setIndeterminate(true);
+        progressDialog.setMessage("Authenticating...");
+        progressDialog.show();
+
+        Intent homeIntent = new Intent(getApplicationContext(),SearchUser.class);
+        homeIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        startActivity(homeIntent);
+
+        progressDialog.hide();
+    }
+
     public void navigatetoHomeActivity(){
+
+
         Intent homeIntent = new Intent(getApplicationContext(),HomeActivity.class);
         homeIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         startActivity(homeIntent);
+
+
     }
 }

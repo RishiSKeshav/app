@@ -14,7 +14,7 @@ import android.widget.TextView;
  * Created by amitrajula on 2/20/16.
  */
 public class EmailAuthentication extends AppCompatActivity {
-    String EMAILID,CODE;
+    String EMAILID,CODE,ACTION;
     EditText et;
 
     @Override
@@ -28,6 +28,12 @@ public class EmailAuthentication extends AppCompatActivity {
         Intent i = getIntent();
         CODE = i.getStringExtra("code");
         EMAILID = i.getStringExtra("emailId");
+
+        Log.i("CODE",CODE);
+
+        if(i.hasExtra("action")){
+            ACTION = "reset_password";
+        }
 
 
         TextView tv = (TextView)findViewById(R.id.text_code);
@@ -45,9 +51,17 @@ public class EmailAuthentication extends AppCompatActivity {
 
                 if(CODE.equals(et.getText().toString())){
 
-                    Intent i = new Intent(EmailAuthentication.this,RegistrationDetails.class);
-                    i.putExtra("emailId",EMAILID);
-                    startActivity(i);
+                    if(ACTION.equals("")) {
+
+                        Intent i = new Intent(EmailAuthentication.this, RegistrationDetails.class);
+                        i.putExtra("emailId", EMAILID);
+                        startActivity(i);
+                    }else{
+                        Intent i = new Intent(EmailAuthentication.this, PasswordReset.class);
+                        i.putExtra("emailId", EMAILID);
+                        startActivity(i);
+                    }
+
 
                 }
 

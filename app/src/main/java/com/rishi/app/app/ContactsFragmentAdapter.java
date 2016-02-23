@@ -45,7 +45,7 @@ public class ContactsFragmentAdapter extends SelectableAdapter<ContactsFragmentA
 
 
     public static class MyViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-        public TextView name;
+        public TextView name,number;
         public ImageView path,check;
         private ClickListener listener;
         View selectedOverlay;
@@ -56,6 +56,7 @@ public class ContactsFragmentAdapter extends SelectableAdapter<ContactsFragmentA
             this.listener = listener;
             // name = (TextView) view.findViewById(R.id.name);
             path =  (ImageView) view.findViewById(R.id.contacts_displayPicture);
+            number = (TextView) view.findViewById(R.id.userbase_number_contacts);
             name = (TextView) view.findViewById(R.id.contacts_name);
             check = (ImageView) view.findViewById(R.id.contacts_image_check);
             selectedOverlay = view.findViewById(R.id.contacts_selected_overlay);
@@ -104,6 +105,7 @@ public class ContactsFragmentAdapter extends SelectableAdapter<ContactsFragmentA
         ContactsFriends cf = contactsfriends.get(position);
 
         holder.name.setText(cf.getName());
+        holder.number.setText(cf.getNumber());
 
         Context context = holder.path.getContext();
         Picasso.with(context).load(cf.getDisplayPicture()).error(R.mipmap.ic_launcher).placeholder(R.mipmap.ic_launcher)
