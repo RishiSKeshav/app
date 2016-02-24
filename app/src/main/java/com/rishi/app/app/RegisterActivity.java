@@ -5,11 +5,13 @@ import org.json.JSONObject;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.preference.PreferenceActivity;
 import android.util.Log;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -66,6 +68,9 @@ public class RegisterActivity extends Activity {
      */
     public void registerUser(View view) throws JSONException, UnsupportedEncodingException {
 
+        InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
+        imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+
 
         //String name = nameET.getText().toString();
         // String mobileNo = mobilenoET.getText().toString();
@@ -76,7 +81,8 @@ public class RegisterActivity extends Activity {
 
         //  if(Utility.isNotNull(emailId) && Utility.isNotNull(password) && Utility.isNotNull(name) && Utility.isNotNull(mobileNo) ) {
 //
-        if (Utility.isNotNull(emailId) || Utility.validateEmail(emailId)) {
+        if (Utility.isNotNull(emailId) && Utility.validateEmail(emailId)) {
+
 
 //                if(Utility.validatePassword(password)){
 

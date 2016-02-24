@@ -14,7 +14,7 @@ import android.widget.TextView;
  * Created by amitrajula on 2/20/16.
  */
 public class EmailAuthentication extends AppCompatActivity {
-    String EMAILID,CODE,ACTION;
+    String EMAILID,CODE,ACTION="";
     EditText et;
 
     @Override
@@ -37,8 +37,11 @@ public class EmailAuthentication extends AppCompatActivity {
 
 
         TextView tv = (TextView)findViewById(R.id.text_code);
-        tv.setText("You should have received a email with activation code. It was sent to " + EMAILID);
-
+        if(ACTION.equals("")) {
+            tv.setText("You should have received a email with activation code. It was sent to " + EMAILID);
+        }else{
+            tv.setText("You should have received a email with pass reset code. It was sent to " + EMAILID);
+        }
         et = (EditText) findViewById(R.id.code);
         et.addTextChangedListener(new TextWatcher() {
             @Override

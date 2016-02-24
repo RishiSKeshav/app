@@ -7,7 +7,7 @@ public class Config {
 
     // flag to identify whether to show single line
     // or multi line text in push notification tray
-    public static boolean appendNotificationMessages = true;
+    public static boolean appendNotificationMessages = false;
 
     // global topic to receive app wide push notifications
     public static final String TOPIC_GLOBAL = "global";

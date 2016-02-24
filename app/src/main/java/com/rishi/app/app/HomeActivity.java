@@ -105,6 +105,7 @@ public class HomeActivity extends AppCompatActivity {
 
     SessionManager sessionManager;
     TextView nameTV;
+    String picturePath;
     TextView name;
     private FloatingActionButton fab,fab1;
     final int PICK_FROM_CAPTURE = 0;
@@ -296,36 +297,38 @@ public class HomeActivity extends AppCompatActivity {
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+        if(resultCode != RESULT_CANCELED) {
+            if (requestCode == PICK_FROM_FILE) {
+                if (Build.VERSION.SDK_INT < 19) {
+                    mImageCaptureUri = data.getData();
 
-        if(requestCode == PICK_FROM_FILE){
-            if (Build.VERSION.SDK_INT < 19) {
-                mImageCaptureUri = data.getData();
+                } else {
+                    mImageCaptureUri = data.getData();
+                    ParcelFileDescriptor parcelFileDescriptor;
+                    try {
+                        parcelFileDescriptor = getContentResolver()
+                                .openFileDescriptor(mImageCaptureUri, "r");
+                        FileDescriptor fileDescriptor = parcelFileDescriptor
+                                .getFileDescriptor();
+                        bitmap = BitmapFactory
+                                .decodeFileDescriptor(fileDescriptor);
+                        parcelFileDescriptor.close();
 
-            } else {
-                mImageCaptureUri = data.getData();
-                ParcelFileDescriptor parcelFileDescriptor;
-                try {
-                    parcelFileDescriptor = getContentResolver()
-                            .openFileDescriptor(mImageCaptureUri, "r");
-                    FileDescriptor fileDescriptor = parcelFileDescriptor
-                            .getFileDescriptor();
-                    bitmap = BitmapFactory
-                            .decodeFileDescriptor(fileDescriptor);
-                    parcelFileDescriptor.close();
-
-                } catch (FileNotFoundException e) {
-                    e.printStackTrace();
-                } catch (IOException e) {
-                    // TODO Auto-generated catch block
-                    e.printStackTrace();
+                    } catch (FileNotFoundException e) {
+                        e.printStackTrace();
+                    } catch (IOException e) {
+                        // TODO Auto-generated catch block
+                        e.printStackTrace();
+                    }
                 }
+
+                performCrop();
+
             }
-
-            performCrop();
-
         }
         if(requestCode == PICK_FROM_CAPTURE){
             mImageCaptureUri = data.getData();
+            picturePath = getRealPathFromURI(mImageCaptureUri);
             performCrop();
         }
         if(requestCode == PIC_CROP){
@@ -333,10 +336,33 @@ public class HomeActivity extends AppCompatActivity {
             if(extras != null) {
                 bitmap = extras.getParcelable("data");
                 encodeImagetoString();
+
+                Log.i("fff",picturePath.toString());
+//                File f  = new File(mImageCaptureUri.);
+//                f.delete();
             }
         }
 
     }
+
+    public String getRealPathFromURI(Uri contentUri)
+    {
+        try
+        {
+            String[] proj = {MediaStore.Images.Media.DATA};
+            Cursor cursor = managedQuery(contentUri, proj, null, null, null);
+            int column_index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
+            cursor.moveToFirst();
+            return cursor.getString(column_index);
+        }
+        catch (Exception e)
+        {
+            return contentUri.getPath();
+        }
+    }
+
+
+
 
     private void performCrop(){
 
