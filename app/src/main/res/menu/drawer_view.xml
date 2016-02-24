@@ -1,26 +1,29 @@
-<menu xmlns:android="http://schemas.android.com/apk/res/android">
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:yourapp="http://schemas.android.com/apk/res-auto">
 
     <group android:checkableBehavior="single">
         <item
             android:id="@+id/nav_first_fragment"
             android:src="@drawable/ic_person_black_48dp"
+            yourapp:showAsAction="ifRoom"
             android:title="Home" />
         <item
             android:id="@+id/nav_second_fragment"
-
+            android:src="@drawable/ic_person_black_48dp"
             android:title="Camera" />
         <item
             android:id="@+id/nav_third_fragment"
-
+            android:src="@drawable/ic_person_black_48dp"
             android:title="Notification" />
 
         <item
             android:id="@+id/nav_fourth_fragment"
-
+            android:src="@drawable/ic_person_black_48dp"
             android:title="Sync" />
 
         <item
             android:id="@+id/nav_fifth_fragment"
+            android:src="@drawable/ic_person_black_48dp"
             android:title="Photos" />
     </group>
 </menu>

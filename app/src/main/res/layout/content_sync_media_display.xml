@@ -38,5 +38,5 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
-        android:src="@android:drawable/ic_input_add"/>
+        android:src="@drawable/unsynced_image"/>
 </RelativeLayout>

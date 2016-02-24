@@ -29,6 +29,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.ParcelFileDescriptor;
+import android.preference.PreferenceActivity;
 import android.provider.MediaStore;
 import com.github.clans.fab.FloatingActionButton;
 import com.github.clans.fab.FloatingActionMenu;
@@ -67,6 +68,8 @@ import android.widget.Toast;
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
+import com.nispok.snackbar.SnackbarManager;
+import com.nispok.snackbar.listeners.EventListener;
 import com.squareup.picasso.Picasso;
 
 import org.apache.http.HttpEntity;
@@ -75,12 +78,15 @@ import org.apache.http.NameValuePair;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpPost;
+import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.util.EntityUtils;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.w3c.dom.Text;
+
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.UUID;
@@ -123,6 +129,8 @@ public class HomeActivity extends AppCompatActivity {
     private static final String TAG = HomeActivity.class.getName();
     RequestParams params = new RequestParams();
 
+    TextView t1,t2,t3;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -144,6 +152,9 @@ public class HomeActivity extends AppCompatActivity {
         Picasso.with(getApplicationContext()).load(sessionManager.getDisplayPicture())
                 .placeholder(R.mipmap.ic_launcher).error(R.mipmap.ic_launcher)
                 .into(cv);
+        t1 = (TextView) hView.findViewById(R.id.photos_id);
+        t2 = (TextView) hView.findViewById(R.id.personal_album_id);
+        t3 = (TextView) hView.findViewById(R.id.shared_album_id);
 
 
         album = (FloatingActionButton) findViewById(R.id.fab_album);
@@ -240,6 +251,78 @@ public class HomeActivity extends AppCompatActivity {
             }
 
         });
+
+
+        navHeaderData();
+
+    }
+
+
+    private  void navHeaderData(){
+        try {
+            JSONObject obj = new JSONObject();
+            obj.put("userId", "1");
+            StringEntity jsonString = new StringEntity(obj.toString());
+
+
+            AsyncHttpClient client = new AsyncHttpClient();
+
+            client.post(getApplicationContext(), "http://52.89.2.186/project/webservice/public/Getuserdatastatus", jsonString, "application/json", new AsyncHttpResponseHandler() {
+
+                @Override
+                public void onStart() {
+                    // called before request is started
+                }
+
+                // @Override
+                public void onSuccess(String response) {
+                    // called when response HTTP status is "200 OK"
+                    try {
+                        JSONObject obj = new JSONObject(response);
+
+                        if (obj.getBoolean("error")) {
+                            SnackbarManager.show(
+                                    com.nispok.snackbar.Snackbar.with(getApplicationContext())
+                                            .text("Something went wrong")
+                                            .duration(com.nispok.snackbar.Snackbar.SnackbarDuration.LENGTH_SHORT)
+                            );
+                        } else {
+
+                            Log.i("ddd",obj.getJSONObject("user").toString());
+
+                            JSONObject user = obj.getJSONObject("user");
+                            t1.setText(user.optString("photos"));
+                            t2.setText(user.optString("personal_albums"));
+                            t3.setText(user.optString("shared_albums"));
+
+                        }
+
+                    } catch (JSONException e) {
+                        // TODO Auto-generated catch block
+                        Toast.makeText(getApplicationContext(), "Error Occured [Server's JSON response might be invalid]!", Toast.LENGTH_LONG).show();
+                        e.printStackTrace();
+
+                    }
+                }
+
+                //@Override
+                public void onFailure(int statusCode, PreferenceActivity.Header[] headers, byte[] errorResponse, Throwable e) {
+                    // called when response HTTP status is "4XX" (eg. 401, 403, 404)
+                }
+
+                //@Override
+                public void onRetry(int retryNo) {
+                    // called when request is retried
+                }
+
+
+            });
+
+        }catch (JSONException e) {
+            e.printStackTrace();
+        }catch(UnsupportedEncodingException ee){
+            ee.printStackTrace();
+        }
 
     }
 

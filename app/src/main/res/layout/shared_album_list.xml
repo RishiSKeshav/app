@@ -20,11 +20,55 @@
             android:id="@+id/name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Amit Rajula"
+            android:text=""
             android:textColor="#fff"
             android:layout_marginTop="130dp"
+            android:layout_marginLeft="15dp"
             android:textSize="18dp"
-            android:padding="16dp"/>
+          />
+
+        <ImageView
+            android:id="@+id/shared_album_card1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/name"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="5dp"
+            android:src="@drawable/shared_album_card1"/>
+
+        <TextView
+            android:id="@+id/shared_album_card1name1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="5"
+            android:textSize="20sp"
+            android:textColor="#fff"
+            android:layout_marginLeft="2dp"
+            android:layout_toRightOf="@id/shared_album_card1"
+            android:layout_marginTop="7dp"
+            android:layout_below="@id/name"/>
+
+        <ImageView
+            android:id="@+id/shared_album_card2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:layout_toRightOf="@+id/shared_album_card1name1"
+            android:src="@drawable/shared_album_card2"
+            android:layout_below="@+id/name"
+            android:layout_marginTop="5dp"/>
+
+        <TextView
+            android:id="@+id/shared_album_card1name2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="5"
+            android:textSize="20sp"
+            android:textColor="#fff"
+            android:layout_marginLeft="2dp"
+            android:layout_toRightOf="@id/shared_album_card2"
+            android:layout_marginTop="7dp"
+            android:layout_below="@id/name"/>
 
         <!--<TextView-->
             <!--android:id="@+id/name"-->

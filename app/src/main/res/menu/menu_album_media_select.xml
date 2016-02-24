@@ -6,7 +6,7 @@
     >
 
     <item android:id="@+id/delete_album_media_select"
-    android:title=""
+    android:title="Dekete"
     android:icon="@android:drawable/ic_menu_delete"
     yourapp:showAsAction="ifRoom"
         />
@@ -17,7 +17,8 @@
         yourapp:showAsAction="ifRoom"
         />
 
-    <item android:id="@+id/save"    android:title="Forward"
+    <item android:id="@+id/save"
+        android:title="Forward"
         yourapp:showAsAction="ifRoom"
         >
 

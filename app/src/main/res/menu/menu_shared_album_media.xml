@@ -6,12 +6,12 @@
 
     <item android:id="@+id/add_media"
         android:title="Add Media"
-        android:icon="@android:drawable/ic_input_add"
+        android:icon="@drawable/media_add"
         yourapp:showAsAction="ifRoom"/>
 
     <item android:id="@+id/add_user"
         android:title="Add User"
-        android:icon="@android:drawable/ic_menu_share"
+        android:icon="@drawable/add_user"
         yourapp:showAsAction="ifRoom"/>
 
     <item android:id="@+id/select"

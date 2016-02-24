@@ -30,6 +30,8 @@ public class SharedAlbumAdapter extends RecyclerView.Adapter<SharedAlbumAdapter.
             view.setOnClickListener(this);
             name = (TextView) view.findViewById(R.id.name);
             thumbnail = (ImageView) view.findViewById(R.id.thumbnail);
+            members = (TextView) view.findViewById(R.id.shared_album_card1name1);
+            count = (TextView) view.findViewById(R.id.shared_album_card1name2);
            // count = (TextView) view.findViewById(R.id.image_data);
             //date = (TextView) view.findViewById(R.id.date_data);
             //members = (TextView)view.findViewById(R.id.members_data);
@@ -67,6 +69,8 @@ public class SharedAlbumAdapter extends RecyclerView.Adapter<SharedAlbumAdapter.
     public void onBindViewHolder(MyViewHolderShared holder, int position) {
         SharedAlbum sh = sharealbumList.get(position);
         holder.name.setText(sh.getName());
+        holder.members.setText(sh.getMembers());
+        holder.count.setText(sh.getCount());
         //holder.count.setText(sh.getCount());
         //holder.date.setText(sh.getDate());
         //holder.members.setText(sh.getMembers());
