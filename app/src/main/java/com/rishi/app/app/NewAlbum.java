@@ -333,13 +333,16 @@ public class NewAlbum extends AppCompatActivity implements NewAlbumAdapter.MyVie
                             JSONObject mediaObj = obj.getJSONObject("outputObj");
                             JSONArray mediaarray = mediaObj.optJSONArray("media");
 
-                            for (int i = 0; i < mediaarray.length(); i++) {
-                                JSONObject mediadetails = mediaarray.optJSONObject(i);
+                            if(mediaarray.length()==0) {
 
-                                Media m = new Media(mediadetails.optString("id"),mediadetails.optString("name"),
-                                        mediadetails.optString("path"),mediadetails.optString("date"));
-                                mediaList.add(m);
-                                nmAdapter.notifyDataSetChanged();
+                                for (int i = 0; i < mediaarray.length(); i++) {
+                                    JSONObject mediadetails = mediaarray.optJSONObject(i);
+
+                                    Media m = new Media(mediadetails.optString("id"), mediadetails.optString("name"),
+                                            mediadetails.optString("path"), mediadetails.optString("date"));
+                                    mediaList.add(m);
+                                    nmAdapter.notifyDataSetChanged();
+                                }
                             }
                         }
 

@@ -47,6 +47,7 @@ public class ToPersonalAlbumAdapter extends SelectableAdapter<ToPersonalAlbumAda
             this.listener = listener;
             thumbnail = (ImageView) view.findViewById(R.id.image_to_personal_album);
             name = (TextView) view.findViewById(R.id.name_to_personal_album);
+            count = (TextView) view.findViewById(R.id.count_to_personal_album);
             selectedOverlay = view.findViewById(R.id.to_personal_album_selected_overlay);
             check = (ImageView) view.findViewById(R.id.to_personal_album_media_image_check);
         }
@@ -93,6 +94,7 @@ public class ToPersonalAlbumAdapter extends SelectableAdapter<ToPersonalAlbumAda
     public void onBindViewHolder(MyViewHolder holder, int position) {
         Album a = personalalbumList.get(position);
         holder.name.setText(a.getName());
+        holder.count.setText(a.getCount() + " Items");
         Context context = holder.thumbnail.getContext();
         Picasso.with(context).load(a.getThumbnail()).error(R.mipmap.ic_launcher).placeholder(R.mipmap.ic_launcher)
                 .into(holder.thumbnail);

@@ -6,6 +6,7 @@ import android.preference.PreferenceActivity;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.view.ActionMode;
 import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -71,7 +72,7 @@ public class ToPersonalAlbum extends AppCompatActivity implements ToPersonalAlbu
         recyclerView = (RecyclerView)findViewById(R.id.recycler_to_personal_album);
         tpaAdapter = new ToPersonalAlbumAdapter(personalalbumList,this);
         recyclerView.setHasFixedSize(true);
-        RecyclerView.LayoutManager mLayoutManager = new GridLayoutManager(this,2);
+        RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(mLayoutManager);
         recyclerView.setAdapter(tpaAdapter);
 
