@@ -50,6 +50,10 @@ public class AlbumMediaDisplay extends AppCompatActivity{
     EditText edit_album_title;
     int count=0;
     String ID,NAME = "";
+    SessionManager sessionManager = new SessionManager(getApplicationContext());
+    String userId = sessionManager.getId();
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -154,7 +158,7 @@ public class AlbumMediaDisplay extends AppCompatActivity{
 
                 try {
                     JSONObject obj = new JSONObject();
-                    obj.put("userId", "1");
+                    obj.put("userId", userId);
                     obj.put("shared","no");
                     obj.put("albumId",ID);
                     obj.put("name",edt1.getText().toString());
@@ -282,7 +286,7 @@ public class AlbumMediaDisplay extends AppCompatActivity{
             public void onClick(DialogInterface arg0, int arg1) {
                 try {
                     JSONObject obj = new JSONObject();
-                    obj.put("userId", "1");
+                    obj.put("userId", userId);
                     obj.put("shared","no");
                     obj.put("albumId",ID);
                     StringEntity jsonString = new StringEntity(obj.toString());
@@ -401,7 +405,7 @@ public class AlbumMediaDisplay extends AppCompatActivity{
         albumMediaList.clear();
         try {
             JSONObject obj = new JSONObject();
-            obj.put("userId", "1");
+            obj.put("userId", userId);
             obj.put("albumId",id);
             StringEntity jsonString = new StringEntity(obj.toString());
 

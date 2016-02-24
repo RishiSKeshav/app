@@ -46,6 +46,7 @@ public class AddMoreMedia extends AppCompatActivity implements AddMoreMediaAdapt
     ArrayList<String> ids= new ArrayList<String>();
     String ID,NAME,SHARED;
     SessionManager sessionManager;
+    String userId=sessionManager.getId();
 
 
 
@@ -149,7 +150,7 @@ public class AddMoreMedia extends AppCompatActivity implements AddMoreMediaAdapt
                 JSONArray a = new JSONArray(pos);
                 JSONArray previous = new JSONArray(ids);
                 JSONObject obj = new JSONObject();
-                obj.put("userId", "1");
+                obj.put("userId", userId);
                 obj.put("albumId", ID);
                 obj.put("name",NAME);
                 obj.put("userName",sessionManager.getName());
@@ -282,7 +283,7 @@ public class AddMoreMedia extends AppCompatActivity implements AddMoreMediaAdapt
         mediaList.clear();
         try {
             JSONObject obj = new JSONObject();
-            obj.put("userId", "1");
+            obj.put("userId", userId);
             StringEntity jsonString = new StringEntity(obj.toString());
 
 

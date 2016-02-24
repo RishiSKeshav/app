@@ -346,7 +346,7 @@ public class FragmentFacebook extends Fragment implements FragmentFacebookAdapte
                             JSONArray a = new JSONArray(userIDS);
                             JSONArray b = new JSONArray(mediaIDS);
                             JSONObject obj = new JSONObject();
-                            obj.put("userId", "1");
+                            obj.put("userId", sessionManager.getId());
                             obj.put("userName",sessionManager.getName());
                             obj.put("mediaId", b);
                             obj.put("sharedUserId", a);
@@ -417,7 +417,7 @@ public class FragmentFacebook extends Fragment implements FragmentFacebookAdapte
                             JSONArray a = new JSONArray(userIDS);
                             JSONArray b = new JSONArray(mediaIDS);
                             JSONObject obj = new JSONObject();
-                            obj.put("userId", "1");
+                            obj.put("userId", sessionManager.getId());
                             obj.put("mediaId", b);
                             obj.put("sharedUserId", a);
                             StringEntity jsonString = new StringEntity(obj.toString());
@@ -496,7 +496,7 @@ public class FragmentFacebook extends Fragment implements FragmentFacebookAdapte
                         try {
                             JSONArray a = new JSONArray(userIDS);
                             JSONObject obj = new JSONObject();
-                            obj.put("userId", "1");
+                            obj.put("userId", sessionManager.getId());
                             obj.put("name",NAME);
                             obj.put("sharedUserId", a);
                             obj.put("albumId",ID);
@@ -567,7 +567,7 @@ public class FragmentFacebook extends Fragment implements FragmentFacebookAdapte
                             JSONArray a = new JSONArray(userIDS);
                             JSONArray b = new JSONArray(mediaIDS);
                             JSONObject obj = new JSONObject();
-                            obj.put("userId", "1");
+                            obj.put("userId", sessionManager.getId());
                             obj.put("mediaId", b);
                             obj.put("sharedUserId", a);
                             StringEntity jsonString = new StringEntity(obj.toString());

@@ -42,6 +42,7 @@ public class ToSharedAlbum extends AppCompatActivity implements ToSharedAlbumAda
     private ArrayList<Integer> pos = new ArrayList<Integer>();
     private ArrayList<Integer> albumid = new ArrayList<>();
     private ArrayList<AlbumMedia> albummediaList = new ArrayList<>();
+    SessionManager sessionManager;
 
     String ID,NAME,SHARED;
     String imagedisplay="";
@@ -50,6 +51,8 @@ public class ToSharedAlbum extends AppCompatActivity implements ToSharedAlbumAda
         super.onCreate(savedInstanceState);
         //Displays Home Screen
         setContentView(R.layout.to_shared_album);
+
+        sessionManager = new SessionManager(getApplicationContext());
 
         Toolbar toolbar= (Toolbar) findViewById(R.id.to_shared_album_toolbar);
         setSupportActionBar(toolbar);
@@ -180,7 +183,7 @@ public class ToSharedAlbum extends AppCompatActivity implements ToSharedAlbumAda
                             JSONArray mediapos = new JSONArray(pos);
                             JSONArray albumids = new JSONArray(albumid);
                             JSONObject obj = new JSONObject();
-                            obj.put("userId", "1");
+                            obj.put("userId",sessionManager.getId() );
                             obj.put("mediaId", mediapos);
                             obj.put("albumId", albumids);
                             obj.put("shared", "yes");
@@ -303,7 +306,7 @@ public class ToSharedAlbum extends AppCompatActivity implements ToSharedAlbumAda
                         try {
                             JSONArray albumids = new JSONArray(albumid);
                             JSONObject obj = new JSONObject();
-                            obj.put("userId", "1");
+                            obj.put("userId", sessionManager.getId());
                             obj.put("albumId", albumids);
                             obj.put("mediaId", ID);
                             StringEntity jsonString = new StringEntity(obj.toString());
@@ -423,7 +426,7 @@ public class ToSharedAlbum extends AppCompatActivity implements ToSharedAlbumAda
         sharedalbumList.clear();
         try {
             JSONObject obj = new JSONObject();
-            obj.put("userId", "1");
+            obj.put("userId", sessionManager.getId());
             obj.put("shared", "yes");
             StringEntity jsonString = new StringEntity(obj.toString());
 

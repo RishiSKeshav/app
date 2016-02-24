@@ -43,6 +43,8 @@ public class PageFragment extends Fragment {
     private SharedAlbumAdapter sAdapter;
     private SharedMediaAdapter smAdapter;
     private SwipeRefreshLayout aswipeRefreshLayout;
+    SessionManager sessionManager;
+
 
     public static PageFragment newInstance(int page) {
         Bundle args = new Bundle();
@@ -56,6 +58,8 @@ public class PageFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mPage = getArguments().getInt(ARG_PAGE);
+
+        sessionManager= new SessionManager(getContext());
     }
 
     @Override
@@ -123,7 +127,7 @@ public class PageFragment extends Fragment {
         albumList.clear();
         try {
             JSONObject obj = new JSONObject();
-            obj.put("userId", "1");
+            obj.put("userId", sessionManager.getId());
             obj.put("shared", "no");
            StringEntity jsonString = new StringEntity(obj.toString());
 
@@ -196,7 +200,7 @@ public class PageFragment extends Fragment {
             sharealbumlist.clear();
             try {
                 JSONObject obj = new JSONObject();
-                obj.put("userId", "1");
+                obj.put("userId", sessionManager.getId());
                 obj.put("shared", "yes");
                 StringEntity jsonString = new StringEntity(obj.toString());
 
@@ -270,7 +274,7 @@ public class PageFragment extends Fragment {
             sharedMediaList.clear();
             try {
                 JSONObject obj = new JSONObject();
-                obj.put("userId", "1");
+                obj.put("userId", sessionManager.getId());
                 StringEntity jsonString = new StringEntity(obj.toString());
 
 

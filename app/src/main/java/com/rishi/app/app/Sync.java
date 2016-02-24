@@ -191,7 +191,7 @@ public class Sync extends AppCompatActivity {
     private  void navHeaderData(){
         try {
             JSONObject obj = new JSONObject();
-            obj.put("userId", "1");
+            obj.put("userId", sessionManager.getId());
             StringEntity jsonString = new StringEntity(obj.toString());
 
 

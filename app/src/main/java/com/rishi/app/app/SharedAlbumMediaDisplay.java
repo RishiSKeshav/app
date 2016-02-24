@@ -192,7 +192,7 @@ public class SharedAlbumMediaDisplay extends AppCompatActivity {
 
                 try {
                     JSONObject obj = new JSONObject();
-                    obj.put("userId", "1");
+                    obj.put("userId", sessionManager.getId());
                     obj.put("shared","yes");
                     obj.put("albumId",ID);
                     obj.put("userName",sessionManager.getName());
@@ -321,7 +321,7 @@ public class SharedAlbumMediaDisplay extends AppCompatActivity {
             public void onClick(DialogInterface arg0, int arg1) {
                 try {
                     JSONObject obj = new JSONObject();
-                    obj.put("userId", "1");
+                    obj.put("userId", sessionManager.getId());
                     obj.put("shared","yes");
                     obj.put("albumId",ID);
                     StringEntity jsonString = new StringEntity(obj.toString());
@@ -441,7 +441,7 @@ public class SharedAlbumMediaDisplay extends AppCompatActivity {
 
         try {
             JSONObject obj = new JSONObject();
-            obj.put("userId", "1");
+            obj.put("userId", sessionManager.getId());
             obj.put("albumId",ID);
             obj.put("shared","yes");
             StringEntity jsonString = new StringEntity(obj.toString());

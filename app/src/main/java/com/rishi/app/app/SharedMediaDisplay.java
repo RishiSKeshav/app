@@ -35,10 +35,14 @@ public class SharedMediaDisplay extends AppCompatActivity{
 
     String imagedisplay,ID;
     ArrayList<Integer> mediasIDS = new ArrayList<>();
+    SessionManager sessionManager;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.shared_media_display);
+
+        sessionManager = new SessionManager(getApplicationContext());
 
         Toolbar shared_media_dsiplay_toolbar= (Toolbar) findViewById(R.id.shared_media_display_toolbar);
         setSupportActionBar(shared_media_dsiplay_toolbar);
@@ -130,7 +134,7 @@ public class SharedMediaDisplay extends AppCompatActivity{
 
                 try {
                     JSONObject obj = new JSONObject();
-                    obj.put("userId", "1");
+                    obj.put("userId", sessionManager.getId());
                     obj.put("mediaId", ID);
                     StringEntity jsonString = new StringEntity(obj.toString());
 

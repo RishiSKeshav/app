@@ -85,7 +85,7 @@ public class EditPassword extends AppCompatActivity {
                 obj.put("action","check_password");
                 obj.put("old_password", edit_old_password.getText().toString());
                 obj.put("new_password",edit_new_password.getText().toString());
-                obj.put("userId","1");
+                obj.put("userId",sessionManager.getId());
                 StringEntity jsonString = new StringEntity(obj.toString());
 
 
