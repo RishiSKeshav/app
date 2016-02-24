@@ -46,6 +46,7 @@ public class CameraFullImageDisplayActivity extends AppCompatActivity {
     private CameraImageAdapter adapter;
     private ViewPager viewPager;
     ImageDatabaseHandler db;
+    SessionManager sessionManager;
 
     ArrayList<Image> photoImageList;
     ArrayList<String> photoList;
@@ -58,6 +59,7 @@ public class CameraFullImageDisplayActivity extends AppCompatActivity {
         setContentView(R.layout.activity_camera_full_image_display);
 
         viewPager = (ViewPager) findViewById(R.id.pager);
+        sessionManager = new SessionManager(getApplicationContext());
 
         Toolbar toolbar= (Toolbar) findViewById(R.id.camera_full_image_toolbar);
         setSupportActionBar(toolbar);
@@ -142,7 +144,7 @@ public class CameraFullImageDisplayActivity extends AppCompatActivity {
         String responseString = null;
 
         HttpClient httpclient = new DefaultHttpClient();
-        HttpPost httppost = new HttpPost("http://52.89.2.186/project/webservice/uploadMedia1.php");
+        HttpPost httppost = new HttpPost("http://52.89.2.186/project/webservice/cameraMediaUpload.php");
 
         try {
             AndroidMultiPartEntity entity = new AndroidMultiPartEntity(
@@ -160,7 +162,7 @@ public class CameraFullImageDisplayActivity extends AppCompatActivity {
 
             entity.addPart("image", cbFile);
             // Extra parameters if you want to pass to server
-            entity.addPart("userId", new StringBody("1"));
+            entity.addPart("userId", new StringBody(sessionManager.getId()));
           //  entity.addPart("name", new StringBody(filename));
 
             totalSize = entity.getContentLength();
@@ -174,23 +176,25 @@ public class CameraFullImageDisplayActivity extends AppCompatActivity {
             if (statusCode == 200) {
                 // Server response
                 responseString = EntityUtils.toString(r_entity);
-
-                Log.d("response",responseString);
+                Log.d("response 200",responseString);
 
                 try {
                     JSONObject obj = new JSONObject(responseString);
 
-
-
+                    Log.d("obh",String.valueOf(obj));
                     if (obj.getBoolean("error")) {
+                        Log.d("error true","true");
+
                         Toast.makeText(getApplicationContext(), obj.getString("message"), Toast.LENGTH_LONG).show();
                     } else {
 
-                        Toast.makeText(getApplicationContext(), obj.getString("message"), Toast.LENGTH_LONG).show();
-                       /* int mediaId = Integer.parseInt(obj.getString("mediaId"));
-                        String link = obj.getString("link");*/
+                        Log.d("error false:", responseString);
+                        //Toast.makeText(getApplicationContext(), obj.getString("message"), Toast.LENGTH_LONG).show();
+                        int mediaId = Integer.parseInt(obj.getString("mediaId"));
+                        String link = obj.getString("link");
+                        String fileName = obj.getString("fileName");
 
-                        //Log.d("link",link);
+                        Log.d("link",link);
 
                         File folder = new File(Environment.getExternalStorageDirectory().toString() + "/app");
                         boolean success = true;
@@ -198,18 +202,23 @@ public class CameraFullImageDisplayActivity extends AppCompatActivity {
                             success = folder.mkdir();
                         }
 
-                        /*db = new ImageDatabaseHandler(getApplicationContext(), folder.toString());
+                        db = new ImageDatabaseHandler(getApplicationContext(), folder.toString());
 
                         Image image = new Image();
 
                         image.setId(mediaId);
                         image.setPath(filePath);
-                        image.setName(filename);
+                        image.setName(fileName);
                         image.setLink(link);
 
-                        db.addImage(image);*/
+                        db.addImage(image);
 
                         count--;
+
+                        File f = new File(filePath);
+                        f.delete();
+
+                        Log.d("image inserted",String.valueOf(db.getCount()));
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -219,7 +228,7 @@ public class CameraFullImageDisplayActivity extends AppCompatActivity {
                 responseString = "Error occurred! Http Status Code: "
                         + statusCode;
 
-                Log.d("response",responseString);
+                Log.d("response error",responseString);
             }
 
         } catch (ClientProtocolException e) {
@@ -228,134 +237,4 @@ public class CameraFullImageDisplayActivity extends AppCompatActivity {
             responseString = e.toString();
         }
     }
-
-
-
-   class  uploadAsyncTask extends AsyncTask<ArrayList<Image>,Integer,Integer> {
-
-       @Override
-       protected void onPostExecute(Integer leftCount) {
-           super.onPostExecute(leftCount);
-
-       }
-
-       @Override
-       protected Integer doInBackground(ArrayList<Image>... params) {
-
-          for(int i=0;i<params[0].size();i++){
-
-              String imgPath=params[0].get(i).getPath();
-
-              if(isCancelled())
-                  break;
-
-               String filePath=params[0].get(i).getPath();
-               String filename = params[0].get(i).getName();
-
-               /*Bitmap bitmap = BitmapFactory.decodeFile(filePath);
-
-               ByteArrayOutputStream stream = new ByteArrayOutputStream();
-               bitmap.compress(Bitmap.CompressFormat.PNG, 50, stream);
-               byte[] byte_arr = stream.toByteArray();
-               String encodedString = Base64.encodeToString(byte_arr, 0);*/
-
-               String responseString = null;
-
-               HttpClient httpclient = new DefaultHttpClient();
-               HttpPost httppost = new HttpPost("http://52.89.2.186/project/webservice/uploadMedia1.php");
-
-               try {
-                   AndroidMultiPartEntity entity = new AndroidMultiPartEntity(
-                           new AndroidMultiPartEntity.ProgressListener() {
-
-                               @Override
-                               public void transferred(long num) {
-
-                                   double y = (long) (((float) num / totalSize) * 100);
-
-                                   publishProgress((int) y);
-                               }
-                           });
-
-                   ContentBody cbFile = new FileBody(new File(filePath),"image/jpeg");
-
-                   entity.addPart("image", cbFile);
-
-                   // Extra parameters if you want to pass to server
-                   entity.addPart("userId", new StringBody("1"));
-                   entity.addPart("filename", new StringBody(filename));
-
-                   totalSize = entity.getContentLength();
-                   httppost.setEntity(entity);
-
-                   // Making server call
-                   HttpResponse response = httpclient.execute(httppost);
-                   HttpEntity r_entity = response.getEntity();
-
-                   int statusCode = response.getStatusLine().getStatusCode();
-                   if (statusCode == 200) {
-                       // Server response
-                       responseString = EntityUtils.toString(r_entity);
-
-                       Log.d("response",responseString);
-
-                       try {
-                           JSONObject obj = new JSONObject(responseString);
-
-                           if (obj.getBoolean("error")) {
-/*                               Toast.makeText(getApplicationContext(), obj.getString("msg"), Toast.LENGTH_LONG).show();*/
-                           } else {
-
-
-
-                               File folder = new File(Environment.getExternalStorageDirectory().toString() + "/app");
-                               boolean success = true;
-                               if (!folder.exists()) {
-                                   success = folder.mkdir();
-                               }
-
-                               /*db = new ImageDatabaseHandler(getApplicationContext(), folder.toString());
-
-                               Image image = new Image();
-
-                               image.setId(mediaId);
-                               image.setPath(filePath);
-                               image.setName(filename);
-
-                               db.addImage(image);
-*/
-                               count--;
-                           }
-
-
-                       } catch (JSONException e) {
-                           e.printStackTrace();
-                       }
-
-                   } else {
-                       responseString = "Error occurred! Http Status Code: "
-                               + statusCode;
-                   }
-
-               } catch (ClientProtocolException e) {
-                   responseString = e.toString();
-               } catch (IOException e) {
-                   responseString = e.toString();
-               }
-           }
-           return count;
-       }
-
-       @Override
-       protected void onPreExecute() {
-
-           super.onPreExecute();
-       }
-
-       protected void onProgressUpdate(Integer... progress) {
-
-       }
-   }
-
-
 }

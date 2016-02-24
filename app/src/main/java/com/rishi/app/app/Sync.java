@@ -324,16 +324,32 @@ public class Sync extends AppCompatActivity {
             boolean isMobileData = activeNetwork.getType() == ConnectivityManager.TYPE_MOBILE;
             boolean isWIFI = activeNetwork.getType() == ConnectivityManager.TYPE_WIFI;
 
-            if(isMobileData && sessionManager.getPhotoSyncStatus()==false ) {
+            if(sessionManager.getSyncStatus()==true){
+
+                if(!isWIFI){
+                    serviceIntent = new Intent(Sync.this, ImageUploadService.class);
+                    stopService(serviceIntent);
+                }
+                if(isWIFI){
+                    initializeImageLists();
+                    serviceIntent = new Intent(Sync.this, ImageUploadService.class);
+                    serviceIntent.putParcelableArrayListExtra("unSyncedImageList", unSyncedImageList);
+                    startService(serviceIntent);
+                }
+                if(isMobileData && sessionManager.getPhotoSyncStatus()==false){
+                    serviceIntent = new Intent(Sync.this, ImageUploadService.class);
+                    stopService(serviceIntent);
+                }
+
+                if(isMobileData && sessionManager.getPhotoSyncStatus()==true){
+                    serviceIntent = new Intent(Sync.this, ImageUploadService.class);
+                    serviceIntent.putParcelableArrayListExtra("unSyncedImageList", unSyncedImageList);
+                    startService(serviceIntent);
+                }
+            }
+            else{
                 serviceIntent = new Intent(Sync.this, ImageUploadService.class);
                 stopService(serviceIntent);
-            }
-
-            if(isWIFI){
-                initializeImageLists();
-                serviceIntent = new Intent(Sync.this, ImageUploadService.class);
-                serviceIntent.putParcelableArrayListExtra("unSyncedImageList", unSyncedImageList);
-                startService(serviceIntent);
             }
         }
     }

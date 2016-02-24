@@ -14,7 +14,7 @@ import android.widget.TextView;
  * Created by amitrajula on 2/20/16.
  */
 public class EmailAuthentication extends AppCompatActivity {
-    String EMAILID,CODE,ACTION;
+    String EMAILID,CODE,ACTION="";
     EditText et;
 
     @Override

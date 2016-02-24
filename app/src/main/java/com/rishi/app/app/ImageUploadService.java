@@ -55,6 +55,7 @@ public class ImageUploadService extends Service {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
+        sessionManager = new SessionManager(getApplicationContext());
         unSyncedImageList = intent.getParcelableArrayListExtra("unSyncedImageList");
         startUpload(unSyncedImageList);
         return START_STICKY;
@@ -105,6 +106,7 @@ public class ImageUploadService extends Service {
         intent.putExtra("leftCount", count);
         sendBroadcast(intent);
 
+        Log.d("userID",sessionManager.getId());
         String filePath=img.getPath();
         String filename = img.getName();
 
@@ -139,7 +141,7 @@ public class ImageUploadService extends Service {
             entity.addPart("image", new StringBody(encodedString));
 
             // Extra parameters if you want to pass to server
-            entity.addPart("userId", new StringBody("1"));
+            entity.addPart("userId", new StringBody(sessionManager.getId()));
             entity.addPart("filename", new StringBody(filename));
 
             totalSize = entity.getContentLength();
