@@ -32,6 +32,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.ByteArrayOutputStream;
+import java.io.File;
 import java.io.FileDescriptor;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -107,43 +108,48 @@ public class UploadDP extends AppCompatActivity {
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+        if(resultCode != RESULT_CANCELED) {
+            if (requestCode == PICK_FROM_FILE) {
+                if (Build.VERSION.SDK_INT < 19) {
+                    mImageCaptureUri = data.getData();
 
-        if(requestCode == PICK_FROM_FILE){
-            if (Build.VERSION.SDK_INT < 19) {
-                mImageCaptureUri = data.getData();
+                } else {
+                    mImageCaptureUri = data.getData();
+                    ParcelFileDescriptor parcelFileDescriptor;
+                    try {
+                        parcelFileDescriptor = getContentResolver()
+                                .openFileDescriptor(mImageCaptureUri, "r");
+                        FileDescriptor fileDescriptor = parcelFileDescriptor
+                                .getFileDescriptor();
+                        bitmap = BitmapFactory
+                                .decodeFileDescriptor(fileDescriptor);
+                        parcelFileDescriptor.close();
 
-            } else {
-                mImageCaptureUri = data.getData();
-                ParcelFileDescriptor parcelFileDescriptor;
-                try {
-                    parcelFileDescriptor = getContentResolver()
-                            .openFileDescriptor(mImageCaptureUri, "r");
-                    FileDescriptor fileDescriptor = parcelFileDescriptor
-                            .getFileDescriptor();
-                    bitmap = BitmapFactory
-                            .decodeFileDescriptor(fileDescriptor);
-                    parcelFileDescriptor.close();
-
-                } catch (FileNotFoundException e) {
-                    e.printStackTrace();
-                } catch (IOException e) {
-                    // TODO Auto-generated catch block
-                    e.printStackTrace();
+                    } catch (FileNotFoundException e) {
+                        e.printStackTrace();
+                    } catch (IOException e) {
+                        // TODO Auto-generated catch block
+                        e.printStackTrace();
+                    }
                 }
+
+                performCrop();
+
             }
+            if (requestCode == PICK_FROM_CAPTURE) {
+                mImageCaptureUri = data.getData();
+                performCrop();
+            }
+            if (requestCode == PIC_CROP) {
+                Bundle extras = data.getExtras();
+                if (extras != null) {
+                    bitmap = extras.getParcelable("data");
+                    encodeImagetoString();
 
-            performCrop();
+                    File f = new File(mImageCaptureUri.getPath());
+                    f.delete();
 
-        }
-        if(requestCode == PICK_FROM_CAPTURE){
-            mImageCaptureUri = data.getData();
-            performCrop();
-        }
-        if(requestCode == PIC_CROP){
-            Bundle extras = data.getExtras();
-            if(extras != null) {
-                bitmap = extras.getParcelable("data");
-                encodeImagetoString();
+                }
             }
         }
 
@@ -276,6 +282,19 @@ public class UploadDP extends AppCompatActivity {
         return true;
     }
 
+    @Override
+    public boolean onPrepareOptionsMenu(Menu menu) {
+        super.onPrepareOptionsMenu(menu);
+
+        if(sessionManager.getDisplayPicture().equals(null)) {
+            menu.findItem(R.id.skip).setVisible(true);
+            menu.findItem(R.id.next).setVisible(false);
+        }else{
+            menu.findItem(R.id.skip).setVisible(false);
+            menu.findItem(R.id.next).setVisible(true);
+        }
+        return true;
+    }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -287,6 +306,14 @@ public class UploadDP extends AppCompatActivity {
             this.startActivity(i);
 
         }
+
+        if (id == R.id.next) {
+
+            Intent i = new Intent(this,HomeActivity.class);
+            this.startActivity(i);
+
+        }
+
         return super.onOptionsItemSelected(item);
     }
 

@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.hardware.Camera;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Environment;
 import android.support.design.widget.FloatingActionButton;
@@ -27,7 +26,6 @@ import org.apache.http.HttpResponse;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpPost;
-import org.apache.http.entity.mime.content.ContentBody;
 import org.apache.http.entity.mime.content.FileBody;
 import org.apache.http.entity.mime.content.StringBody;
 import org.apache.http.impl.client.DefaultHttpClient;
@@ -49,7 +47,6 @@ public class CameraFullImageDisplayActivity extends AppCompatActivity {
     SessionManager sessionManager;
 
     ArrayList<Image> photoImageList;
-    ArrayList<String> photoList;
     long totalSize=0;
     int count=0;
 
@@ -67,7 +64,7 @@ public class CameraFullImageDisplayActivity extends AppCompatActivity {
 
         Intent intent = getIntent();
         photoImageList =intent.getParcelableArrayListExtra("photoImageList");
-        photoList = intent.getStringArrayListExtra("photoFileList");
+        ArrayList<String> photoList = intent.getStringArrayListExtra("photoFileList");
 
         Log.d("photolist size",photoList.toString());
 
@@ -101,20 +98,19 @@ public class CameraFullImageDisplayActivity extends AppCompatActivity {
                 return true;
             case R.id.camera_upload:
 
-                startUpload(photoList);
+                startUpload(photoImageList);
+                Log.i("eee","reached");
                 return true;
         }
         return(super.onOptionsItemSelected(item));
     }
 
 
-    public void startUpload(final ArrayList<String> unSyncedImageList)
+    public void startUpload(final ArrayList<Image> unSyncedImageList)
     {
         Log.d("Service: count ", String.valueOf(unSyncedImageList.size()));
 
         count = unSyncedImageList.size();
-
-        //new uploadAsyncTask().execute(unSyncedImageList);
 
         Runnable r = new Runnable() {
             public void run() {
@@ -133,13 +129,26 @@ public class CameraFullImageDisplayActivity extends AppCompatActivity {
 
         Thread t = new Thread(r);
         t.start();
+
+        db = new ImageDatabaseHandler(getApplicationContext(), Environment.getExternalStorageDirectory().toString()+ "/app");
+        Log.d("Db count", String.valueOf(db.getCount()));
     }
-    public void upload(String path,int count)
+    public void upload(Image img,int count)
     {
-        String filePath=path;
+        Intent intent = new Intent("IMAGE_ACTION");
+        intent.putExtra("imgPath", img.path);
+        intent.putExtra("leftCount", count);
+        sendBroadcast(intent);
 
+        String filePath=img.getPath();
+        String filename = img.getName();
 
-        Log.d("Camera filePath",filePath);
+        /*Bitmap bitmap = BitmapFactory.decodeFile(filePath);
+
+        ByteArrayOutputStream stream = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.PNG, 50, stream);
+        byte[] byte_arr = stream.toByteArray();
+        String encodedString = Base64.encodeToString(byte_arr, 0);*/
 
         String responseString = null;
 
@@ -152,15 +161,19 @@ public class CameraFullImageDisplayActivity extends AppCompatActivity {
 
                         @Override
                         public void transferred(long num) {
+
+                            double y = (long) (((float) num / totalSize) * 100);
+
+                            Intent i = new Intent("PROGRESS_ACTION");
+                            i.putExtra("NUMBER",(int)y);
+                            sendBroadcast(i);
                         }
                     });
 
             // Adding file data to http body
             //entity.addPart("image", new StringBody(encodedString));
 
-            ContentBody cbFile = new FileBody(new File(filePath),"image/jpeg");
-
-            entity.addPart("image", cbFile);
+            entity.addPart("image", new FileBody(new File(filePath)));
             // Extra parameters if you want to pass to server
             entity.addPart("userId", new StringBody(sessionManager.getId()));
           //  entity.addPart("name", new StringBody(filename));

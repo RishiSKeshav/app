@@ -52,7 +52,7 @@
 
     <Button
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="40dp"
         android:id="@+id/get_code_send"
         android:layout_below="@id/get_code_name2"
         android:layout_marginLeft="10dp"
@@ -64,13 +64,13 @@
 
     <Button
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="40dp"
         android:id="@+id/get_code_not_my_account"
         android:layout_below="@+id/get_code_send"
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"
         android:layout_marginTop="15dp"
-        android:background="#fff"
+        android:background="@drawable/border"
         android:text="Not my Account"
         android:textColor="@color/color_primary"/>
 

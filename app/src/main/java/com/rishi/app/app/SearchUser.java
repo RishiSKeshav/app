@@ -1,5 +1,6 @@
 package com.rishi.app.app;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.preference.PreferenceActivity;
@@ -7,6 +8,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -48,9 +50,22 @@ public class SearchUser extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
+                InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
+                imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
+
                 String etEmail = et.getText().toString();
 
-                fetchUser(etEmail);
+                if(Utility.validateEmail(etEmail)) {
+
+                    fetchUser(etEmail);
+                }else{
+                    SnackbarManager.show(
+                            com.nispok.snackbar.Snackbar.with(SearchUser.this)
+                                    .text("Invalid email address")
+                                    .duration(com.nispok.snackbar.Snackbar.SnackbarDuration.LENGTH_SHORT)
+                    );
+
+                }
 
 
 //                Intent i = new Intent(SearchUser.this,GetCode.class);
@@ -105,16 +120,17 @@ public class SearchUser extends AppCompatActivity {
                         } else {
 
                             JSONObject user = obj.getJSONObject("outputObj");
-                            if (user.getJSONObject("user").length() == 0) {
+                            JSONObject userdetails = user.getJSONObject("user");
+                            if (userdetails.optString("id").equals("nil")) {
 
                                 SnackbarManager.show(
-                                        com.nispok.snackbar.Snackbar.with(getApplicationContext())
+                                        com.nispok.snackbar.Snackbar.with((SearchUser.this))
                                                 .text("No record matched for email address")
                                                 .duration(com.nispok.snackbar.Snackbar.SnackbarDuration.LENGTH_SHORT)
                                 );
 
                             } else {
-                                    JSONObject userdetails = user.getJSONObject("user");
+                                   // JSONObject userdetails = user.getJSONObject("user");
                                     Intent i = new Intent(SearchUser.this,GetCode.class);
                                     i.putExtra("name",userdetails.optString("name"));
                                     i.putExtra("emailId",userdetails.optString("emailId"));

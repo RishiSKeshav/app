@@ -40,17 +40,17 @@ public class MyGcmPushReceiver extends GcmListenerService {
         Log.e(TAG, "image: " + sharedAlbumId);
         Log.e(TAG, "timestamp: " + timestamp);
 
-        if (!NotificationUtils.isAppIsInBackground(getApplicationContext())) {
-
-            // app is in foreground, broadcast the push message
-            Intent pushNotification = new Intent(Config.PUSH_NOTIFICATION);
-            pushNotification.putExtra("message", message);
-            LocalBroadcastManager.getInstance(this).sendBroadcast(pushNotification);
-
-            // play notification sound
-            NotificationUtils notificationUtils = new NotificationUtils();
-            notificationUtils.playNotificationSound();
-        } else {
+//        if (!NotificationUtils.isAppIsInBackground(getApplicationContext())) {
+//
+//            // app is in foreground, broadcast the push message
+//            Intent pushNotification = new Intent(Config.PUSH_NOTIFICATION);
+//            pushNotification.putExtra("message", message);
+//            LocalBroadcastManager.getInstance(this).sendBroadcast(pushNotification);
+//
+//            // play notification sound
+//            NotificationUtils notificationUtils = new NotificationUtils();
+//            notificationUtils.playNotificationSound();
+//        } else {
 
             Intent resultIntent = new Intent(getApplicationContext(), SharedAlbumMediaDisplay.class);
             resultIntent.putExtra("message", message);
@@ -62,7 +62,7 @@ public class MyGcmPushReceiver extends GcmListenerService {
             } else {
                 showNotificationMessageWithBigImage(getApplicationContext(), title, message, timestamp, resultIntent, image);
             }
-        }
+        //}
     }
 
     /**

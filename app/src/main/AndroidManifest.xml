@@ -121,10 +121,14 @@
         <activity android:name=".RegistrationDetails" >
         </activity>
         <activity android:name=".UploadDP" />
-        <activity android:name=".Invitations" />
-        <activity android:name=".InvitationsContacts" />
-        <activity android:name=".SearchUser" />
-        <activity android:name=".GetCode" />
+        <activity android:name=".Invitations"
+            android:parentActivityName=".HomeActivity"/>
+        <activity android:name=".InvitationsContacts"
+            android:parentActivityName=".Invitations"/>
+        <activity android:name=".SearchUser"
+            android:parentActivityName=".LoginActivity"/>
+        <activity android:name=".GetCode"
+            android:parentActivityName=".SearchUser"/>
         <activity android:name=".PasswordReset" />
 
         <receiver

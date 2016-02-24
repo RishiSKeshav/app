@@ -69,6 +69,13 @@ public class Utility {
         return matcher.matches();
     }
 
+    public static boolean checkMatchPassword(String password,String confirmpassword){
+        if(password.equals(confirmpassword)){
+            return true;
+        }
+        return false;
+    }
+
 
 
     /**
