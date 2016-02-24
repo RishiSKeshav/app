@@ -44,7 +44,8 @@ public class CameraFullImageDisplayActivity extends AppCompatActivity {
     private CameraImageAdapter adapter;
     private ViewPager viewPager;
     ImageDatabaseHandler db;
-    SessionManager sessionManager;
+    SessionManager sessionManager = new SessionManager(getApplicationContext());
+    String userId = sessionManager.getId();
 
     ArrayList<Image> photoImageList;
     long totalSize=0;
@@ -56,7 +57,6 @@ public class CameraFullImageDisplayActivity extends AppCompatActivity {
         setContentView(R.layout.activity_camera_full_image_display);
 
         viewPager = (ViewPager) findViewById(R.id.pager);
-        sessionManager = new SessionManager(getApplicationContext());
 
         Toolbar toolbar= (Toolbar) findViewById(R.id.camera_full_image_toolbar);
         setSupportActionBar(toolbar);
@@ -99,7 +99,7 @@ public class CameraFullImageDisplayActivity extends AppCompatActivity {
             case R.id.camera_upload:
 
                 startUpload(photoImageList);
-                Log.i("eee","reached");
+                Log.i("eee", "reached");
                 return true;
         }
         return(super.onOptionsItemSelected(item));
@@ -175,7 +175,7 @@ public class CameraFullImageDisplayActivity extends AppCompatActivity {
 
             entity.addPart("image", new FileBody(new File(filePath)));
             // Extra parameters if you want to pass to server
-            entity.addPart("userId", new StringBody(sessionManager.getId()));
+            entity.addPart("userId", new StringBody(userId));
           //  entity.addPart("name", new StringBody(filename));
 
             totalSize = entity.getContentLength();

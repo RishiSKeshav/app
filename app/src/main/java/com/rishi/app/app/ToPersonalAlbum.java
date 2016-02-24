@@ -45,10 +45,14 @@ public class ToPersonalAlbum extends AppCompatActivity implements ToPersonalAlbu
     String ID,NAME,SHARED;
     String imagedisplay="";
 
+    SessionManager sessionManager;
+
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         //Displays Home Screen
         setContentView(R.layout.to_personal_album);
+
+        sessionManager = new SessionManager(getApplicationContext());
 
         Intent i = getIntent();
         if(i.hasExtra("imagedisplay")){
@@ -169,7 +173,7 @@ public class ToPersonalAlbum extends AppCompatActivity implements ToPersonalAlbu
                                 JSONArray mediapos = new JSONArray(pos);
                                 JSONArray albumids = new JSONArray(albumid);
                                 JSONObject obj = new JSONObject();
-                                obj.put("userId", "1");
+                                obj.put("userId",sessionManager.getId() );
                                 obj.put("mediaId", mediapos);
                                 obj.put("albumId", albumids);
                                 obj.put("shared", "no");
@@ -289,7 +293,7 @@ public class ToPersonalAlbum extends AppCompatActivity implements ToPersonalAlbu
                         try {
                             JSONArray albumids = new JSONArray(albumid);
                             JSONObject obj = new JSONObject();
-                            obj.put("userId", "1");
+                            obj.put("userId", sessionManager.getId());
                             obj.put("albumId", albumids);
                             obj.put("mediaId", ID);
                             StringEntity jsonString = new StringEntity(obj.toString());
@@ -413,7 +417,7 @@ public class ToPersonalAlbum extends AppCompatActivity implements ToPersonalAlbu
         personalalbumList.clear();
         try {
             JSONObject obj = new JSONObject();
-            obj.put("userId", "1");
+            obj.put("userId", sessionManager.getId());
             obj.put("shared", "no");
             StringEntity jsonString = new StringEntity(obj.toString());
 

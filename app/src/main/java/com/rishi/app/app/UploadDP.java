@@ -145,10 +145,6 @@ public class UploadDP extends AppCompatActivity {
                 if (extras != null) {
                     bitmap = extras.getParcelable("data");
                     encodeImagetoString();
-
-                    File f = new File(mImageCaptureUri.getPath());
-                    f.delete();
-
                 }
             }
         }

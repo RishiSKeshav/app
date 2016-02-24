@@ -50,11 +50,15 @@ public class SharedAlbumMediaSelect extends AppCompatActivity implements SharedA
     int count = 0;
     String ID, NAME = "";
 
+    SessionManager sessionManager;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         //Displays Home Screen
         setContentView(R.layout.shared_album_media_select);
+
+        sessionManager = new SessionManager(getApplicationContext());
 
         mediacount = (TextView) findViewById(R.id.media_count);
         edit_album_title = (EditText) findViewById(R.id.edit_album_title);
@@ -307,7 +311,7 @@ public class SharedAlbumMediaSelect extends AppCompatActivity implements SharedA
 
         try {
             JSONObject obj = new JSONObject();
-            obj.put("userId", "1");
+            obj.put("userId", sessionManager.getId());
             obj.put("albumId",ID);
             obj.put("shared","yes");
             StringEntity jsonString = new StringEntity(obj.toString());

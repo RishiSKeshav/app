@@ -49,6 +49,7 @@ public class NewAlbum extends AppCompatActivity implements NewAlbumAdapter.MyVie
     private ActionMode actionMode;
     private ArrayList<Integer> pos = new ArrayList<Integer>();
     private EditText album_title;
+    SessionManager sessionManager;
     String SHARED;
 
     View main_layout;
@@ -59,6 +60,8 @@ public class NewAlbum extends AppCompatActivity implements NewAlbumAdapter.MyVie
         super.onCreate(savedInstanceState);
         //Displays Home Screen
         setContentView(R.layout.new_album);
+
+        sessionManager = new SessionManager(getApplicationContext());
 
         main_layout = (View) findViewById(R.id.main_layout);
 
@@ -171,7 +174,7 @@ public class NewAlbum extends AppCompatActivity implements NewAlbumAdapter.MyVie
                         try {
                             JSONArray a = new JSONArray(pos);
                             JSONObject obj = new JSONObject();
-                            obj.put("userId", "1");
+                            obj.put("userId",sessionManager.getId());
                             obj.put("shared", "No");
                             obj.put("name", at);
                             obj.put("mediaId", a);
@@ -307,7 +310,7 @@ public class NewAlbum extends AppCompatActivity implements NewAlbumAdapter.MyVie
         mediaList.clear();
         try {
             JSONObject obj = new JSONObject();
-            obj.put("userId", "1");
+            obj.put("userId", sessionManager.getId());
             StringEntity jsonString = new StringEntity(obj.toString());
 
 

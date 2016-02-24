@@ -261,7 +261,7 @@ public class HomeActivity extends AppCompatActivity {
     private  void navHeaderData(){
         try {
             JSONObject obj = new JSONObject();
-            obj.put("userId", "1");
+            obj.put("userId", sessionManager.getId());
             StringEntity jsonString = new StringEntity(obj.toString());
 
 
@@ -501,7 +501,7 @@ public class HomeActivity extends AppCompatActivity {
                // prgDialog.setMessage("Calling Upload");
                 // Put converted Image string into Async Http Post param
                params.put("image", encodedString);
-                params.put("userId", "1");
+                params.put("userId", sessionManager.getId());
                 params.put("filename",System.currentTimeMillis() + ".jpg");
                 triggerImageUpload();
             }

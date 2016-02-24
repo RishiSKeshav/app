@@ -94,7 +94,7 @@ public class Notification extends AppCompatActivity {
     private  void navHeaderData(){
         try {
             JSONObject obj = new JSONObject();
-            obj.put("userId", "1");
+            obj.put("userId", sessionManager.getId());
             StringEntity jsonString = new StringEntity(obj.toString());
 
 
@@ -232,7 +232,7 @@ public class Notification extends AppCompatActivity {
 
         try {
             JSONObject obj = new JSONObject();
-            obj.put("userId", "124");
+            obj.put("userId", sessionManager.getId());
             StringEntity jsonString = new StringEntity(obj.toString());
 
 

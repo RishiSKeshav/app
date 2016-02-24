@@ -39,6 +39,7 @@ public class InvitationsContacts extends AppCompatActivity
     private InvitationsContactsAdapter icAdapter;
     ArrayList<InvitationsContactsModel> contactsList = new ArrayList<>();
     ArrayList<String> databaseNumberList = new ArrayList<>();
+    SessionManager sessionManager;
 
 
     @Override
@@ -49,6 +50,8 @@ public class InvitationsContacts extends AppCompatActivity
         Toolbar toolbar= (Toolbar) findViewById(R.id.invitations_contacts_toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+        sessionManager = new SessionManager(getApplicationContext());
 
         recyclerView = (RecyclerView)findViewById(R.id.invitations_contacts_recyclerview);
         recyclerView.addItemDecoration(new DividerItemDecoration(this, LinearLayoutManager.VERTICAL));
@@ -67,7 +70,7 @@ public class InvitationsContacts extends AppCompatActivity
 
         try {
             JSONObject obj = new JSONObject();
-            obj.put("userId", "1");
+            obj.put("userId", sessionManager.getId());
             StringEntity jsonString = new StringEntity(obj.toString());
 
 

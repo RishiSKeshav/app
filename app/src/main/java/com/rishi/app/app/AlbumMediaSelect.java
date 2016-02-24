@@ -83,6 +83,8 @@ public class AlbumMediaSelect extends AppCompatActivity implements AlbumMediaSel
     String ID,NAME;
     ShareDialog shareDialog;
     CallbackManager callbackManager;
+    SessionManager sessionManager = new SessionManager(getApplicationContext());
+    String userId = sessionManager.getId();
 
     private FloatingActionButton menu_fab1;
     private FloatingActionButton menu_fab2;
@@ -415,7 +417,7 @@ public class AlbumMediaSelect extends AppCompatActivity implements AlbumMediaSel
                 try {
                     JSONArray a = new JSONArray(pos);
                     JSONObject obj = new JSONObject();
-                    obj.put("userId", "1");
+                    obj.put("userId", userId);
                     obj.put("mediaId", a);
                     obj.put("albumId", ID);
                     StringEntity jsonString = new StringEntity(obj.toString());

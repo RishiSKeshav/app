@@ -25,14 +25,15 @@ import java.io.UnsupportedEncodingException;
  * Created by amitrajula on 2/13/16.
  */
 public class EditEmail extends AppCompatActivity {
-    SessionManager sessionManager;
+    SessionManager sessionManager= new SessionManager(getApplicationContext());;
     TextView emailTV;
+    String userId=sessionManager.getId();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.edit_email);
 
-        sessionManager = new SessionManager(getApplicationContext());
         Toolbar toolbar= (Toolbar) findViewById(R.id.edit_email_toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -61,7 +62,7 @@ public class EditEmail extends AppCompatActivity {
                 JSONObject obj = new JSONObject();
                 obj.put("action","edit_emailId");
                 obj.put("emailId", emailTV.getText().toString());
-                obj.put("userId","1");
+                obj.put("userId",userId);
                 StringEntity jsonString = new StringEntity(obj.toString());
 
 
