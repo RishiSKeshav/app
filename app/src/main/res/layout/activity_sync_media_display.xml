@@ -32,17 +32,73 @@
             />
     </android.support.v7.widget.Toolbar>
 
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/sync_images_toolbar"
+        android:id="@+id/text_unsync_image_list"
+        android:text="fff"
+        android:layout_marginTop="5dp"
+        android:layout_marginLeft="5dp"
+        android:textSize="14sp"/>
 
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/unsync_media_recycler_view"
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:layout_below="@id/text_unsync_image_list"
+        tools:context=".MainActivity$PlaceholderFragment"/>
+
+
+
+    <TextView
+        android:id="@+id/text_sync_image_lsit"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/unsync_media_recycler_view"
+        android:layout_marginLeft="5dp"
+        android:layout_marginTop="10dp"
+        android:text="fff"
+        />
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/sync_media_recycler_view"
         xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:layout_marginTop="5dp"
-        android:layout_below="@id/sync_images_toolbar"
+        android:layout_below="@id/text_sync_image_lsit"
         tools:context=".MainActivity$PlaceholderFragment"/>
+
+
+    <TextView
+        android:id="@+id/text_camera_image_lsit"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/unsync_media_recycler_view"
+        android:layout_marginLeft="5dp"
+        android:layout_marginTop="10dp"
+        android:text="fff"
+        />
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/camera_media_recycler_view"
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:layout_below="@id/text_camera_image_lsit"
+        tools:context=".MainActivity$PlaceholderFragment"/>
+
+
+
+
+
 
 </RelativeLayout>
 

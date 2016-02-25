@@ -478,7 +478,6 @@ public class ContactsFragment extends Fragment implements ContactsFragmentAdapte
             phoneNumber = phones.getString(phones.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER));
             String no = phoneNumber.replaceAll("\\p{P}","");
             String no1= no.replaceAll("\\s+","");
-
             numbers.add(no1);
 
         }

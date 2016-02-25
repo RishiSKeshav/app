@@ -1,5 +1,6 @@
 package com.rishi.app.app;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.preference.PreferenceActivity;
@@ -170,6 +171,15 @@ public class NewAlbum extends AppCompatActivity implements NewAlbumAdapter.MyVie
 
                     } else {
 
+
+
+                        final ProgressDialog progressDialog = new ProgressDialog(NewAlbum.this,
+                                R.style.AppTheme_Dark_Dialog);
+                        progressDialog.setIndeterminate(true);
+                        progressDialog.setMessage("Creating Album...");
+                        progressDialog.show();
+
+
                         String at = album_title.getText().toString();
                         try {
                             JSONArray a = new JSONArray(pos);
@@ -205,6 +215,7 @@ public class NewAlbum extends AppCompatActivity implements NewAlbumAdapter.MyVie
                                             );
                                         } else {
 
+                                            progressDialog.hide();
 
                                             SnackbarManager.show(
                                                     com.nispok.snackbar.Snackbar.with(getApplicationContext())
@@ -229,6 +240,9 @@ public class NewAlbum extends AppCompatActivity implements NewAlbumAdapter.MyVie
 
                                                                 @Override
                                                                 public void onDismiss(com.nispok.snackbar.Snackbar snackbar) {
+
+
+
 
                                                                     try {
                                                                         Intent homeIntent = new Intent(getApplicationContext(), AlbumMediaDisplay.class);

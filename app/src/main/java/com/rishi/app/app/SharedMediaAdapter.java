@@ -27,6 +27,8 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.List;
 
+import de.hdodenhof.circleimageview.CircleImageView;
+
 public class SharedMediaAdapter extends RecyclerView.Adapter<SharedMediaAdapter.MyViewHolderSharedMedia> {
 
     private List<SharedMedia> sharedMediaList;
@@ -34,13 +36,16 @@ public class SharedMediaAdapter extends RecyclerView.Adapter<SharedMediaAdapter.
     //Context context;
 
     public class MyViewHolderSharedMedia extends RecyclerView.ViewHolder implements View.OnClickListener {
-        public TextView name, date;
+        public TextView name, date,fromName;
         public ImageView path;
+        public CircleImageView fromdisplayPicture;
 
         public MyViewHolderSharedMedia(View view) {
             super(view);
             view.setOnClickListener(this);
             path = (ImageView) view.findViewById(R.id.path);
+            fromName = (TextView) view.findViewById(R.id.shared_user_name);
+            fromdisplayPicture = (CircleImageView) view.findViewById(R.id.shared_user_displayPicture);
 
         }
 
@@ -76,11 +81,16 @@ public class SharedMediaAdapter extends RecyclerView.Adapter<SharedMediaAdapter.
     @Override
     public void onBindViewHolder(MyViewHolderSharedMedia holder, int position) {
         SharedMedia sm = sharedMediaList.get(position);
+        holder.fromName.setText(sm.getFromName());
         //holder.name.setText(sm.getName());
         //holder.date.setText(sm.getDate());
         Context context = holder.path.getContext();
         Picasso.with(context).load(sm.getPath()).error(R.mipmap.ic_launcher).placeholder(R.mipmap.ic_launcher)
                 .into(holder.path);
+
+        Context context1 = holder.fromdisplayPicture.getContext();
+        Picasso.with(context).load(sm.getFromdisplayPicture()).error(R.mipmap.ic_launcher).placeholder(R.mipmap.ic_launcher)
+                .into(holder.fromdisplayPicture);
     }
 
     @Override

@@ -362,8 +362,14 @@ public class HomeActivity extends AppCompatActivity {
                 break;
 
             case R.id.nav_fifth_fragment:
+                final ProgressDialog progressDialog = new ProgressDialog(HomeActivity.this,
+                        R.style.AppTheme_Dark_Dialog);
+                progressDialog.setIndeterminate(true);
+                progressDialog.setMessage("Creating Album...");
+                progressDialog.show();
                 Intent i5 = new Intent(HomeActivity.this,SyncMediaDisplayActivity.class);
                 startActivity(i5);
+                progressDialog.hide();
                 break;
 
             default:
@@ -420,7 +426,7 @@ public class HomeActivity extends AppCompatActivity {
                 bitmap = extras.getParcelable("data");
                 encodeImagetoString();
 
-                Log.i("fff",picturePath.toString());
+              //  Log.i("fff",picturePath.toString());
 //                File f  = new File(mImageCaptureUri.);
 //                f.delete();
             }

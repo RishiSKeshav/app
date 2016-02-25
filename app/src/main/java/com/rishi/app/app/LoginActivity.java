@@ -82,6 +82,7 @@ public class LoginActivity extends ActionBarActivity {
 
 
         loginButton.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
+
             @Override
             public void onSuccess(LoginResult loginResult) {
 
@@ -93,6 +94,12 @@ public class LoginActivity extends ActionBarActivity {
 
                                 Log.e("responsefrom login: ", response + "");
                                 try {
+
+                                    final ProgressDialog progressDialog = new ProgressDialog(LoginActivity.this,
+                                            R.style.AppTheme_Dark_Dialog);
+                                    progressDialog.setIndeterminate(true);
+                                    progressDialog.setMessage("Creating Album...");
+                                    progressDialog.show();
 //                                    user.email = object.getString("email").toString();
 
                                     JSONObject obj = new JSONObject();
@@ -134,8 +141,10 @@ public class LoginActivity extends ActionBarActivity {
                                                         if (checkPlayServices()) {
                                                             registerGCM();
                                                         }
+                                                        progressDialog.hide();
                                                         navigatetoHomeActivity();
                                                     }else{
+                                                        progressDialog.hide();
                                                         navigatetoHomeActivity();
                                                     }
 

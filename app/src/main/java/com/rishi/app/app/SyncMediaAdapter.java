@@ -25,8 +25,8 @@ import java.util.List;
 
 public class SyncMediaAdapter extends RecyclerView.Adapter<SyncMediaAdapter.MyViewHolder> {
 
-    private ArrayList<SyncImages> syncMediaList = new ArrayList<SyncImages>();
-    private ArrayList<String> syncMediaPathList = new ArrayList<String>();
+    private ArrayList<Image> unsyncMediaList = new ArrayList<Image>();
+    private ArrayList<String> unsyncMediaPathList = new ArrayList<String>();
     private Bitmap bitmap;
     //String path = "";
     //Context context;
@@ -56,13 +56,13 @@ public class SyncMediaAdapter extends RecyclerView.Adapter<SyncMediaAdapter.MyVi
             Context context = view.getContext();
             Intent intent = new Intent(context,SyncMediaFullScreenActivity.class);
             intent.putExtra("Position", pos);
-            intent.putStringArrayListExtra("data",syncMediaPathList);
+            intent.putStringArrayListExtra("data",unsyncMediaPathList);
             context.startActivity(intent);
         }
     }
 
-    public SyncMediaAdapter(ArrayList<SyncImages> List) {
-        this.syncMediaList = List;
+    public SyncMediaAdapter(ArrayList<Image> List) {
+        this.unsyncMediaList = List;
 
     }
 
@@ -76,26 +76,26 @@ public class SyncMediaAdapter extends RecyclerView.Adapter<SyncMediaAdapter.MyVi
 
     @Override
     public void onBindViewHolder(MyViewHolder holder, int position) {
-        SyncImages sm = syncMediaList.get(position);
+        Image sm = unsyncMediaList.get(position);
 
         String imgPath;
 
-        if(sm.getSyncStatus()) {
-
-            Log.d("no overlay", String.valueOf(sm.getSyncStatus()));
-
-            Context context = holder.path.getContext();
-            Picasso.with(context).load(sm.getLink()).error(R.mipmap.ic_launcher).placeholder(R.mipmap.ic_launcher)
-                    .into(holder.path);
-
-            holder.check.setVisibility(View.INVISIBLE);
-
-            imgPath = syncMediaList.get(position).getLink();
-            syncMediaPathList.add(imgPath);
-        }
-        else
-        {
-            Log.d("overlay", String.valueOf(sm.getSyncStatus()));
+//        if(sm.getSyncStatus()) {
+//
+//            Log.d("no overlay", String.valueOf(sm.getSyncStatus()));
+//
+//            Context context = holder.path.getContext();
+//            Picasso.with(context).load(sm.getLink()).error(R.mipmap.ic_launcher).placeholder(R.mipmap.ic_launcher)
+//                    .into(holder.path);
+//
+//            holder.check.setVisibility(View.INVISIBLE);
+//
+//            imgPath = syncMediaList.get(position).getLink();
+//            syncMediaPathList.add(imgPath);
+//        }
+//        else
+//        {
+          ///  Log.d("overlay", String.valueOf(sm.()));
 
 
             Context c = holder.path.getContext();
@@ -108,9 +108,9 @@ public class SyncMediaAdapter extends RecyclerView.Adapter<SyncMediaAdapter.MyVi
 
             holder.check.setVisibility(View.VISIBLE);
 
-            imgPath = syncMediaList.get(position).getPath();
-            syncMediaPathList.add(imgPath);
-        }
+            imgPath = unsyncMediaList.get(position).getPath();
+            unsyncMediaPathList.add(imgPath);
+       // }
     }
 
     public static Bitmap decodeSampledBitmapFromPath(String path, int reqWidth,
@@ -163,6 +163,6 @@ public class SyncMediaAdapter extends RecyclerView.Adapter<SyncMediaAdapter.MyVi
 
     @Override
     public int getItemCount() {
-        return syncMediaList.size();
+        return unsyncMediaList.size();
     }
 }

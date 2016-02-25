@@ -1,5 +1,6 @@
 package com.rishi.app.app;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.hardware.camera2.params.Face;
 import android.os.Bundle;
@@ -19,6 +20,7 @@ import android.widget.TextView;
 import com.rishi.app.app.FragmentFacebook;
 import com.facebook.FacebookSdk;
 
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -43,6 +45,12 @@ public class Userbase extends AppCompatActivity {
         Toolbar toolbar= (Toolbar) findViewById(R.id.userbase_toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+        final ProgressDialog progressDialog = new ProgressDialog(Userbase.this,
+                R.style.AppTheme_Dark_Dialog);
+        progressDialog.setIndeterminate(true);
+        progressDialog.setMessage("Creating Album...");
+        progressDialog.show();
 
         Intent i = getIntent();
         ACTION = i.getStringExtra("action");
@@ -83,6 +91,8 @@ public class Userbase extends AppCompatActivity {
         tabLayout.setupWithViewPager(viewPager);
 
         setupTabIcons();
+
+        progressDialog.hide();
 
 
 
@@ -154,7 +164,7 @@ public class Userbase extends AppCompatActivity {
 
         TextView tabTwo = (TextView) LayoutInflater.from(this).inflate(R.layout.userbase_custom_tab, null);
         tabTwo.setText("Contacts");
-        tabTwo.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.ic_person_black_48dp, 0, 0);
+        tabTwo.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.contacts, 0, 0);
         tabLayout.getTabAt(1).setCustomView(tabTwo);
 
 //        TextView tabThree = (TextView) LayoutInflater.from(this).inflate(R.layout.userbase_custom_tab, null);

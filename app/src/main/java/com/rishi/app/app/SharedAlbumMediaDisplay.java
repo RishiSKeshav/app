@@ -120,7 +120,7 @@ public class SharedAlbumMediaDisplay extends AppCompatActivity {
         if (id == R.id.add_media) {
             ArrayList<String> ids = new ArrayList<String>();
             for(int i=0;i<sharedalbumMediaList.size();i++){
-                if(sharedalbumMediaList.get(i).getId().equals("1")){
+                if(sharedalbumMediaList.get(i).getId().equals(sessionManager.getId())){
                     ArrayList<Media> m = sharedalbumMediaList.get(i).getMedia();
                     for(int j=0;j<m.size();j++){
                         ids.add(m.get(j).getId());
@@ -213,6 +213,7 @@ public class SharedAlbumMediaDisplay extends AppCompatActivity {
                         public void onSuccess(String response) {
                             // called when response HTTP status is "200 OK"
                             try {
+                                Log.i("name",response.toString());
                                 JSONObject obj = new JSONObject(response);
 
                                 if (obj.getBoolean("error")) {

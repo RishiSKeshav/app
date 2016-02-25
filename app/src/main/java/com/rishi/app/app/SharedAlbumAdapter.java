@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -39,12 +40,12 @@ public class SharedAlbumAdapter extends RecyclerView.Adapter<SharedAlbumAdapter.
 
         @Override
         public void onClick(View view) {
+
             Context context = view.getContext();
             SharedAlbum sm = sharealbumList.get(getPosition());
             Intent intent = new Intent(context,SharedAlbumMediaDisplay.class);
             intent.putExtra("Id",sm.getId());
             intent.putExtra("Name",sm.getName());
-
             context.startActivity(intent);
 
         }

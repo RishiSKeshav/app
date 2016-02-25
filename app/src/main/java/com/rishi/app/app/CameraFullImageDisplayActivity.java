@@ -46,7 +46,6 @@ public class CameraFullImageDisplayActivity extends AppCompatActivity {
     ImageDatabaseHandler db;
     SessionManager sessionManager;
 
-
     ArrayList<Image> photoImageList;
     long totalSize=0;
     int count=0;
@@ -59,6 +58,8 @@ public class CameraFullImageDisplayActivity extends AppCompatActivity {
         sessionManager = new SessionManager(getApplicationContext());
 
         viewPager = (ViewPager) findViewById(R.id.pager);
+
+        sessionManager = new SessionManager(getApplicationContext());
 
         Toolbar toolbar= (Toolbar) findViewById(R.id.camera_full_image_toolbar);
         setSupportActionBar(toolbar);
