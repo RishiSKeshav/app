@@ -44,8 +44,8 @@ public class CameraFullImageDisplayActivity extends AppCompatActivity {
     private CameraImageAdapter adapter;
     private ViewPager viewPager;
     ImageDatabaseHandler db;
-    SessionManager sessionManager = new SessionManager(getApplicationContext());
-    String userId = sessionManager.getId();
+    SessionManager sessionManager;
+
 
     ArrayList<Image> photoImageList;
     long totalSize=0;
@@ -55,6 +55,8 @@ public class CameraFullImageDisplayActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_camera_full_image_display);
+
+        sessionManager = new SessionManager(getApplicationContext());
 
         viewPager = (ViewPager) findViewById(R.id.pager);
 
@@ -175,7 +177,7 @@ public class CameraFullImageDisplayActivity extends AppCompatActivity {
 
             entity.addPart("image", new FileBody(new File(filePath)));
             // Extra parameters if you want to pass to server
-            entity.addPart("userId", new StringBody(userId));
+            entity.addPart("userId", new StringBody(sessionManager.getId()));
           //  entity.addPart("name", new StringBody(filename));
 
             totalSize = entity.getContentLength();

@@ -53,6 +53,8 @@ public class CameraActivity extends Activity {
     private ArrayList<Image> photoImageList;
     ImageView imgPreview,camera_cancel;
 
+    int cameraFlag=0;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -60,6 +62,8 @@ public class CameraActivity extends Activity {
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
         myContext = this;
 
+        Log.d("camera", "on create");
+        cameraFlag=0;
         layout = (RelativeLayout) findViewById(R.id.layout);
         photoFileList = new ArrayList<String>();
         photoImageList = new ArrayList<Image>();
@@ -122,6 +126,7 @@ public class CameraActivity extends Activity {
 
     public void onResume() {
         super.onResume();
+        cameraFlag=0;
         if (!hasCamera(myContext)) {
             Toast toast = Toast.makeText(myContext, "Sorry, your phone does not have a camera!", Toast.LENGTH_LONG);
             toast.show();
@@ -136,7 +141,10 @@ public class CameraActivity extends Activity {
             mCamera = Camera.open(findBackFacingCamera());
             mPicture = getPictureCallback();
             mPreview.refreshCamera(mCamera);
+
         }
+
+        Log.d("camera","on resume");
     }
 
     public void initialize() {
@@ -178,6 +186,7 @@ public class CameraActivity extends Activity {
                 //set a picture callback
                 //refresh the preview
 
+                cameraFlag=0;
                 mCamera = Camera.open(cameraId);
                 mPicture = getPictureCallback();
                 mPreview.refreshCamera(mCamera);
@@ -189,6 +198,7 @@ public class CameraActivity extends Activity {
                 //set a picture callback
                 //refresh the preview
 
+                cameraFlag=1;
                 mCamera = Camera.open(cameraId);
                 mPicture = getPictureCallback();
                 mPreview.refreshCamera(mCamera);
@@ -244,9 +254,19 @@ public class CameraActivity extends Activity {
                 byte[] pictureBytes;
 
                 Bitmap thePicture = BitmapFactory.decodeByteArray(data, 0, data.length);
-                Matrix m = new Matrix();
-                m.postRotate(90);
-                thePicture = Bitmap.createBitmap(thePicture, 0, 0, thePicture.getWidth(), thePicture.getHeight(), m, true);
+
+
+                if(cameraFlag==0) {
+                    Matrix m = new Matrix();
+                    m.postRotate(90);
+                    thePicture = Bitmap.createBitmap(thePicture, 0, 0, thePicture.getWidth(), thePicture.getHeight(), m, true);
+                }
+                else {
+                    Matrix m = new Matrix();
+                    m.postRotate(-90);
+                    thePicture = Bitmap.createBitmap(thePicture, 0, 0, thePicture.getWidth(), thePicture.getHeight(), m, true);
+                }
+
 
                 ByteArrayOutputStream bos = new ByteArrayOutputStream();
                 thePicture.compress(Bitmap.CompressFormat.JPEG, 100, bos);
@@ -280,7 +300,7 @@ public class CameraActivity extends Activity {
                 } finally {
                 }
 
-                Toast.makeText(getApplicationContext(), "Picture Saved", Toast.LENGTH_LONG).show();
+                //Toast.makeText(getApplicationContext(), "Picture Saved", Toast.LENGTH_LONG).show();
 
                 if(imgPreview.getParent()!=null)
                     ((ViewGroup)imgPreview.getParent()).removeView(imgPreview); // <- fix
