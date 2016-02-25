@@ -39,11 +39,12 @@ import de.hdodenhof.circleimageview.CircleImageView;
 
 public class SyncMediaDisplayActivity extends AppCompatActivity {
 
-    private ArrayList<SyncImages> imageList;
-    private ArrayList<SyncImages> unSyncedImageList;
-    private ArrayList<SyncImages> syncedImageList;
+    private ArrayList<com.rishi.app.app.Image> imageList;
+    private ArrayList<com.rishi.app.app.Image> syncedImageList;
+    private ArrayList<com.rishi.app.app.Image> unSyncedImageList;
     private ArrayList<String> syncedPathList;
-    private ArrayList<SyncImages> syncMediaDisplayList = new ArrayList<SyncImages>();
+    private ArrayList<String> cameraImageList;
+    private ArrayList<String> syncImageList;
 
     private DrawerLayout mDrawer;
     private NavigationView nvDrawer;
@@ -54,7 +55,9 @@ public class SyncMediaDisplayActivity extends AppCompatActivity {
     SyncImages sImage;
     SyncMediaAdapter syncAdapter;
 
-    RecyclerView recyclerView;
+    RecyclerView recyclerView1;
+    RecyclerView recyclerView2;
+    RecyclerView recyclerView3;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -87,23 +90,23 @@ public class SyncMediaDisplayActivity extends AppCompatActivity {
         initializeImageLists();
 
         recyclerView = (RecyclerView)findViewById(R.id.sync_media_recycler_view);
-        syncAdapter = new SyncMediaAdapter(syncMediaDisplayList);
+        syncAdapter = new SyncMediaAdapter(unSyncedImageList);
         recyclerView.setHasFixedSize(true);
         RecyclerView.LayoutManager mLayoutManager = new GridLayoutManager(this,4);
         recyclerView.setLayoutManager(mLayoutManager);
         recyclerView.setAdapter(syncAdapter);
 
-        generateMainList();
+        //generateMainList();
 
 
-        for(SyncImages img:syncMediaDisplayList){
+        /*for(SyncImages img:syncMediaDisplayList){
 
             if(img.getLink().equals("localPath"))
                 Log.d("unsynced",img.getPath() + " " + String.valueOf(img.getSyncStatus()));
             else
                 Log.d("synced",img.getLink() + " " + String.valueOf(img.getSyncStatus()));
 
-        }
+        }*/
 
     }
 
@@ -247,36 +250,19 @@ public class SyncMediaDisplayActivity extends AppCompatActivity {
         generateImageList();
         generateDBImageList();
         generateUnsyncedImageList();
-
+        generateCameraImageList();
+        generateSyncImageList();
     }
 
-    private void generateMainList()
-    {
-        for(SyncImages img:unSyncedImageList){
-            syncMediaDisplayList.add(img);
 
-            syncAdapter.notifyDataSetChanged();
-        }
-
-        for(SyncImages img:syncedImageList){
-            syncMediaDisplayList.add(img);
-
-            syncAdapter.notifyDataSetChanged();
-        }
-    }
 
     private void generateUnsyncedImageList() {
 
-        unSyncedImageList = new ArrayList<SyncImages>();
+        unSyncedImageList = new ArrayList<Image>();
 
-        for(SyncImages img : imageList){
-            Boolean flag = false;
-            for(SyncImages sImg:syncedImageList) {
-                if(img.getPath().equals(sImg.getPath()))
-                    flag=true;
-            }
+        for(com.rishi.app.app.Image img : imageList){
 
-            if(flag==false)
+            if(!syncedPathList.contains(img.path))
                 unSyncedImageList.add(img);
         }
     }
@@ -287,17 +273,28 @@ public class SyncMediaDisplayActivity extends AppCompatActivity {
 
         if(db!=null){
 
-            syncedImageList=db.getAllImages();
+            syncedPathList= db.getAllImagePath();
+
+            Iterator<String> abc = syncedPathList.iterator();
+
+            while(abc.hasNext())
+            {
+
+                Log.d("DB ",abc.next());
+            }
+
         }
         else
             Log.i("databasae_name","DB not created");
 
-//        Log.d("DB list count ",String.valueOf(syncedPathList.size()));
+        Log.d("DB list count ",String.valueOf(syncedPathList.size()));
     }
+
+
 
     private void generateImageList() {
 
-        imageList = new ArrayList<SyncImages>();
+        imageList = new ArrayList<com.rishi.app.app.Image>();
 
         ContentResolver cr = this.getContentResolver();
 
@@ -309,17 +306,61 @@ public class SyncMediaDisplayActivity extends AppCompatActivity {
 
         if (cursor.moveToFirst()) {
             do {
-                SyncImages image = new SyncImages();
+                com.rishi.app.app.Image image = new com.rishi.app.app.Image();
 
                 image.setPath(cursor.getString(0));
                 image.setName(cursor.getString(1));
-                image.setLink("localPath");
-                image.setSyncStatus(false);
 
                 imageList.add(image);
             } while (cursor.moveToNext());
         }
 
         Log.d("image list count", String.valueOf(imageList.size()));
+    }
+
+    private void generateCameraImageList() {
+
+        ImageDatabaseHandler db = new ImageDatabaseHandler(this, Environment.getExternalStorageDirectory().toString()+ "/app");
+
+        if(db!=null){
+
+            cameraImageList= db.getAllCameraImagePath();
+
+            Iterator<String> abc = cameraImageList.iterator();
+
+            while(abc.hasNext())
+            {
+
+                Log.d("DB ",abc.next());
+            }
+
+        }
+        else
+            Log.i("databasae_name","DB not created");
+
+        Log.d("DB list count ",String.valueOf(cameraImageList.size()));
+    }
+
+    private void generateSyncImageList() {
+
+        ImageDatabaseHandler db = new ImageDatabaseHandler(this, Environment.getExternalStorageDirectory().toString()+ "/app");
+
+        if(db!=null){
+
+            syncImageList= db.getAllSyncImagePath();
+
+            Iterator<String> abc = syncImageList.iterator();
+
+            while(abc.hasNext())
+            {
+
+                Log.d("DB ",abc.next());
+            }
+
+        }
+        else
+            Log.i("databasae_name","DB not created");
+
+        Log.d("DB list count ",String.valueOf(syncImageList.size()));
     }
 }

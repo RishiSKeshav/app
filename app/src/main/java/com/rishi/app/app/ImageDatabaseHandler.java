@@ -6,6 +6,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.os.Environment;
+import android.util.Log;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -34,10 +35,13 @@ public class ImageDatabaseHandler extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase db) {
 
+        Log.d("Database handler","Database created");
+
         String CREATE_CONTACTS_TABLE = "CREATE TABLE IF NOT EXISTS " + TABLE_SyncedMedia + "( media_id INTEGER PRIMARY KEY,"
                 + " name TEXT,"
                 + " path TEXT,"
-                + " link TEXT"
+                + " link TEXT,"
+                + " source TEXT"
                  + ")";
 
         db.execSQL(CREATE_CONTACTS_TABLE);
@@ -57,6 +61,22 @@ public class ImageDatabaseHandler extends SQLiteOpenHelper {
         values.put("name", img.getName());
         values.put("path", img.getPath());
         values.put("link", img.getLink());
+        values.put("source", "sync");
+
+        // Inserting Row
+        db.insert(TABLE_SyncedMedia, null, values);
+        db.close(); // Closing database connection
+    }
+
+    void addCameraImage(Image img) {
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        ContentValues values = new ContentValues();
+        values.put("media_id", img.getId());
+        values.put("name", img.getName());
+        values.put("path", img.getPath());
+        values.put("link", img.getLink());
+        values.put("source","camera");
 
         // Inserting Row
         db.insert(TABLE_SyncedMedia, null, values);
@@ -123,5 +143,45 @@ public class ImageDatabaseHandler extends SQLiteOpenHelper {
         cursor.close();
         // return contact list
         return syncedImagePathList;
+    }
+
+    public ArrayList<String> getAllCameraImagePath() {
+        ArrayList<String> cameraImagePathList = new ArrayList<String>();
+        // Select All Query
+        String selectQuery = "SELECT  * FROM " + TABLE_SyncedMedia +" where source='camera'";
+
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery(selectQuery, null);
+
+        // looping through all rows and adding to list
+        if (cursor.moveToFirst()) {
+            do {
+                cameraImagePathList.add(cursor.getString(2));
+            } while (cursor.moveToNext());
+        }
+
+        cursor.close();
+        // return contact list
+        return cameraImagePathList;
+    }
+
+    public ArrayList<String> getAllSyncImagePath() {
+        ArrayList<String> syncImagePathList = new ArrayList<String>();
+        // Select All Query
+        String selectQuery = "SELECT  * FROM " + TABLE_SyncedMedia +" where source='sync'";
+
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery(selectQuery, null);
+
+        // looping through all rows and adding to list
+        if (cursor.moveToFirst()) {
+            do {
+                syncImagePathList.add(cursor.getString(2));
+            } while (cursor.moveToNext());
+        }
+
+        cursor.close();
+        // return contact list
+        return syncImagePathList;
     }
 }

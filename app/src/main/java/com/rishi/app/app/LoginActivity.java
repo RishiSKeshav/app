@@ -233,6 +233,8 @@ public class LoginActivity extends ActionBarActivity {
 
         Log.d("databasae_name", "Database SEtup started");
 
+        Log.i("databasae_name",db.getDatabaseName());
+
         /*String uuid = UUID.randomUUID().toString();
 
         com.rishi.app.app.Image img = new com.rishi.app.app.Image();
