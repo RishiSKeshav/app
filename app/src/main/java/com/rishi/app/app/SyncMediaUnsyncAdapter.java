@@ -23,7 +23,7 @@ import java.util.List;
  * Created by RishiS on 2/19/2016.
  */
 
-public class SyncMediaAdapter extends RecyclerView.Adapter<SyncMediaAdapter.MyViewHolder> {
+public class SyncMediaUnsyncAdapter extends RecyclerView.Adapter<SyncMediaUnsyncAdapter.MyViewHolder> {
 
     private ArrayList<Image> unsyncMediaList = new ArrayList<Image>();
     private ArrayList<String> unsyncMediaPathList = new ArrayList<String>();
@@ -61,8 +61,9 @@ public class SyncMediaAdapter extends RecyclerView.Adapter<SyncMediaAdapter.MyVi
         }
     }
 
-    public SyncMediaAdapter(ArrayList<Image> List) {
+    public SyncMediaUnsyncAdapter(ArrayList<Image> List) {
         this.unsyncMediaList = List;
+        Log.d("SyncMediaUnsyncAdapter",String.valueOf(unsyncMediaList.size()));
 
     }
 

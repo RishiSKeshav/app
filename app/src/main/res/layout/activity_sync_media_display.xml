@@ -5,6 +5,11 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+<!--
+<ScrollView
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+-->
 
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
@@ -47,7 +52,7 @@
         xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="150dp"
         android:layout_marginTop="5dp"
         android:layout_below="@id/text_unsync_image_list"
         tools:context=".MainActivity$PlaceholderFragment"/>
@@ -69,7 +74,7 @@
         xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="150dp"
         android:layout_marginTop="5dp"
         android:layout_below="@id/text_sync_image_lsit"
         tools:context=".MainActivity$PlaceholderFragment"/>
@@ -79,7 +84,7 @@
         android:id="@+id/text_camera_image_lsit"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/unsync_media_recycler_view"
+        android:layout_below="@id/sync_media_recycler_view"
         android:layout_marginLeft="5dp"
         android:layout_marginTop="10dp"
         android:text="fff"
@@ -90,7 +95,7 @@
         xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="100dp"
         android:layout_marginTop="5dp"
         android:layout_below="@id/text_camera_image_lsit"
         tools:context=".MainActivity$PlaceholderFragment"/>
@@ -102,6 +107,7 @@
 
 </RelativeLayout>
 
+<!--</ScrollView>-->
 
     <android.support.design.widget.NavigationView
         android:id="@+id/nvView"

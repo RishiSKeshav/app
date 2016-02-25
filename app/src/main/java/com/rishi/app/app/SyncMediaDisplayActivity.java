@@ -53,7 +53,9 @@ public class SyncMediaDisplayActivity extends AppCompatActivity {
 
 
     SyncImages sImage;
-    SyncMediaAdapter syncAdapter;
+    SyncMediaUnsyncAdapter syncMediaUnsyncAdapter;
+    SyncMediaCameraAdapter syncMediaCameraAdapter;
+    SyncMediaSyncAdapter syncMediaSyncAdapter;
 
     RecyclerView recyclerView1;
     RecyclerView recyclerView2;
@@ -89,12 +91,26 @@ public class SyncMediaDisplayActivity extends AppCompatActivity {
 
         initializeImageLists();
 
-        recyclerView = (RecyclerView)findViewById(R.id.sync_media_recycler_view);
-        syncAdapter = new SyncMediaAdapter(unSyncedImageList);
-        recyclerView.setHasFixedSize(true);
-        RecyclerView.LayoutManager mLayoutManager = new GridLayoutManager(this,4);
-        recyclerView.setLayoutManager(mLayoutManager);
-        recyclerView.setAdapter(syncAdapter);
+        recyclerView1 = (RecyclerView)findViewById(R.id.unsync_media_recycler_view);
+        syncMediaUnsyncAdapter = new SyncMediaUnsyncAdapter(unSyncedImageList);
+        recyclerView1.setHasFixedSize(true);
+        RecyclerView.LayoutManager mLayoutManager1 = new GridLayoutManager(this,4);
+        recyclerView1.setLayoutManager(mLayoutManager1);
+        recyclerView1.setAdapter(syncMediaUnsyncAdapter);
+
+        recyclerView2 = (RecyclerView)findViewById(R.id.sync_media_recycler_view);
+        syncMediaSyncAdapter = new SyncMediaSyncAdapter(syncImageList);
+        recyclerView2.setHasFixedSize(true);
+        RecyclerView.LayoutManager mLayoutManager2 = new GridLayoutManager(this,4);
+        recyclerView2.setLayoutManager(mLayoutManager2);
+        recyclerView2.setAdapter(syncMediaSyncAdapter);
+
+        recyclerView3 = (RecyclerView)findViewById(R.id.camera_media_recycler_view);
+        syncMediaCameraAdapter = new SyncMediaCameraAdapter(cameraImageList);
+        recyclerView3.setHasFixedSize(true);
+        RecyclerView.LayoutManager mLayoutManager3 = new GridLayoutManager(this,4);
+        recyclerView3.setLayoutManager(mLayoutManager3);
+        recyclerView3.setAdapter(syncMediaCameraAdapter);
 
         //generateMainList();
 

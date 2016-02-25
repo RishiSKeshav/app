@@ -60,6 +60,8 @@ public class SyncMediaSyncAdapter extends RecyclerView.Adapter<SyncMediaSyncAdap
     public SyncMediaSyncAdapter(ArrayList<String> List) {
         this.syncMediaList = List;
 
+        Log.d("SyncMediaSyncAdapter",String.valueOf(syncMediaList.size()));
+
     }
 
     @Override
