@@ -224,12 +224,16 @@ public class FragmentFacebook extends Fragment implements FragmentFacebookAdapte
                                                     JSONObject userObj = obj.getJSONObject("outputObj");
                                                     JSONObject userDetails = userObj.getJSONObject("user");
 
-                                                    FacebookFriends ff = new FacebookFriends(userDetails.optString("id"), userDetails.optString("name"), userDetails.optString("emailId"),
-                                                            userDetails.optString("mobileNo"), userDetails.optString("displayPicture"),
-                                                            userDetails.optString("facebookId"), false);
+                                                    if(userDetails.length() == 0){
 
-                                                    friends.add(ff);
-                                                    ffAdapter.notifyDataSetChanged();
+                                                    }else {
+                                                        FacebookFriends ff = new FacebookFriends(userDetails.optString("id"), userDetails.optString("name"), userDetails.optString("emailId"),
+                                                                userDetails.optString("mobileNo"), userDetails.optString("displayPicture"),
+                                                                userDetails.optString("facebookId"), false);
+
+                                                        friends.add(ff);
+                                                        ffAdapter.notifyDataSetChanged();
+                                                    }
 
                                                 }
 
