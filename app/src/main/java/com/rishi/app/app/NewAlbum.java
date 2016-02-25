@@ -333,10 +333,14 @@ public class NewAlbum extends AppCompatActivity implements NewAlbumAdapter.MyVie
                             Toast.makeText(getApplicationContext(), obj.getString("msg"), Toast.LENGTH_LONG).show();
                         } else {
 
+                            Log.i("res",response.toString());
+
                             JSONObject mediaObj = obj.getJSONObject("outputObj");
                             JSONArray mediaarray = mediaObj.optJSONArray("media");
 
                             if(mediaarray.length()==0) {
+
+                            }else {
 
                                 for (int i = 0; i < mediaarray.length(); i++) {
                                     JSONObject mediadetails = mediaarray.optJSONObject(i);
@@ -346,6 +350,7 @@ public class NewAlbum extends AppCompatActivity implements NewAlbumAdapter.MyVie
                                     mediaList.add(m);
                                     nmAdapter.notifyDataSetChanged();
                                 }
+
                             }
                         }
 

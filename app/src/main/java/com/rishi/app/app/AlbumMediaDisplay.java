@@ -50,8 +50,7 @@ public class AlbumMediaDisplay extends AppCompatActivity{
     EditText edit_album_title;
     int count=0;
     String ID,NAME = "";
-    SessionManager sessionManager = new SessionManager(getApplicationContext());
-    String userId = sessionManager.getId();
+    SessionManager sessionManager;
 
 
     @Override
@@ -59,6 +58,7 @@ public class AlbumMediaDisplay extends AppCompatActivity{
         super.onCreate(savedInstanceState);
         //Displays Home Screen
         setContentView(R.layout.album_media_display);
+        sessionManager = new SessionManager(getApplicationContext());
         Intent intent = getIntent();
         ID = intent.getStringExtra("Id");
         NAME = intent.getStringExtra("Name");
@@ -158,7 +158,7 @@ public class AlbumMediaDisplay extends AppCompatActivity{
 
                 try {
                     JSONObject obj = new JSONObject();
-                    obj.put("userId", userId);
+                    obj.put("userId", sessionManager.getId());
                     obj.put("shared","no");
                     obj.put("albumId",ID);
                     obj.put("name",edt1.getText().toString());
@@ -286,7 +286,7 @@ public class AlbumMediaDisplay extends AppCompatActivity{
             public void onClick(DialogInterface arg0, int arg1) {
                 try {
                     JSONObject obj = new JSONObject();
-                    obj.put("userId", userId);
+                    obj.put("userId", sessionManager.getId());
                     obj.put("shared","no");
                     obj.put("albumId",ID);
                     StringEntity jsonString = new StringEntity(obj.toString());
@@ -405,7 +405,7 @@ public class AlbumMediaDisplay extends AppCompatActivity{
         albumMediaList.clear();
         try {
             JSONObject obj = new JSONObject();
-            obj.put("userId", userId);
+            obj.put("userId", sessionManager.getId());
             obj.put("albumId",id);
             StringEntity jsonString = new StringEntity(obj.toString());
 
@@ -446,7 +446,7 @@ public class AlbumMediaDisplay extends AppCompatActivity{
 
                                     mediacount.setText(mediaarray.length() + " Photos");
                             }else{
-                                Toast.makeText(getApplicationContext(),"No Data",Toast.LENGTH_LONG).show();
+                                //Toast.makeText(getApplicationContext(),"No Data",Toast.LENGTH_LONG).show();
                             }
                         }
 

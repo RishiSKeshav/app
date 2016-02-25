@@ -6,22 +6,21 @@
     >
 
     <item android:id="@+id/delete_album_media_select"
-    android:title="Dekete"
+    android:title="Delete"
     android:icon="@android:drawable/ic_menu_delete"
     yourapp:showAsAction="ifRoom"
         />
 
-    <item android:id="@+id/download"
-        android:title="Download"
-        android:icon="@android:drawable/stat_sys_download_done"
-        yourapp:showAsAction="ifRoom"
-        />
+    <!--<item android:id="@+id/download"-->
+        <!--android:title="Download"-->
+        <!--android:icon="@android:drawable/stat_sys_download_done"-->
+        <!--yourapp:showAsAction="ifRoom"-->
+        <!--/>-->
 
     <item android:id="@+id/save"
         android:title="Forward"
         yourapp:showAsAction="ifRoom"
         >
-
         <menu>
 
             <item android:id="@+id/to_personal_album"
@@ -34,7 +33,11 @@
 
             <item android:id="@+id/to_others"
 
-                android:title="User" />
+                android:title="Friends" />
+
+            <item android:id="@+id/download"
+
+                android:title="Download" />
 
         </menu>
 

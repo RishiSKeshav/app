@@ -51,8 +51,7 @@ public class ContactsFragment extends Fragment implements ContactsFragmentAdapte
     String ID,NAME,ACTION,ALBUM_NAME,SHARED,imagedisplay;
     private ArrayList<Integer> mediaIDS = new ArrayList<>();
     private ArrayList<Integer> userIDS = new ArrayList<Integer>();
-    SessionManager sessionManager =  new SessionManager(getContext());;
-    String userId= sessionManager.getId();
+    SessionManager sessionManager;
 
 
     public ContactsFragment() {
@@ -69,7 +68,10 @@ public class ContactsFragment extends Fragment implements ContactsFragmentAdapte
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
+        sessionManager = new SessionManager(getContext());
+
         View vq = inflater.inflate(R.layout.contacts_fragment, container, false);
+
 
 
         ACTION = getArguments().getString("action");
@@ -163,7 +165,7 @@ public class ContactsFragment extends Fragment implements ContactsFragmentAdapte
                             JSONArray a = new JSONArray(userIDS);
                             JSONArray b = new JSONArray(mediaIDS);
                             JSONObject obj = new JSONObject();
-                            obj.put("userId", userId);
+                            obj.put("userId", sessionManager.getId());
                             obj.put("userName",sessionManager.getName());
                             obj.put("mediaId", b);
                             obj.put("sharedUserId", a);
@@ -234,7 +236,7 @@ public class ContactsFragment extends Fragment implements ContactsFragmentAdapte
                             JSONArray a = new JSONArray(userIDS);
                             JSONArray b = new JSONArray(mediaIDS);
                             JSONObject obj = new JSONObject();
-                            obj.put("userId", userId);
+                            obj.put("userId", sessionManager.getId());
                             obj.put("mediaId", b);
                             obj.put("sharedUserId", a);
                             StringEntity jsonString = new StringEntity(obj.toString());
@@ -313,7 +315,7 @@ public class ContactsFragment extends Fragment implements ContactsFragmentAdapte
                         try {
                             JSONArray a = new JSONArray(userIDS);
                             JSONObject obj = new JSONObject();
-                            obj.put("userId", userId);
+                            obj.put("userId", sessionManager.getId());
                             obj.put("name",NAME);
                             obj.put("sharedUserId", a);
                             obj.put("albumId",ID);
@@ -384,7 +386,7 @@ public class ContactsFragment extends Fragment implements ContactsFragmentAdapte
                             JSONArray a = new JSONArray(userIDS);
                             JSONArray b = new JSONArray(mediaIDS);
                             JSONObject obj = new JSONObject();
-                            obj.put("userId", userId);
+                            obj.put("userId", sessionManager.getId());
                             obj.put("mediaId", b);
                             obj.put("sharedUserId", a);
                             StringEntity jsonString = new StringEntity(obj.toString());

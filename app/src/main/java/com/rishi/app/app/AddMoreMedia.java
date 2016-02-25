@@ -46,7 +46,6 @@ public class AddMoreMedia extends AppCompatActivity implements AddMoreMediaAdapt
     ArrayList<String> ids= new ArrayList<String>();
     String ID,NAME,SHARED;
     SessionManager sessionManager;
-    String userId=sessionManager.getId();
 
 
 
@@ -55,12 +54,13 @@ public class AddMoreMedia extends AppCompatActivity implements AddMoreMediaAdapt
         super.onCreate(savedInstanceState);
         //Displays Home Screen
         setContentView(R.layout.add_more_media);
+        sessionManager = new SessionManager(getApplicationContext());
 
         Toolbar add_more_toolbar= (Toolbar) findViewById(R.id.add_more_toolbar);
         setSupportActionBar(add_more_toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        sessionManager = new SessionManager(getApplicationContext());
+
 
         Intent intent = getIntent();
 
@@ -150,7 +150,7 @@ public class AddMoreMedia extends AppCompatActivity implements AddMoreMediaAdapt
                 JSONArray a = new JSONArray(pos);
                 JSONArray previous = new JSONArray(ids);
                 JSONObject obj = new JSONObject();
-                obj.put("userId", userId);
+                obj.put("userId", sessionManager.getId());
                 obj.put("albumId", ID);
                 obj.put("name",NAME);
                 obj.put("userName",sessionManager.getName());
@@ -283,7 +283,7 @@ public class AddMoreMedia extends AppCompatActivity implements AddMoreMediaAdapt
         mediaList.clear();
         try {
             JSONObject obj = new JSONObject();
-            obj.put("userId", userId);
+            obj.put("userId", sessionManager.getId());
             StringEntity jsonString = new StringEntity(obj.toString());
 
 

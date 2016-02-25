@@ -24,6 +24,6 @@
         <item
             android:id="@+id/nav_fifth_fragment"
             android:src="@drawable/ic_person_black_48dp"
-            android:title="Photos" />
+            android:title="Media Library" />
     </group>
 </menu>
