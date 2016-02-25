@@ -10,7 +10,7 @@ import java.sql.Timestamp;
  */
 public class SharedMedia {
 
-    private String id,name,path;
+    private String id,name,path,fromId,fromName,fromdisplayPicture;
     private String date;
 
 
@@ -18,12 +18,14 @@ public class SharedMedia {
 
     }
 
-    public SharedMedia(String id,String name,String path,String date){
+    public SharedMedia(String id,String name,String path,String date,String fromId,String fromName,String fromdisplayPicture){
 
         this.id= id;
         this.name = name;
         this.path = path;
-
+        this.fromId = fromId;
+        this.fromName = fromName;
+        this.fromdisplayPicture = fromdisplayPicture;
         this.date = date;
     }
 
@@ -58,6 +60,32 @@ public class SharedMedia {
     public void setPath(String path) {
         this.path = path;
     }
+
+    public String getFromId() {
+        return fromId;
+    }
+
+    public void setFromId(String fromId) {
+        this.fromId = fromId;
+    }
+
+    public String getFromName() {
+        return fromName;
+    }
+
+    public void setFromName(String fromName) {
+        this.fromName = fromName;
+    }
+
+
+    public String getFromdisplayPicture() {
+        return fromdisplayPicture;
+    }
+
+    public void setFromdisplayPicture(String fromdisplayPicture) {
+        this.fromdisplayPicture = fromdisplayPicture;
+    }
+
 
 
 }

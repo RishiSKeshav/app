@@ -1,6 +1,7 @@
 package com.rishi.app.app;
 
 import android.app.AlertDialog;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.preference.PreferenceActivity;
@@ -68,6 +69,8 @@ public class AddMoreMedia extends AppCompatActivity implements AddMoreMediaAdapt
         ID = intent.getStringExtra("id");
         NAME = intent.getStringExtra("name");
         SHARED = intent.getStringExtra("shared");
+
+        Log.i("gggg",ids.toString());
 
         recyclerView = (RecyclerView)findViewById(R.id.recycler_add_more_media);
 
@@ -145,10 +148,15 @@ public class AddMoreMedia extends AppCompatActivity implements AddMoreMediaAdapt
 
         if (id == R.id.done_add_more) {
 
+            final ProgressDialog progressDialog = new ProgressDialog(AddMoreMedia.this,
+                    R.style.AppTheme_Dark_Dialog);
+            progressDialog.setIndeterminate(true);
+            progressDialog.setMessage("Creating Album...");
+            progressDialog.show();
 
             try {
                 JSONArray a = new JSONArray(pos);
-                JSONArray previous = new JSONArray(ids);
+                final JSONArray previous = new JSONArray(ids);
                 JSONObject obj = new JSONObject();
                 obj.put("userId", sessionManager.getId());
                 obj.put("albumId", ID);
@@ -185,6 +193,7 @@ public class AddMoreMedia extends AppCompatActivity implements AddMoreMediaAdapt
 
 
 //
+                                progressDialog.hide();
 
                                 SnackbarManager.show(
                                         com.nispok.snackbar.Snackbar.with(getApplicationContext())
@@ -318,6 +327,7 @@ public class AddMoreMedia extends AppCompatActivity implements AddMoreMediaAdapt
                                 mmAdapter.notifyDataSetChanged();
 
                                 if(ids.contains(mediadetails.optString("id"))){
+                                    Log.i("dttttt","reached");
                                     pos.add(Integer.parseInt(mediadetails.optString("id")));
                                     mmAdapter.toggleSelection(i);
                                 }

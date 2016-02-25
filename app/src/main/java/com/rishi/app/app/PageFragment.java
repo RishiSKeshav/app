@@ -113,11 +113,19 @@ public class PageFragment extends Fragment {
         if(mPage == 3){
             recyclerView = (RecyclerView) view.findViewById(R.id.recycler_view);
             smAdapter = new SharedMediaAdapter(sharedMediaList);
+            aswipeRefreshLayout = (SwipeRefreshLayout)view.findViewById(R.id.pager_refresh_layout);
             recyclerView.setHasFixedSize(true);
             RecyclerView.LayoutManager smLayoutManager = new GridLayoutManager(getContext(),3);
             recyclerView.setLayoutManager(smLayoutManager);
             recyclerView.setAdapter(smAdapter);
             prepareSharedMediaData();
+
+            aswipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+                @Override
+                public void onRefresh() {
+                    prepareSharedMediaData();
+                }
+            });
         }
 
         return view;
@@ -308,13 +316,15 @@ public class PageFragment extends Fragment {
 
                                         SharedMedia sm = new SharedMedia(mediadetails.optString("id"),
                                                 mediadetails.optString("name"), mediadetails.optString("path"),
-                                                mediadetails.optString("date"));
+                                                mediadetails.optString("date"), mediadetails.optString("fromId"),
+                                                mediadetails.optString("fromName"),
+                                                mediadetails.optString("fromdisplayPicture"));
                                         sharedMediaList.add(sm);
                                         smAdapter.notifyDataSetChanged();
                                     }
                                 }
                             }
-
+                            aswipeRefreshLayout.setRefreshing(false);
                         } catch (JSONException e) {
                             // TODO Auto-generated catch block
                             Toast.makeText(context, "Error Occured [Server's JSON response might be invalid]!", Toast.LENGTH_LONG).show();

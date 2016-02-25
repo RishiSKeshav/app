@@ -54,14 +54,14 @@ public class HomeSettings extends AppCompatActivity {
             }
         });
 
-        change_email = (LinearLayout) findViewById(R.id.change_email);
-        change_email.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent i = new Intent(HomeSettings.this,EditEmail.class );
-                HomeSettings.this.startActivity(i);
-            }
-        });
+//        change_email = (LinearLayout) findViewById(R.id.change_email);
+//        change_email.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                Intent i = new Intent(HomeSettings.this,EditEmail.class );
+//                HomeSettings.this.startActivity(i);
+//            }
+//        });
 
         change_password = (LinearLayout) findViewById(R.id.change_password);
         change_password.setOnClickListener(new View.OnClickListener() {

@@ -32,12 +32,12 @@ import java.util.List;
 import de.hdodenhof.circleimageview.CircleImageView;
 
 public class NotificationAdapter extends SelectableAdapter<NotificationAdapter.MyViewHolder> {
-    @SuppressWarnings("unused")
-    private List<NotificationsModel> notifications = new ArrayList<>();
+
+    private List<NotificationsModel> notifications;
 
 
 
-    public static class MyViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+    public class MyViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         public ImageView dataThumbnail;
         CircleImageView from;
@@ -47,8 +47,6 @@ public class NotificationAdapter extends SelectableAdapter<NotificationAdapter.M
         public MyViewHolder(View view) {
             super(view);
             view.setOnClickListener(this);
-
-
             from = (CircleImageView) view.findViewById(R.id.from);
             message = (TextView)view.findViewById(R.id.message);
             dataThumbnail = (ImageView) view.findViewById(R.id.dataThumbnail);
@@ -56,9 +54,13 @@ public class NotificationAdapter extends SelectableAdapter<NotificationAdapter.M
 
         @Override
         public void onClick(View v) {
-//            if (listener != null) {
-//                listener.onItemClicked(getPosition());
-//            }
+
+            Context context = v.getContext();
+            NotificationsModel nm = notifications.get(getPosition());
+            Intent intent = new Intent(context,SharedAlbumMediaDisplay.class);
+            intent.putExtra("Id",nm.getDataId());
+            intent.putExtra("Name",nm.getDataName());
+            context.startActivity(intent);
         }
 
 
@@ -66,7 +68,7 @@ public class NotificationAdapter extends SelectableAdapter<NotificationAdapter.M
 
 
     public NotificationAdapter(List<NotificationsModel> notifications) {
-        super();
+       // super();
         this.notifications = notifications;
 
         // this.context = context;
