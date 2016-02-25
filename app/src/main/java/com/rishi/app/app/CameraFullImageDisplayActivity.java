@@ -45,7 +45,6 @@ public class CameraFullImageDisplayActivity extends AppCompatActivity {
     private ViewPager viewPager;
     ImageDatabaseHandler db;
     SessionManager sessionManager;
-   // String userId = sessionManager.getId();
 
     ArrayList<Image> photoImageList;
     long totalSize=0;
@@ -55,6 +54,8 @@ public class CameraFullImageDisplayActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_camera_full_image_display);
+
+        sessionManager = new SessionManager(getApplicationContext());
 
         viewPager = (ViewPager) findViewById(R.id.pager);
 
