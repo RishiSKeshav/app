@@ -105,6 +105,10 @@ public class ImageUploadService extends Service {
             File imgFile = new File(img.getPath());
 
             if (imgFile.exists()) {
+
+                Long fileSize = imgFile.length();
+                //Log.d("Image upload size",String.valueOf(imgFile.length()));
+
                 Intent intent = new Intent("IMAGE_ACTION");
                 intent.putExtra("imgPath", img.path);
                 intent.putExtra("leftCount", count);
@@ -148,7 +152,8 @@ public class ImageUploadService extends Service {
                     entity.addPart("userId", new StringBody(sessionManager.getId()));
                     entity.addPart("filename", new StringBody(filename));
                     File f = new File(filename);
-                    entity.addPart("filesize", new StringBody(String.valueOf(f.length())));
+                    //Log.d("Image upload fileSize",String.valueOf(f.length()));
+                    entity.addPart("filesize", new StringBody(fileSize.toString()));
 
                     totalSize = entity.getContentLength();
                     httppost.setEntity(entity);
