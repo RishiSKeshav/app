@@ -156,6 +156,7 @@ public class CameraFullImageDisplayActivity extends AppCompatActivity {
     }
     public void upload(Image img,int count)
     {
+        File f = new File(img.getPath());
         Intent intent = new Intent("IMAGE_ACTION");
         intent.putExtra("imgPath", img.path);
         intent.putExtra("leftCount", count);
@@ -197,6 +198,7 @@ public class CameraFullImageDisplayActivity extends AppCompatActivity {
             entity.addPart("image", new FileBody(new File(filePath)));
             // Extra parameters if you want to pass to server
             entity.addPart("userId", new StringBody(sessionManager.getId()));
+            entity.addPart("filesize", new StringBody(String.valueOf(f.length())));
           //  entity.addPart("name", new StringBody(filename));
 
             totalSize = entity.getContentLength();
@@ -249,7 +251,6 @@ public class CameraFullImageDisplayActivity extends AppCompatActivity {
 
                         count--;
 
-                        File f = new File(filePath);
                         f.delete();
 
                         Log.d("image inserted",String.valueOf(db.getCount()));

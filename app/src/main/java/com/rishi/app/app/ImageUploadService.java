@@ -151,8 +151,6 @@ public class ImageUploadService extends Service {
                     // Extra parameters if you want to pass to server
                     entity.addPart("userId", new StringBody(sessionManager.getId()));
                     entity.addPart("filename", new StringBody(filename));
-                    File f = new File(filename);
-                    //Log.d("Image upload fileSize",String.valueOf(f.length()));
                     entity.addPart("filesize", new StringBody(fileSize.toString()));
 
                     totalSize = entity.getContentLength();
