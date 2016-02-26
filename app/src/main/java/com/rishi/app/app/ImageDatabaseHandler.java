@@ -156,7 +156,7 @@ public class ImageDatabaseHandler extends SQLiteOpenHelper {
         // looping through all rows and adding to list
         if (cursor.moveToFirst()) {
             do {
-                cameraImagePathList.add(cursor.getString(2));
+                cameraImagePathList.add(cursor.getString(3));
             } while (cursor.moveToNext());
         }
 
@@ -176,7 +176,7 @@ public class ImageDatabaseHandler extends SQLiteOpenHelper {
         // looping through all rows and adding to list
         if (cursor.moveToFirst()) {
             do {
-                syncImagePathList.add(cursor.getString(2));
+                syncImagePathList.add(cursor.getString(3));
             } while (cursor.moveToNext());
         }
 

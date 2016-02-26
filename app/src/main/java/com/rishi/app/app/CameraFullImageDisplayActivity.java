@@ -1,6 +1,7 @@
 package com.rishi.app.app;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -111,6 +112,13 @@ public class CameraFullImageDisplayActivity extends AppCompatActivity {
 
     public void startUpload(final ArrayList<Image> unSyncedImageList)
     {
+
+        final ProgressDialog progressDialog = new ProgressDialog(CameraFullImageDisplayActivity.this,
+                R.style.AppTheme_Dark_Dialog);
+        progressDialog.setIndeterminate(true);
+        progressDialog.setMessage("Uploading...");
+        progressDialog.show();
+
         Log.d("Service: count ", String.valueOf(unSyncedImageList.size()));
 
         count = unSyncedImageList.size();
@@ -118,15 +126,23 @@ public class CameraFullImageDisplayActivity extends AppCompatActivity {
         Runnable r = new Runnable() {
             public void run() {
 
+
+
+
+
                 for (int i = 0; i < unSyncedImageList.size(); i++) {
                     synchronized (this) {
                         try {
-                            upload(unSyncedImageList.get(i),count);
+
+                            progressDialog.setMessage("Uploading" + i+1 + "of" + unSyncedImageList.size());
+                            upload(unSyncedImageList.get(i), count);
 
                         } catch (Exception e) {
                         }
                     }
                 }
+
+
             }
         };
 
@@ -135,6 +151,8 @@ public class CameraFullImageDisplayActivity extends AppCompatActivity {
 
         db = new ImageDatabaseHandler(getApplicationContext(), Environment.getExternalStorageDirectory().toString()+ "/app");
         Log.d("Db count", String.valueOf(db.getCount()));
+
+        progressDialog.hide();
     }
     public void upload(Image img,int count)
     {

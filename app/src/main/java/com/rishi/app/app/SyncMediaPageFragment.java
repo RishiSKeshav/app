@@ -184,11 +184,11 @@ public class SyncMediaPageFragment extends Fragment {
 
             if(!syncedPathList.contains(img.path))
 
-            unSyncImageList.add(img);
+                unSyncImageList.add(img);
 //                smuAdapter.notifyDataSetChanged();
         }
 
-       // Log.i("eeee", unSyncImageList.toString());
+        // Log.i("eeee", unSyncImageList.toString());
     }
 
     private void generateDBImageList() {
@@ -199,17 +199,11 @@ public class SyncMediaPageFragment extends Fragment {
 
             syncedPathList= db.getAllImagePath();
 
-            Iterator<String> abc = syncedPathList.iterator();
-
-            while(abc.hasNext())
-            {
-
-                Log.d("DB ",abc.next());
-            }
-
         }
         else
             Log.i("databasae_name","DB not created");
+
+        db.close();
 
         Log.d("DB list count ",String.valueOf(syncedPathList.size()));
     }
@@ -238,6 +232,7 @@ public class SyncMediaPageFragment extends Fragment {
                 imageList.add(image);
             } while (cursor.moveToNext());
         }
+        cursor.close();
 
         Log.d("image list count", String.valueOf(imageList.size()));
     }
@@ -250,17 +245,11 @@ public class SyncMediaPageFragment extends Fragment {
 
             cameraImageList= db.getAllCameraImagePath();
 
-            Iterator<String> abc = cameraImageList.iterator();
-
-            while(abc.hasNext())
-            {
-
-                Log.d("DB ",abc.next());
-            }
-
         }
         else
             Log.i("databasae_name","DB not created");
+
+        db.close();
 
         Log.d("DB list count ",String.valueOf(cameraImageList.size()));
     }
@@ -273,17 +262,13 @@ public class SyncMediaPageFragment extends Fragment {
 
             syncImageList= db.getAllSyncImagePath();
 
-            Iterator<String> abc = syncImageList.iterator();
 
-            while(abc.hasNext())
-            {
-
-                Log.d("DB ",abc.next());
-            }
 
         }
         else
             Log.i("databasae_name","DB not created");
+
+        db.close();
 
         Log.d("DB list count ",String.valueOf(syncImageList.size()));
     }

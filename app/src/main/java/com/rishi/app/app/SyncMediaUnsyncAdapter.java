@@ -56,6 +56,7 @@ public class SyncMediaUnsyncAdapter extends RecyclerView.Adapter<SyncMediaUnsync
             Context context = view.getContext();
             Intent intent = new Intent(context,SyncMediaFullScreenActivity.class);
             intent.putExtra("Position", pos);
+            intent.putExtra("action","unsync");
             intent.putStringArrayListExtra("data",unsyncMediaPathList);
             context.startActivity(intent);
         }

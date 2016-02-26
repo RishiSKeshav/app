@@ -53,6 +53,7 @@ public class SyncMediaCameraAdapter extends RecyclerView.Adapter<SyncMediaCamera
             Context context = view.getContext();
             Intent intent = new Intent(context,SyncMediaFullScreenActivity.class);
             intent.putExtra("Position", pos);
+            intent.putExtra("action","camera");
             intent.putStringArrayListExtra("data",cameraMediaList);
             context.startActivity(intent);
         }
@@ -74,6 +75,10 @@ public class SyncMediaCameraAdapter extends RecyclerView.Adapter<SyncMediaCamera
 
     @Override
     public void onBindViewHolder(MyViewHolder holder, int position) {
+
+       // Log.i("qpo",cameraMediaList.get(position));
+
+
         Context c = holder.path.getContext();
 
         Picasso.with(c).load(cameraMediaList.get(position)).error(R.mipmap.ic_launcher).placeholder(R.mipmap.ic_launcher)
