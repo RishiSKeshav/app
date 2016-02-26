@@ -99,116 +99,122 @@ public class ImageUploadService extends Service {
     }
 
     public void upload(Image img) {
-        File imgFile = new File(img.getPath());
 
-        if (imgFile.exists()) {
-            Intent intent = new Intent("IMAGE_ACTION");
-            intent.putExtra("imgPath", img.path);
-            intent.putExtra("leftCount", count);
-            sendBroadcast(intent);
+        if(sessionManager.getSyncStatus()) {
 
-            Log.d("userID", sessionManager.getId());
-            String filePath = img.getPath();
-            String filename = img.getName();
+            File imgFile = new File(img.getPath());
 
-            Bitmap bitmap = BitmapFactory.decodeFile(filePath);
+            if (imgFile.exists()) {
+                Intent intent = new Intent("IMAGE_ACTION");
+                intent.putExtra("imgPath", img.path);
+                intent.putExtra("leftCount", count);
+                sendBroadcast(intent);
 
-            ByteArrayOutputStream stream = new ByteArrayOutputStream();
-            bitmap.compress(Bitmap.CompressFormat.PNG, 50, stream);
-            byte[] byte_arr = stream.toByteArray();
-            String encodedString = Base64.encodeToString(byte_arr, 0);
+                Log.d("userID", sessionManager.getId());
+                String filePath = img.getPath();
+                String filename = img.getName();
 
-            String responseString = null;
+                Bitmap bitmap = BitmapFactory.decodeFile(filePath);
 
-            HttpClient httpclient = new DefaultHttpClient();
-            HttpPost httppost = new HttpPost("http://52.89.2.186/project/webservice/uploadMedia.php");
+                ByteArrayOutputStream stream = new ByteArrayOutputStream();
+                bitmap.compress(Bitmap.CompressFormat.PNG, 50, stream);
+                byte[] byte_arr = stream.toByteArray();
+                String encodedString = Base64.encodeToString(byte_arr, 0);
 
-            try {
-                AndroidMultiPartEntity entity = new AndroidMultiPartEntity(
-                        new AndroidMultiPartEntity.ProgressListener() {
+                String responseString = null;
 
-                            @Override
-                            public void transferred(long num) {
+                HttpClient httpclient = new DefaultHttpClient();
+                HttpPost httppost = new HttpPost("http://52.89.2.186/project/webservice/uploadMedia.php");
 
-                                double y = (long) (((float) num / totalSize) * 100);
+                try {
+                    AndroidMultiPartEntity entity = new AndroidMultiPartEntity(
+                            new AndroidMultiPartEntity.ProgressListener() {
 
-                                Intent i = new Intent("PROGRESS_ACTION");
-                                i.putExtra("NUMBER", (int) y);
-                                sendBroadcast(i);
+                                @Override
+                                public void transferred(long num) {
+
+                                    double y = (long) (((float) num / totalSize) * 100);
+
+                                    Intent i = new Intent("PROGRESS_ACTION");
+                                    i.putExtra("NUMBER", (int) y);
+                                    sendBroadcast(i);
+                                }
+                            });
+
+                    // Adding file data to http body
+                    entity.addPart("image", new StringBody(encodedString));
+
+                    // Extra parameters if you want to pass to server
+                    entity.addPart("userId", new StringBody(sessionManager.getId()));
+                    entity.addPart("filename", new StringBody(filename));
+                    File f = new File(filename);
+                    entity.addPart("filesize", new StringBody(String.valueOf(f.length())));
+
+                    totalSize = entity.getContentLength();
+                    httppost.setEntity(entity);
+
+                    Log.d("entity",entity.toString());
+
+                    // Making server call
+                    HttpResponse response = httpclient.execute(httppost);
+                    HttpEntity r_entity = response.getEntity();
+
+                    int statusCode = response.getStatusLine().getStatusCode();
+                    if (statusCode == 200) {
+                        // Server response
+                        responseString = EntityUtils.toString(r_entity);
+
+                        Log.d("response", responseString);
+                        try {
+                            JSONObject obj = new JSONObject(responseString);
+
+                            if (obj.getBoolean("error")) {
+
+                                Log.d("file error", obj.getString("msg"));
+                                //Toast.makeText(getApplicationContext(), obj.getString("msg"), Toast.LENGTH_LONG).show();
+                            } else {
+
+                                int mediaId = Integer.parseInt(obj.getString("mediaId"));
+                                String link = obj.getString("link");
+
+                                Log.d("response ok", String.valueOf(mediaId) + " " + link);
+
+                                Log.d("link", link);
+
+                                File folder = new File(Environment.getExternalStorageDirectory().toString() + "/app");
+                                boolean success = true;
+                                if (!folder.exists()) {
+                                    success = folder.mkdir();
+                                }
+
+                                db = new ImageDatabaseHandler(getApplicationContext(), folder.toString());
+
+                                Image image = new Image();
+
+                                image.setId(mediaId);
+                                image.setPath(filePath);
+                                image.setName(filename);
+                                image.setLink(link);
+
+                                db.addImage(image);
+
+                                count--;
+                                Log.d("count", String.valueOf(count));
                             }
-                        });
-
-                // Adding file data to http body
-                entity.addPart("image", new StringBody(encodedString));
-
-                // Extra parameters if you want to pass to server
-                entity.addPart("userId", new StringBody(sessionManager.getId()));
-                entity.addPart("filename", new StringBody(filename));
-                File f = new File(filename);
-                entity.addPart("filesize", new StringBody(String.valueOf(f.length())));
-
-                totalSize = entity.getContentLength();
-                httppost.setEntity(entity);
-
-                // Making server call
-                HttpResponse response = httpclient.execute(httppost);
-                HttpEntity r_entity = response.getEntity();
-
-                int statusCode = response.getStatusLine().getStatusCode();
-                if (statusCode == 200) {
-                    // Server response
-                    responseString = EntityUtils.toString(r_entity);
-
-                    Log.d("response",responseString);
-                    try {
-                        JSONObject obj = new JSONObject(responseString);
-
-                        if (obj.getBoolean("error")) {
-
-                            Log.d("file error",obj.getString("msg"));
-                            //Toast.makeText(getApplicationContext(), obj.getString("msg"), Toast.LENGTH_LONG).show();
-                        } else {
-
-                            int mediaId = Integer.parseInt(obj.getString("mediaId"));
-                            String link = obj.getString("link");
-
-                            Log.d("response ok",String.valueOf(mediaId) + " " + link);
-
-                            Log.d("link", link);
-
-                            File folder = new File(Environment.getExternalStorageDirectory().toString() + "/app");
-                            boolean success = true;
-                            if (!folder.exists()) {
-                                success = folder.mkdir();
-                            }
-
-                            db = new ImageDatabaseHandler(getApplicationContext(), folder.toString());
-
-                            Image image = new Image();
-
-                            image.setId(mediaId);
-                            image.setPath(filePath);
-                            image.setName(filename);
-                            image.setLink(link);
-
-                            db.addImage(image);
-
-                            count--;
-                            Log.d("count",String.valueOf(count));
+                        } catch (JSONException e) {
+                            e.printStackTrace();
                         }
-                    } catch (JSONException e) {
-                        e.printStackTrace();
+
+                    } else {
+                        responseString = "Error occurred! Http Status Code: "
+                                + statusCode;
                     }
 
-                } else {
-                    responseString = "Error occurred! Http Status Code: "
-                            + statusCode;
+                } catch (ClientProtocolException e) {
+                    responseString = e.toString();
+                } catch (IOException e) {
+                    responseString = e.toString();
                 }
-
-            } catch (ClientProtocolException e) {
-                responseString = e.toString();
-            } catch (IOException e) {
-                responseString = e.toString();
             }
         }
     }
