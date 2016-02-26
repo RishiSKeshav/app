@@ -151,7 +151,7 @@ public class FragmentFacebook extends Fragment implements FragmentFacebookAdapte
         aswipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-
+                updateWithToken(AccessToken.getCurrentAccessToken());
             }
         });
 
@@ -179,12 +179,14 @@ public class FragmentFacebook extends Fragment implements FragmentFacebookAdapte
 
         } else {
             Log.i("B","come");
+            aswipeRefreshLayout.setRefreshing(false);
         }
     }
 
         private void callFacebook(AccessToken ac){
 
         loginButton.setVisibility(View.INVISIBLE);
+            friends.clear();
 
             GraphRequestAsyncTask graphRequestAsyncTask = new GraphRequest(
                     ac,
@@ -234,6 +236,7 @@ public class FragmentFacebook extends Fragment implements FragmentFacebookAdapte
                                                         friends.add(ff);
                                                         ffAdapter.notifyDataSetChanged();
                                                     }
+                                                    aswipeRefreshLayout.setRefreshing(false);
 
                                                 }
 
