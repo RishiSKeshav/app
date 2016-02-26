@@ -118,57 +118,45 @@ public class Sync extends AppCompatActivity {
         IntentFilter finalFilter = new IntentFilter("IMAGE_ACTION");
         registerReceiver(finalCountReceiver, finalFilter);
 
+        /*IntentFilter networkFilter = new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION);
+        registerReceiver(networkChangeReceiver1, networkFilter);*/
+
         switchButton = (Switch) findViewById(R.id.switchButton);
         photoChk =(CheckBox) findViewById(R.id.chkPhoto);
         txtview =(TextView) findViewById(R.id.txtView);
 
-        if(sessionManager.getSyncStatus()) {
-            switchButton.setChecked(true);
-
-            setPhotoVideoStatusVisibile();
-
-            initializeImageLists();
-
-            serviceIntent = new Intent(Sync.this,ImageUploadService.class);
-            serviceIntent.putParcelableArrayListExtra("unSyncedImageList", unSyncedImageList);
-            startService(serviceIntent);
-        }
-        else{
-            switchButton.setChecked(false);
-            imgView.setVisibility(View.INVISIBLE);
-            pBar.setVisibility(View.INVISIBLE);
-
-            setPhotoVideoStatusInvisibile();
-        }
+        startOrStopSync();
 
         switchButton.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean bChecked) {
                 if (bChecked) {
-
-                    setPhotoVideoStatusVisibile();
+/*                    setPhotoVideoStatusVisibile();*/
 
                     sessionManager.changeSyncStatus(bChecked);
 
-                    initializeImageLists();
+                    startOrStopSync();
+                    /*initializeImageLists();
 
                     serviceIntent = new Intent(Sync.this, ImageUploadService.class);
                     serviceIntent.putParcelableArrayListExtra("unSyncedImageList", unSyncedImageList);
                     startService(serviceIntent);
 
-                    Log.d("checked", " checked reached");
+                    Log.d("checked", " checked reached");*/
                 } else {
 
                     Log.d("unchecked", " unchecked reached");
 
                     sessionManager.changeSyncStatus(bChecked);
 
-                    setPhotoVideoStatusInvisibile();
+                    startOrStopSync();
+
+                    /*setPhotoVideoStatusInvisibile();
                     imgView.setVisibility(View.INVISIBLE);
                     pBar.setVisibility(View.INVISIBLE);
 
                     serviceIntent = new Intent(Sync.this, ImageUploadService.class);
-                    stopService(serviceIntent);
+                    stopService(serviceIntent);*/
 
                 }
             }
@@ -179,14 +167,69 @@ public class Sync extends AppCompatActivity {
 
                 if(isChecked){
                     sessionManager.changePhotoSyncStatus(true);
+                    startOrStopSync();
                 }
                 else{
                     sessionManager.changePhotoSyncStatus(false);
+                    startOrStopSync();
                 }
             }
         }));
     }
 
+    public void startOrStopSync() {
+        ConnectivityManager cm =
+                (ConnectivityManager) getApplicationContext().getSystemService(Context.CONNECTIVITY_SERVICE);
+
+        NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
+
+        if (activeNetwork != null && activeNetwork.isConnected()) {
+
+            boolean isMobileData = activeNetwork.getType() == ConnectivityManager.TYPE_MOBILE;
+            boolean isWIFI = activeNetwork.getType() == ConnectivityManager.TYPE_WIFI;
+
+            if (sessionManager.getSyncStatus()) {
+                switchButton.setChecked(true);
+                setPhotoVideoStatusVisibile();
+
+                if (isWIFI) {
+                    startSync();
+                } else if (isMobileData) {
+                    if (sessionManager.getPhotoSyncStatus())
+                        startSync();
+                    else
+                        stopSync();
+                }
+
+            /*initializeImageLists();
+            serviceIntent = new Intent(Sync.this,ImageUploadService.class);
+            serviceIntent.putParcelableArrayListExtra("unSyncedImageList", unSyncedImageList);
+            startService(serviceIntent);*/
+            } else {
+                switchButton.setChecked(false);
+                imgView.setVisibility(View.INVISIBLE);
+                pBar.setVisibility(View.INVISIBLE);
+
+                setPhotoVideoStatusInvisibile();
+
+                stopSync();
+            }
+        }
+    }
+
+    private void startSync(){
+
+            initializeImageLists();
+
+            serviceIntent = new Intent(Sync.this,ImageUploadService.class);
+            serviceIntent.putParcelableArrayListExtra("unSyncedImageList", unSyncedImageList);
+            startService(serviceIntent);
+    }
+
+    private void stopSync(){
+        serviceIntent = new Intent(Sync.this, ImageUploadService.class);
+        stopService(serviceIntent);
+    }
 
     private  void navHeaderData(){
         try {
@@ -485,47 +528,97 @@ public class Sync extends AppCompatActivity {
 
         unregisterReceiver(myReceiver);
         unregisterReceiver(finalCountReceiver);
+        //unregisterReceiver(networkChangeReceiver1);
     }
 
-    public class NetworkChangeReceiver extends BroadcastReceiver {
+   /*private BroadcastReceiver networkChangeReceiver1 = new BroadcastReceiver(){
+
+       @Override
+       public void onReceive(Context context, Intent intent) {
+
+
+           Log.d("NetworkChangeReceiver1","network change");
+           //startOrStopSync();
+       }
+   };*/
+
+
+
+    /*public class NetworkChangeReceiver extends BroadcastReceiver {
+
+       SessionManager sessionManager1;
+
+        public NetworkChangeReceiver(){
+
+
+        }
+
         @Override
         public void onReceive(Context context, Intent intent) {
 
-            ConnectivityManager cm =
-                    (ConnectivityManager)context.getSystemService(Context.CONNECTIVITY_SERVICE);
+            sessionManager1 = new SessionManager(context.getApplicationContext());
 
-            NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
+            Log.d("network change", "network change");
 
-            boolean isMobileData = activeNetwork.getType() == ConnectivityManager.TYPE_MOBILE;
-            boolean isWIFI = activeNetwork.getType() == ConnectivityManager.TYPE_WIFI;
+            Sync.this.startOrStopSync();
 
-            if(sessionManager.getSyncStatus()==true){
-
-                if(!isWIFI){
-                    serviceIntent = new Intent(Sync.this, ImageUploadService.class);
-                    stopService(serviceIntent);
-                }
-                if(isWIFI){
-                    initializeImageLists();
-                    serviceIntent = new Intent(Sync.this, ImageUploadService.class);
-                    serviceIntent.putParcelableArrayListExtra("unSyncedImageList", unSyncedImageList);
-                    startService(serviceIntent);
-                }
-                if(isMobileData && sessionManager.getPhotoSyncStatus()==false){
-                    serviceIntent = new Intent(Sync.this, ImageUploadService.class);
-                    stopService(serviceIntent);
-                }
-
-                if(isMobileData && sessionManager.getPhotoSyncStatus()==true){
-                    serviceIntent = new Intent(Sync.this, ImageUploadService.class);
-                    serviceIntent.putParcelableArrayListExtra("unSyncedImageList", unSyncedImageList);
-                    startService(serviceIntent);
-                }
-            }
-            else{
-                serviceIntent = new Intent(Sync.this, ImageUploadService.class);
-                stopService(serviceIntent);
-            }
         }
-    }
+
+       *//*public void startOrStopSync1(Context context) {
+           ConnectivityManager cm =
+                   (ConnectivityManager) context.getApplicationContext().getSystemService(Context.CONNECTIVITY_SERVICE);
+
+           NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
+
+           if (activeNetwork != null && activeNetwork.isConnected()) {
+
+               boolean isMobileData = activeNetwork.getType() == ConnectivityManager.TYPE_MOBILE;
+               boolean isWIFI = activeNetwork.getType() == ConnectivityManager.TYPE_WIFI;
+
+               if (sessionManager1.getSyncStatus()) {
+                   switchButton.setChecked(true);
+                   setPhotoVideoStatusVisibile();
+
+                   if (isWIFI) {
+                       startSync();
+                   } else if (isMobileData) {
+                       if (sessionManager.getPhotoSyncStatus())
+                           startSync();
+                       else
+                           stopSync();
+                   }
+
+            *//**//*initializeImageLists();
+            serviceIntent = new Intent(Sync.this,ImageUploadService.class);
+            serviceIntent.putParcelableArrayListExtra("unSyncedImageList", unSyncedImageList);
+            startService(serviceIntent);*//**//*
+               } else {
+                   switchButton.setChecked(false);
+                   imgView.setVisibility(View.INVISIBLE);
+                   pBar.setVisibility(View.INVISIBLE);
+
+                   setPhotoVideoStatusInvisibile();
+
+                   stopSync();
+               }
+           }
+       }
+
+       private void startSync(){
+
+           initializeImageLists();
+
+           serviceIntent = new Intent(Sync.this,ImageUploadService.class);
+           serviceIntent.putParcelableArrayListExtra("unSyncedImageList", unSyncedImageList);
+           startService(serviceIntent);
+       }
+
+       private void stopSync(){
+           serviceIntent = new Intent(Sync.this, ImageUploadService.class);
+           stopService(serviceIntent);
+       }*//*
+
+
+
+    }*/
 }
