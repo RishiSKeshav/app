@@ -124,7 +124,7 @@ public class LoginActivity extends ActionBarActivity {
                                         // @Override
                                         public void onSuccess(String response) {
                                             // called when response HTTP status is "200 OK"
-
+                                                Log.i("res",response);
                                             try {
                                                 JSONObject obj = new JSONObject(response);
 

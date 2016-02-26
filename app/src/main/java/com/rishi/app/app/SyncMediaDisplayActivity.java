@@ -10,7 +10,9 @@ import android.provider.MediaStore;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.Snackbar;
+import android.support.design.widget.TabLayout;
 import android.support.v4.view.GravityCompat;
+import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
@@ -89,28 +91,53 @@ public class SyncMediaDisplayActivity extends AppCompatActivity {
         navHeaderData();
 
 
-        initializeImageLists();
+        final ViewPager viewPager = (ViewPager) findViewById(R.id.sync_images_viewpager);
+        viewPager.setAdapter(new SyncMediaPagerAdapter(getSupportFragmentManager(),
+                SyncMediaDisplayActivity.this));
 
-        recyclerView1 = (RecyclerView)findViewById(R.id.unsync_media_recycler_view);
-        syncMediaUnsyncAdapter = new SyncMediaUnsyncAdapter(unSyncedImageList);
-        recyclerView1.setHasFixedSize(true);
-        RecyclerView.LayoutManager mLayoutManager1 = new GridLayoutManager(this,4);
-        recyclerView1.setLayoutManager(mLayoutManager1);
-        recyclerView1.setAdapter(syncMediaUnsyncAdapter);
+        TabLayout tabLayout = (TabLayout) findViewById(R.id.sync_images_sliding_tabs);
+        tabLayout.setupWithViewPager(viewPager);
+        tabLayout.setOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+            @Override
+            public void onTabSelected(TabLayout.Tab tab) {
+                viewPager.setCurrentItem(tab.getPosition());
+            }
 
-        recyclerView2 = (RecyclerView)findViewById(R.id.sync_media_recycler_view);
-        syncMediaSyncAdapter = new SyncMediaSyncAdapter(syncImageList);
-        recyclerView2.setHasFixedSize(true);
-        RecyclerView.LayoutManager mLayoutManager2 = new GridLayoutManager(this,4);
-        recyclerView2.setLayoutManager(mLayoutManager2);
-        recyclerView2.setAdapter(syncMediaSyncAdapter);
+            @Override
+            public void onTabUnselected(TabLayout.Tab tab) {
 
-        recyclerView3 = (RecyclerView)findViewById(R.id.camera_media_recycler_view);
-        syncMediaCameraAdapter = new SyncMediaCameraAdapter(cameraImageList);
-        recyclerView3.setHasFixedSize(true);
-        RecyclerView.LayoutManager mLayoutManager3 = new GridLayoutManager(this,4);
-        recyclerView3.setLayoutManager(mLayoutManager3);
-        recyclerView3.setAdapter(syncMediaCameraAdapter);
+            }
+
+            @Override
+            public void onTabReselected(TabLayout.Tab tab) {
+
+            }
+
+        });
+
+
+//        initializeImageLists();
+//
+//        recyclerView1 = (RecyclerView)findViewById(R.id.unsync_media_recycler_view);
+//        syncMediaUnsyncAdapter = new SyncMediaUnsyncAdapter(unSyncedImageList);
+//        recyclerView1.setHasFixedSize(true);
+//        RecyclerView.LayoutManager mLayoutManager1 = new GridLayoutManager(this,4);
+//        recyclerView1.setLayoutManager(mLayoutManager1);
+//        recyclerView1.setAdapter(syncMediaUnsyncAdapter);
+//
+//        recyclerView2 = (RecyclerView)findViewById(R.id.sync_media_recycler_view);
+//        syncMediaSyncAdapter = new SyncMediaSyncAdapter(syncImageList);
+//        recyclerView2.setHasFixedSize(true);
+//        RecyclerView.LayoutManager mLayoutManager2 = new GridLayoutManager(this,4);
+//        recyclerView2.setLayoutManager(mLayoutManager2);
+//        recyclerView2.setAdapter(syncMediaSyncAdapter);
+//
+//        recyclerView3 = (RecyclerView)findViewById(R.id.camera_media_recycler_view);
+//        syncMediaCameraAdapter = new SyncMediaCameraAdapter(cameraImageList);
+//        recyclerView3.setHasFixedSize(true);
+//        RecyclerView.LayoutManager mLayoutManager3 = new GridLayoutManager(this,4);
+//        recyclerView3.setLayoutManager(mLayoutManager3);
+//        recyclerView3.setAdapter(syncMediaCameraAdapter);
 
         //generateMainList();
 
@@ -261,122 +288,122 @@ public class SyncMediaDisplayActivity extends AppCompatActivity {
     }
 
 
-    private void initializeImageLists() {
-
-        generateImageList();
-        generateDBImageList();
-        generateUnsyncedImageList();
-        generateCameraImageList();
-        generateSyncImageList();
-    }
-
-
-
-    private void generateUnsyncedImageList() {
-
-        unSyncedImageList = new ArrayList<Image>();
-
-        for(com.rishi.app.app.Image img : imageList){
-
-            if(!syncedPathList.contains(img.path))
-                unSyncedImageList.add(img);
-        }
-    }
-
-    private void generateDBImageList() {
-
-        ImageDatabaseHandler db = new ImageDatabaseHandler(this, Environment.getExternalStorageDirectory().toString()+ "/app");
-
-        if(db!=null){
-
-            syncedPathList= db.getAllImagePath();
-
-            Iterator<String> abc = syncedPathList.iterator();
-
-            while(abc.hasNext())
-            {
-
-                Log.d("DB ",abc.next());
-            }
-
-        }
-        else
-            Log.i("databasae_name","DB not created");
-
-        Log.d("DB list count ",String.valueOf(syncedPathList.size()));
-    }
-
-
-
-    private void generateImageList() {
-
-        imageList = new ArrayList<com.rishi.app.app.Image>();
-
-        ContentResolver cr = this.getContentResolver();
-
-        String[] columns = new String[] {
-                MediaStore.Images.ImageColumns.DATA,
-                MediaStore.Images.ImageColumns.DISPLAY_NAME};
-        Cursor cursor = cr.query(MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
-                columns, null, null, null);
-
-        if (cursor.moveToFirst()) {
-            do {
-                com.rishi.app.app.Image image = new com.rishi.app.app.Image();
-
-                image.setPath(cursor.getString(0));
-                image.setName(cursor.getString(1));
-
-                imageList.add(image);
-            } while (cursor.moveToNext());
-        }
-
-        Log.d("image list count", String.valueOf(imageList.size()));
-    }
-
-    private void generateCameraImageList() {
-
-        ImageDatabaseHandler db = new ImageDatabaseHandler(this, Environment.getExternalStorageDirectory().toString()+ "/app");
-
-        if(db!=null){
-
-            cameraImageList= db.getAllCameraImagePath();
-
-            Iterator<String> abc = cameraImageList.iterator();
-
-            while(abc.hasNext())
-            {
-
-                Log.d("DB ",abc.next());
-            }
-
-        }
-        else
-            Log.i("databasae_name","DB not created");
-
-        Log.d("DB list count ",String.valueOf(cameraImageList.size()));
-    }
-
-    private void generateSyncImageList() {
-
-        ImageDatabaseHandler db = new ImageDatabaseHandler(this, Environment.getExternalStorageDirectory().toString()+ "/app");
-
-        if(db!=null){
-
-            syncImageList= db.getAllSyncImagePath();
-
-            Iterator<String> abc = syncImageList.iterator();
-
-            while(abc.hasNext())
-            {
-
-                Log.d("DB ",abc.next());
-            }
-
-        }
-        else
-            Log.i("databasae_name","DB not created");
-
-        Log.d("DB list count ",String.valueOf(syncImageList.size()));
-    }
+//    private void initializeImageLists() {
+//
+//        generateImageList();
+//        generateDBImageList();
+//        generateUnsyncedImageList();
+//        generateCameraImageList();
+//        generateSyncImageList();
+//    }
+//
+//
+//
+//    private void generateUnsyncedImageList() {
+//
+//        unSyncedImageList = new ArrayList<Image>();
+//
+//        for(com.rishi.app.app.Image img : imageList){
+//
+//            if(!syncedPathList.contains(img.path))
+//                unSyncedImageList.add(img);
+//        }
+//    }
+//
+//    private void generateDBImageList() {
+//
+//        ImageDatabaseHandler db = new ImageDatabaseHandler(this, Environment.getExternalStorageDirectory().toString()+ "/app");
+//
+//        if(db!=null){
+//
+//            syncedPathList= db.getAllImagePath();
+//
+//            Iterator<String> abc = syncedPathList.iterator();
+//
+//            while(abc.hasNext())
+//            {
+//
+//                Log.d("DB ",abc.next());
+//            }
+//
+//        }
+//        else
+//            Log.i("databasae_name","DB not created");
+//
+//        Log.d("DB list count ",String.valueOf(syncedPathList.size()));
+//    }
+//
+//
+//
+//    private void generateImageList() {
+//
+//        imageList = new ArrayList<com.rishi.app.app.Image>();
+//
+//        ContentResolver cr = this.getContentResolver();
+//
+//        String[] columns = new String[] {
+//                MediaStore.Images.ImageColumns.DATA,
+//                MediaStore.Images.ImageColumns.DISPLAY_NAME};
+//        Cursor cursor = cr.query(MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
+//                columns, null, null, null);
+//
+//        if (cursor.moveToFirst()) {
+//            do {
+//                com.rishi.app.app.Image image = new com.rishi.app.app.Image();
+//
+//                image.setPath(cursor.getString(0));
+//                image.setName(cursor.getString(1));
+//
+//                imageList.add(image);
+//            } while (cursor.moveToNext());
+//        }
+//
+//        Log.d("image list count", String.valueOf(imageList.size()));
+//    }
+//
+//    private void generateCameraImageList() {
+//
+//        ImageDatabaseHandler db = new ImageDatabaseHandler(this, Environment.getExternalStorageDirectory().toString()+ "/app");
+//
+//        if(db!=null){
+//
+//            cameraImageList= db.getAllCameraImagePath();
+//
+//            Iterator<String> abc = cameraImageList.iterator();
+//
+//            while(abc.hasNext())
+//            {
+//
+//                Log.d("DB ",abc.next());
+//            }
+//
+//        }
+//        else
+//            Log.i("databasae_name","DB not created");
+//
+//        Log.d("DB list count ",String.valueOf(cameraImageList.size()));
+//    }
+//
+//    private void generateSyncImageList() {
+//
+//        ImageDatabaseHandler db = new ImageDatabaseHandler(this, Environment.getExternalStorageDirectory().toString()+ "/app");
+//
+//        if(db!=null){
+//
+//            syncImageList= db.getAllSyncImagePath();
+//
+//            Iterator<String> abc = syncImageList.iterator();
+//
+//            while(abc.hasNext())
+//            {
+//
+//                Log.d("DB ",abc.next());
+//            }
+//
+//        }
+//        else
+//            Log.i("databasae_name","DB not created");
+//
+//        Log.d("DB list count ",String.valueOf(syncImageList.size()));
+//    }
 }

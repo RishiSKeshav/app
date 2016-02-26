@@ -63,7 +63,6 @@ public class SyncMediaUnsyncAdapter extends RecyclerView.Adapter<SyncMediaUnsync
 
     public SyncMediaUnsyncAdapter(ArrayList<Image> List) {
         this.unsyncMediaList = List;
-        Log.d("SyncMediaUnsyncAdapter",String.valueOf(unsyncMediaList.size()));
 
     }
 

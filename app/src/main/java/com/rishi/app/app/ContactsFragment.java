@@ -25,6 +25,9 @@ import android.widget.Toast;
 
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.AsyncHttpResponseHandler;
+import com.nispok.snackbar.Snackbar;
+import com.nispok.snackbar.SnackbarManager;
+import com.nispok.snackbar.listeners.EventListener;
 
 import org.apache.http.entity.StringEntity;
 import org.json.JSONArray;
@@ -194,11 +197,47 @@ public class ContactsFragment extends Fragment implements ContactsFragmentAdapte
                                         if (obj.getBoolean("error")) {
                                             Toast.makeText(getContext(), obj.getString("msg"), Toast.LENGTH_LONG).show();
                                         } else {
-                                            Toast.makeText(getContext(), obj.getString("msg"), Toast.LENGTH_LONG).show();
+                                            SnackbarManager.show(
+                                                    com.nispok.snackbar.Snackbar.with(getContext())
+                                                            .text(obj.getString("msg"))
+                                                            .duration(Snackbar.SnackbarDuration.LENGTH_SHORT)
+                                                            .eventListener(new EventListener() {
+                                                                @Override
+                                                                public void onShow(com.nispok.snackbar.Snackbar snackbar) {
 
-                                            Intent i = new Intent(getContext(), HomeActivity.class);
-                                            i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                                            getContext().startActivity(i);
+                                                                }
+
+                                                                @Override
+                                                                public void onShowByReplace(com.nispok.snackbar.Snackbar snackbar) {
+
+                                                                }
+
+                                                                @Override
+                                                                public void onShown(com.nispok.snackbar.Snackbar snackbar) {
+
+                                                                }
+
+                                                                @Override
+                                                                public void onDismiss(com.nispok.snackbar.Snackbar snackbar) {
+
+                                                                    Intent i = new Intent(getContext(), HomeActivity.class);
+                                                                    i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                                                                    getContext().startActivity(i);
+
+
+                                                                }
+
+                                                                @Override
+                                                                public void onDismissByReplace(com.nispok.snackbar.Snackbar snackbar) {
+
+                                                                }
+
+                                                                @Override
+                                                                public void onDismissed(com.nispok.snackbar.Snackbar snackbar) {
+
+                                                                }
+                                                            })
+                                                    , getActivity().getParent());
 
                                         }
 
@@ -262,22 +301,57 @@ public class ContactsFragment extends Fragment implements ContactsFragmentAdapte
                                         if (obj.getBoolean("error")) {
                                             Toast.makeText(getContext(), obj.getString("msg"), Toast.LENGTH_LONG).show();
                                         } else {
-                                            Toast.makeText(getContext(), obj.getString("msg"), Toast.LENGTH_LONG).show();
+                                            SnackbarManager.show(
+                                                    com.nispok.snackbar.Snackbar.with(getContext())
+                                                            .text(obj.getString("msg"))
+                                                            .duration(Snackbar.SnackbarDuration.LENGTH_SHORT)
+                                                            .eventListener(new EventListener() {
+                                                                @Override
+                                                                public void onShow(com.nispok.snackbar.Snackbar snackbar) {
 
-                                            if(SHARED.equals("no")) {
-                                                Intent i = new Intent(getContext(), AlbumMediaDisplay.class);
-                                                i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                                                i.putExtra("Id", ID);
-                                                i.putExtra("Name", NAME);
-                                                getContext().startActivity(i);
-                                            }else{
-                                                Intent i = new Intent(getContext(), SharedAlbumMediaDisplay.class);
-                                                i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                                                i.putExtra("Id", ID);
-                                                i.putExtra("Name", NAME);
-                                                getContext().startActivity(i);
-                                            }
+                                                                }
 
+                                                                @Override
+                                                                public void onShowByReplace(com.nispok.snackbar.Snackbar snackbar) {
+
+                                                                }
+
+                                                                @Override
+                                                                public void onShown(com.nispok.snackbar.Snackbar snackbar) {
+
+                                                                }
+
+                                                                @Override
+                                                                public void onDismiss(com.nispok.snackbar.Snackbar snackbar) {
+
+                                                                    if (SHARED.equals("no")) {
+                                                                        Intent i = new Intent(getContext(), AlbumMediaDisplay.class);
+                                                                        i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                                                                        i.putExtra("Id", ID);
+                                                                        i.putExtra("Name", NAME);
+                                                                        getContext().startActivity(i);
+                                                                    } else {
+                                                                        Intent i = new Intent(getContext(), SharedAlbumMediaDisplay.class);
+                                                                        i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                                                                        i.putExtra("Id", ID);
+                                                                        i.putExtra("Name", NAME);
+                                                                        getContext().startActivity(i);
+                                                                    }
+
+
+                                                                }
+
+                                                                @Override
+                                                                public void onDismissByReplace(com.nispok.snackbar.Snackbar snackbar) {
+
+                                                                }
+
+                                                                @Override
+                                                                public void onDismissed(com.nispok.snackbar.Snackbar snackbar) {
+
+                                                                }
+                                                            })
+                                                    , getActivity().getParent());
                                         }
 
                                     } catch (JSONException e) {
@@ -343,12 +417,50 @@ public class ContactsFragment extends Fragment implements ContactsFragmentAdapte
                                         if (obj.getBoolean("error")) {
                                             Toast.makeText(getContext(), obj.getString("msg"), Toast.LENGTH_LONG).show();
                                         } else {
-                                            Toast.makeText(getContext(), obj.getString("msg"), Toast.LENGTH_LONG).show();
-                                            Intent i = new Intent(getContext(), SharedAlbumMediaDisplay.class);
-                                            i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                                            i.putExtra("Id", ID);
-                                            i.putExtra("Name", NAME);
-                                            getContext().startActivity(i);
+                                            SnackbarManager.show(
+                                                    com.nispok.snackbar.Snackbar.with(getContext())
+                                                            .text(obj.getString("msg"))
+                                                            .duration(Snackbar.SnackbarDuration.LENGTH_SHORT)
+                                                            .eventListener(new EventListener() {
+                                                                @Override
+                                                                public void onShow(com.nispok.snackbar.Snackbar snackbar) {
+
+                                                                }
+
+                                                                @Override
+                                                                public void onShowByReplace(com.nispok.snackbar.Snackbar snackbar) {
+
+                                                                }
+
+                                                                @Override
+                                                                public void onShown(com.nispok.snackbar.Snackbar snackbar) {
+
+                                                                }
+
+                                                                @Override
+                                                                public void onDismiss(com.nispok.snackbar.Snackbar snackbar) {
+
+                                                                    Intent i = new Intent(getContext(), SharedAlbumMediaDisplay.class);
+                                                                    i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                                                                    i.putExtra("Id", ID);
+                                                                    i.putExtra("Name", NAME);
+                                                                    getContext().startActivity(i);
+
+
+                                                                }
+
+                                                                @Override
+                                                                public void onDismissByReplace(com.nispok.snackbar.Snackbar snackbar) {
+
+                                                                }
+
+                                                                @Override
+                                                                public void onDismissed(com.nispok.snackbar.Snackbar snackbar) {
+
+                                                                }
+                                                            })
+                                                    , getActivity().getParent());
+
 
                                         }
 
@@ -412,13 +524,49 @@ public class ContactsFragment extends Fragment implements ContactsFragmentAdapte
                                         if (obj.getBoolean("error")) {
                                             Toast.makeText(getContext(), obj.getString("msg"), Toast.LENGTH_LONG).show();
                                         } else {
-                                            Toast.makeText(getContext(), obj.getString("msg"), Toast.LENGTH_LONG).show();
+                                            SnackbarManager.show(
+                                                    com.nispok.snackbar.Snackbar.with(getContext())
+                                                            .text(obj.getString("msg"))
+                                                            .duration(Snackbar.SnackbarDuration.LENGTH_SHORT)
+                                                            .eventListener(new EventListener() {
+                                                                @Override
+                                                                public void onShow(com.nispok.snackbar.Snackbar snackbar) {
 
-                                            Intent i = new Intent(getContext(), SharedMediaDisplay.class);
-                                            i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                                            i.putExtra("Id", ID);
-                                            i.putExtra("image", imagedisplay);
-                                            getContext().startActivity(i);
+                                                                }
+
+                                                                @Override
+                                                                public void onShowByReplace(com.nispok.snackbar.Snackbar snackbar) {
+
+                                                                }
+
+                                                                @Override
+                                                                public void onShown(com.nispok.snackbar.Snackbar snackbar) {
+
+                                                                }
+
+                                                                @Override
+                                                                public void onDismiss(com.nispok.snackbar.Snackbar snackbar) {
+
+                                                                    Intent i = new Intent(getContext(), SharedMediaDisplay.class);
+                                                                    i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                                                                    i.putExtra("Id", ID);
+                                                                    i.putExtra("image", imagedisplay);
+                                                                    getContext().startActivity(i);
+
+
+                                                                }
+
+                                                                @Override
+                                                                public void onDismissByReplace(com.nispok.snackbar.Snackbar snackbar) {
+
+                                                                }
+
+                                                                @Override
+                                                                public void onDismissed(com.nispok.snackbar.Snackbar snackbar) {
+
+                                                                }
+                                                            })
+                                                    , getActivity().getParent());
 
 
                                         }

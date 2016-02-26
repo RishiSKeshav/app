@@ -60,7 +60,7 @@ public class SyncMediaSyncAdapter extends RecyclerView.Adapter<SyncMediaSyncAdap
     public SyncMediaSyncAdapter(ArrayList<String> List) {
         this.syncMediaList = List;
 
-        Log.d("SyncMediaSyncAdapter",String.valueOf(syncMediaList.size()));
+
 
     }
 
@@ -75,6 +75,8 @@ public class SyncMediaSyncAdapter extends RecyclerView.Adapter<SyncMediaSyncAdap
     @Override
     public void onBindViewHolder(MyViewHolder holder, int position) {
         Context c = holder.path.getContext();
+
+        Log.i("qpo",syncMediaList.get(position));
 
         Picasso.with(c).load(syncMediaList.get(position)).error(R.mipmap.ic_launcher).placeholder(R.mipmap.ic_launcher)
                     .into(holder.path);

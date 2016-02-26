@@ -378,11 +378,51 @@ public class FragmentFacebook extends Fragment implements FragmentFacebookAdapte
                                         if (obj.getBoolean("error")) {
                                             Toast.makeText(getContext(), obj.getString("msg"), Toast.LENGTH_LONG).show();
                                         } else {
-                                            Toast.makeText(getContext(), obj.getString("msg"), Toast.LENGTH_LONG).show();
+//                                            Toast.makeText(getContext(), obj.getString("msg"), Toast.LENGTH_LONG).show();
+//
+//
 
-                                            Intent i = new Intent(getContext(), HomeActivity.class);
-                                            i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                                            getContext().startActivity(i);
+                                            SnackbarManager.show(
+                                                    com.nispok.snackbar.Snackbar.with(getContext())
+                                                            .text(obj.getString("msg"))
+                                                            .duration(Snackbar.SnackbarDuration.LENGTH_SHORT)
+                                                            .eventListener(new EventListener() {
+                                                                @Override
+                                                                public void onShow(com.nispok.snackbar.Snackbar snackbar) {
+
+                                                                }
+
+                                                                @Override
+                                                                public void onShowByReplace(com.nispok.snackbar.Snackbar snackbar) {
+
+                                                                }
+
+                                                                @Override
+                                                                public void onShown(com.nispok.snackbar.Snackbar snackbar) {
+
+                                                                }
+
+                                                                @Override
+                                                                public void onDismiss(com.nispok.snackbar.Snackbar snackbar) {
+
+                                                                    Intent i = new Intent(getContext(), HomeActivity.class);
+                                                                      i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                                                                      getContext().startActivity(i);
+
+
+                                                                }
+
+                                                                @Override
+                                                                public void onDismissByReplace(com.nispok.snackbar.Snackbar snackbar) {
+
+                                                                }
+
+                                                                @Override
+                                                                public void onDismissed(com.nispok.snackbar.Snackbar snackbar) {
+
+                                                                }
+                                                            })
+                                                    , getActivity().getParent());
 
                                         }
 
@@ -446,9 +486,31 @@ public class FragmentFacebook extends Fragment implements FragmentFacebookAdapte
                                         if (obj.getBoolean("error")) {
                                             Toast.makeText(getContext(), obj.getString("msg"), Toast.LENGTH_LONG).show();
                                         } else {
-                                            Toast.makeText(getContext(), obj.getString("msg"), Toast.LENGTH_LONG).show();
 
-                                            if(SHARED.equals("no")) {
+                                            SnackbarManager.show(
+                                                    com.nispok.snackbar.Snackbar.with(getContext())
+                                                            .text(obj.getString("msg"))
+                                                            .duration(Snackbar.SnackbarDuration.LENGTH_SHORT)
+                                                            .eventListener(new EventListener() {
+                                                                @Override
+                                                                public void onShow(com.nispok.snackbar.Snackbar snackbar) {
+
+                                                                }
+
+                                                                @Override
+                                                                public void onShowByReplace(com.nispok.snackbar.Snackbar snackbar) {
+
+                                                                }
+
+                                                                @Override
+                                                                public void onShown(com.nispok.snackbar.Snackbar snackbar) {
+
+                                                                }
+
+                                                                @Override
+                                                                public void onDismiss(com.nispok.snackbar.Snackbar snackbar) {
+
+                                                                    if(SHARED.equals("no")) {
                                                 Intent i = new Intent(getContext(), AlbumMediaDisplay.class);
                                                 i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                                                 i.putExtra("Id", ID);
@@ -461,6 +523,21 @@ public class FragmentFacebook extends Fragment implements FragmentFacebookAdapte
                                                 i.putExtra("Name", NAME);
                                                 getContext().startActivity(i);
                                             }
+
+
+                                                                }
+
+                                                                @Override
+                                                                public void onDismissByReplace(com.nispok.snackbar.Snackbar snackbar) {
+
+                                                                }
+
+                                                                @Override
+                                                                public void onDismissed(com.nispok.snackbar.Snackbar snackbar) {
+
+                                                                }
+                                                            })
+                                                    , getActivity().getParent());
 
                                         }
 
@@ -527,12 +604,53 @@ public class FragmentFacebook extends Fragment implements FragmentFacebookAdapte
                                         if (obj.getBoolean("error")) {
                                             Toast.makeText(getContext(), obj.getString("msg"), Toast.LENGTH_LONG).show();
                                         } else {
-                                            Toast.makeText(getContext(), obj.getString("msg"), Toast.LENGTH_LONG).show();
-                                            Intent i = new Intent(getContext(), SharedAlbumMediaDisplay.class);
+
+                                            SnackbarManager.show(
+                                                    com.nispok.snackbar.Snackbar.with(getContext())
+                                                            .text(obj.getString("msg"))
+                                                            .duration(Snackbar.SnackbarDuration.LENGTH_SHORT)
+                                                            .eventListener(new EventListener() {
+                                                                @Override
+                                                                public void onShow(com.nispok.snackbar.Snackbar snackbar) {
+
+                                                                }
+
+                                                                @Override
+                                                                public void onShowByReplace(com.nispok.snackbar.Snackbar snackbar) {
+
+                                                                }
+
+                                                                @Override
+                                                                public void onShown(com.nispok.snackbar.Snackbar snackbar) {
+
+                                                                }
+
+                                                                @Override
+                                                                public void onDismiss(com.nispok.snackbar.Snackbar snackbar) {
+
+                                                                    Intent i = new Intent(getContext(), SharedAlbumMediaDisplay.class);
                                             i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                                             i.putExtra("Id", ID);
                                             i.putExtra("Name", NAME);
                                             getContext().startActivity(i);
+
+
+                                                                }
+
+                                                                @Override
+                                                                public void onDismissByReplace(com.nispok.snackbar.Snackbar snackbar) {
+
+                                                                }
+
+                                                                @Override
+                                                                public void onDismissed(com.nispok.snackbar.Snackbar snackbar) {
+
+                                                                }
+                                                            })
+                                                    , getActivity().getParent());
+
+
+
 
                                         }
 
@@ -596,13 +714,53 @@ public class FragmentFacebook extends Fragment implements FragmentFacebookAdapte
                                         if (obj.getBoolean("error")) {
                                             Toast.makeText(getContext(), obj.getString("msg"), Toast.LENGTH_LONG).show();
                                         } else {
-                                            Toast.makeText(getContext(), obj.getString("msg"), Toast.LENGTH_LONG).show();
 
-                                                Intent i = new Intent(getContext(), SharedMediaDisplay.class);
+                                            SnackbarManager.show(
+                                                    com.nispok.snackbar.Snackbar.with(getContext())
+                                                            .text(obj.getString("msg"))
+                                                            .duration(Snackbar.SnackbarDuration.LENGTH_SHORT)
+                                                            .eventListener(new EventListener() {
+                                                                @Override
+                                                                public void onShow(com.nispok.snackbar.Snackbar snackbar) {
+
+                                                                }
+
+                                                                @Override
+                                                                public void onShowByReplace(com.nispok.snackbar.Snackbar snackbar) {
+
+                                                                }
+
+                                                                @Override
+                                                                public void onShown(com.nispok.snackbar.Snackbar snackbar) {
+
+                                                                }
+
+                                                                @Override
+                                                                public void onDismiss(com.nispok.snackbar.Snackbar snackbar) {
+
+                                                                    Intent i = new Intent(getContext(), SharedMediaDisplay.class);
                                                 i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                                                 i.putExtra("Id", ID);
                                                 i.putExtra("image", imagedisplay);
                                                 getContext().startActivity(i);
+
+
+
+                                                                }
+
+                                                                @Override
+                                                                public void onDismissByReplace(com.nispok.snackbar.Snackbar snackbar) {
+
+                                                                }
+
+                                                                @Override
+                                                                public void onDismissed(com.nispok.snackbar.Snackbar snackbar) {
+
+                                                                }
+                                                            })
+                                                    , getActivity().getParent());
+
+
 
 
                                         }
