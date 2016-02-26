@@ -52,6 +52,7 @@ public class SyncMediaSyncAdapter extends RecyclerView.Adapter<SyncMediaSyncAdap
             Context context = view.getContext();
             Intent intent = new Intent(context,SyncMediaFullScreenActivity.class);
             intent.putExtra("Position", pos);
+            intent.putExtra("action","sync");
             intent.putStringArrayListExtra("data",syncMediaList);
             context.startActivity(intent);
         }
@@ -60,6 +61,8 @@ public class SyncMediaSyncAdapter extends RecyclerView.Adapter<SyncMediaSyncAdap
     public SyncMediaSyncAdapter(ArrayList<String> List) {
         this.syncMediaList = List;
 
+
+        Log.d("SyncAdapter constructor",String.valueOf(this.syncMediaList.size()));
 
 
     }
@@ -76,7 +79,7 @@ public class SyncMediaSyncAdapter extends RecyclerView.Adapter<SyncMediaSyncAdap
     public void onBindViewHolder(MyViewHolder holder, int position) {
         Context c = holder.path.getContext();
 
-        Log.i("qpo",syncMediaList.get(position));
+        Log.i("syncList",syncMediaList.get(position));
 
         Picasso.with(c).load(syncMediaList.get(position)).error(R.mipmap.ic_launcher).placeholder(R.mipmap.ic_launcher)
                     .into(holder.path);

@@ -6,8 +6,8 @@
     >
 
     <de.hdodenhof.circleimageview.CircleImageView
-        android:layout_width="40dp"
-        android:layout_height="40dp"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
         android:layout_marginTop="5dp"
         android:src="@mipmap/ic_launcher"
         android:id="@+id/shared_user_displayPicture"
@@ -19,7 +19,8 @@
         android:layout_height="wrap_content"
         android:layout_toRightOf="@id/shared_user_displayPicture"
         android:text=""
-        android:layout_marginTop="15dp"
+        android:layout_marginTop="5dp"
+        android:textSize="12sp"
         android:layout_marginLeft="5dp"/>
 
 

@@ -52,6 +52,7 @@ public class SyncMediaDisplayActivity extends AppCompatActivity {
     private NavigationView nvDrawer;
     TextView t1,t2,t3;
     SessionManager sessionManager;
+    String action;
 
 
     SyncImages sImage;
@@ -94,6 +95,21 @@ public class SyncMediaDisplayActivity extends AppCompatActivity {
         final ViewPager viewPager = (ViewPager) findViewById(R.id.sync_images_viewpager);
         viewPager.setAdapter(new SyncMediaPagerAdapter(getSupportFragmentManager(),
                 SyncMediaDisplayActivity.this));
+
+        Intent i = getIntent();
+
+        if(i.hasExtra("action")){
+            action = i.getStringExtra("action");
+            if(action.equals("unsync")){
+                viewPager.setCurrentItem(0);
+            }
+            if(action.equals("sync")){
+                viewPager.setCurrentItem(1);
+            }
+            if(action.equals("camera")){
+                viewPager.setCurrentItem(2);
+            }
+        }
 
         TabLayout tabLayout = (TabLayout) findViewById(R.id.sync_images_sliding_tabs);
         tabLayout.setupWithViewPager(viewPager);
