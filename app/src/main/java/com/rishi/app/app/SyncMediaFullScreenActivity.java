@@ -84,9 +84,11 @@ public class SyncMediaFullScreenActivity extends AppCompatActivity {
 
         int id = item.getItemId();
         if (id == android.R.id.home) {
-            Intent intent = new Intent(SyncMediaFullScreenActivity.this,SyncMediaDisplayActivity.class);
-            intent.putExtra("action",action);
-            startActivity(intent);
+//            Intent intent = new Intent(SyncMediaFullScreenActivity.this,SyncMediaDisplayActivity.class);
+//            intent.putExtra("action",action);
+//            startActivity(intent);
+            Log.i("ooo","reachedback");
+            onBackPressed();
     }
         if(id == R.id.delete_sync_media_display){
 
@@ -105,7 +107,7 @@ public class SyncMediaFullScreenActivity extends AppCompatActivity {
         String path = data.get(pos);
 
 
-        db = new ImageDatabaseHandler(getApplicationContext(), Environment.getExternalStorageDirectory().toString() + "/app");
+        db = new ImageDatabaseHandler(getApplicationContext(), Environment.getExternalStorageDirectory().toString() + "/ClikApp");
         final int mediaId = db.getMediaId(path);
         db.close();
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
@@ -167,7 +169,7 @@ public class SyncMediaFullScreenActivity extends AppCompatActivity {
                                                         @Override
                                                         public void onDismiss(com.nispok.snackbar.Snackbar snackbar) {
 
-                                                            db = new ImageDatabaseHandler(getApplicationContext(), Environment.getExternalStorageDirectory().toString() + "/app");
+                                                            db = new ImageDatabaseHandler(getApplicationContext(), Environment.getExternalStorageDirectory().toString() + "/ClikApp");
 
                                                             db.deleteMedia(mediaId);
 

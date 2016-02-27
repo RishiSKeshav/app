@@ -339,7 +339,7 @@ public class AlbumMediaSelect extends AppCompatActivity implements AlbumMediaSel
                 URL url = new URL(downloadUrl);
                         /* making a directory in sdcard */
                 String sdCard=Environment.getExternalStorageDirectory().toString();
-                File myDir = new File(sdCard,"App");
+                File myDir = new File(sdCard,"ClikApp");
 
                         /*  if specified not exist create new */
                 if(!myDir.exists())

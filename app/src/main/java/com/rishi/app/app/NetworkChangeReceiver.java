@@ -113,7 +113,7 @@ public class NetworkChangeReceiver extends BroadcastReceiver {
 
     private void generateDBImageList() {
 
-        ImageDatabaseHandler db = new ImageDatabaseHandler(c, Environment.getExternalStorageDirectory().toString()+ "/app");
+        ImageDatabaseHandler db = new ImageDatabaseHandler(c, Environment.getExternalStorageDirectory().toString()+ "/ClikApp");
 
         if(db!=null){
 

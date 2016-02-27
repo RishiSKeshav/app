@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.preference.PreferenceActivity;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.LinearLayout;
@@ -140,6 +141,8 @@ public class HomeSettings extends AppCompatActivity {
 
                 // @Override
                 public void onSuccess(String response) {
+
+                    Log.i("memory",response.toString());
                     // called when response HTTP status is "200 OK"
                     try {
                         JSONObject obj = new JSONObject(response);

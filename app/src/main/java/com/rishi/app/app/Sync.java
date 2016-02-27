@@ -409,7 +409,7 @@ public class Sync extends AppCompatActivity {
 
     private void generateDBImageList() {
 
-        ImageDatabaseHandler db = new ImageDatabaseHandler(this, Environment.getExternalStorageDirectory().toString()+ "/app");
+        ImageDatabaseHandler db = new ImageDatabaseHandler(this, Environment.getExternalStorageDirectory().toString()+ "/ClikApp");
 
         if(db!=null){
 

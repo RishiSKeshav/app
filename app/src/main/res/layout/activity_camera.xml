@@ -22,16 +22,6 @@
     </FrameLayout>
 
 
-<<<<<<< HEAD
-=======
-    <Button
-        android:id="@+id/button_ChangeCamera"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:layout_centerInParent="true"
-         />
->>>>>>> 0ac569085a9c2d583ee490de645d164e681a8e84
 
 
     <RelativeLayout

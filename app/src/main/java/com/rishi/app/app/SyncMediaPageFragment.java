@@ -193,7 +193,7 @@ public class SyncMediaPageFragment extends Fragment {
 
     private void generateDBImageList() {
 
-        ImageDatabaseHandler db = new ImageDatabaseHandler(getContext(), Environment.getExternalStorageDirectory().toString()+ "/app");
+        ImageDatabaseHandler db = new ImageDatabaseHandler(getContext(), Environment.getExternalStorageDirectory().toString()+ "/ClikApp");
 
         if(db!=null){
 
@@ -239,7 +239,7 @@ public class SyncMediaPageFragment extends Fragment {
 
     private void generateCameraImageList() {
 
-        ImageDatabaseHandler db = new ImageDatabaseHandler(getContext(), Environment.getExternalStorageDirectory().toString()+ "/app");
+        ImageDatabaseHandler db = new ImageDatabaseHandler(getContext(), Environment.getExternalStorageDirectory().toString()+ "/ClikApp");
 
         if(db!=null){
 
@@ -256,7 +256,7 @@ public class SyncMediaPageFragment extends Fragment {
 
     private void generateSyncImageList() {
 
-        ImageDatabaseHandler db = new ImageDatabaseHandler(getContext(), Environment.getExternalStorageDirectory().toString()+ "/app");
+        ImageDatabaseHandler db = new ImageDatabaseHandler(getContext(), Environment.getExternalStorageDirectory().toString()+ "/ClikApp");
 
         if(db!=null){
 

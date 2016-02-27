@@ -20,6 +20,7 @@ import android.graphics.PorterDuff;
 import android.graphics.PorterDuffXfermode;
 import android.graphics.Rect;
 import android.graphics.RectF;
+import android.graphics.Typeface;
 import android.media.Image;
 
 import android.net.LinkAddress;
@@ -137,9 +138,17 @@ public class HomeActivity extends AppCompatActivity {
         setContentView(R.layout.home);
         sessionManager = new SessionManager(getApplicationContext());
 
+        String fontPath = "fonts/Orbitron-Bold.ttf";
+
         Toolbar home_toolbar= (Toolbar) findViewById(R.id.home_toolbar);
+        TextView header = (TextView) findViewById(R.id.tv_ld_header);
+        Typeface tf = Typeface.createFromAsset(getAssets(), fontPath);
+        header.setTypeface(tf);
         setSupportActionBar(home_toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+
+
         mDrawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         nvDrawer = (NavigationView) findViewById(R.id.nvView);
         setupDrawerContent(nvDrawer);

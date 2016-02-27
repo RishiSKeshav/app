@@ -89,6 +89,9 @@ public class SessionManager {
     }
 
     public void logoutUser(){
+
+     //   FacebookSdk.sdkInitialize(Sess);
+
         editor.putBoolean("login_status_value", false);
 
         editor.commit();

@@ -73,6 +73,8 @@ public class SyncMediaDisplayActivity extends AppCompatActivity {
         Toolbar toolbar= (Toolbar) findViewById(R.id.sync_images_toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+
         mDrawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         nvDrawer = (NavigationView) findViewById(R.id.nvView);
         setupDrawerContent(nvDrawer);
@@ -169,7 +171,6 @@ public class SyncMediaDisplayActivity extends AppCompatActivity {
 
     }
 
-
     private  void navHeaderData(){
         try {
             JSONObject obj = new JSONObject();
@@ -200,7 +201,7 @@ public class SyncMediaDisplayActivity extends AppCompatActivity {
                             );
                         } else {
 
-                            Log.i("ddd",obj.getJSONObject("user").toString());
+                            Log.i("dddSync",obj.getJSONObject("user").toString());
 
                             JSONObject user = obj.getJSONObject("user");
                             t1.setText(user.optString("photos"));
@@ -287,6 +288,8 @@ public class SyncMediaDisplayActivity extends AppCompatActivity {
         setTitle(menuItem.getTitle());
         mDrawer.closeDrawers();
     }
+
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
 
@@ -295,6 +298,7 @@ public class SyncMediaDisplayActivity extends AppCompatActivity {
         if(id == android.R.id.home){
             mDrawer.openDrawer(GravityCompat.START);
         }
+
         return super.onOptionsItemSelected(item);
     }
 
@@ -302,6 +306,10 @@ public class SyncMediaDisplayActivity extends AppCompatActivity {
     protected void onPostCreate(Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);
     }
+
+
+
+
 
 
 //    private void initializeImageLists() {

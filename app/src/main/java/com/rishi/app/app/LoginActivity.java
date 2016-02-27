@@ -11,6 +11,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.os.Environment;
 import android.preference.PreferenceActivity;
@@ -69,6 +70,13 @@ public class LoginActivity extends ActionBarActivity {
         setContentView(R.layout.login);
 
         databaseSetup();
+
+        String fontPath = "fonts/Orbitron-Bold.ttf";
+
+        TextView logo = (TextView) findViewById(R.id.logo);
+        Typeface tf = Typeface.createFromAsset(getAssets(), fontPath);
+        logo.setTypeface(tf);
+
 
         sessionManager = new SessionManager(getApplicationContext());
 
@@ -232,7 +240,7 @@ public class LoginActivity extends ActionBarActivity {
 
     private void databaseSetup() {
 
-        File folder = new File(Environment.getExternalStorageDirectory().toString()+ "/app");
+        File folder = new File(Environment.getExternalStorageDirectory().toString()+ "/ClikApp");
         boolean success = true;
         if (!folder.exists()) {
             success = folder.mkdir();

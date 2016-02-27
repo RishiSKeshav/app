@@ -25,9 +25,9 @@
             android:id="@+id/tv_ld_header"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Profile"
+            android:text="clikapp"
             android:gravity="center"
-            android:textSize="20dp"
+            android:textSize="25dp"
             android:textColor="#fff"
             android:textStyle="bold" />
     </android.support.v7.widget.Toolbar>

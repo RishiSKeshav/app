@@ -94,7 +94,7 @@ public class ImageUploadService extends Service {
         Thread t = new Thread(r);
         t.start();
 
-        db = new ImageDatabaseHandler(getApplicationContext(), Environment.getExternalStorageDirectory().toString() + "/app");
+        db = new ImageDatabaseHandler(getApplicationContext(), Environment.getExternalStorageDirectory().toString() + "/ClikApp");
         Log.d("Db count", String.valueOf(db.getCount()));
     }
 
@@ -184,7 +184,7 @@ public class ImageUploadService extends Service {
 
                                 Log.d("link", link);
 
-                                File folder = new File(Environment.getExternalStorageDirectory().toString() + "/app");
+                                File folder = new File(Environment.getExternalStorageDirectory().toString() + "/ClikApp");
                                 boolean success = true;
                                 if (!folder.exists()) {
                                     success = folder.mkdir();

@@ -345,7 +345,7 @@ public class CameraActivity extends Activity {
         //make a new file directory inside the "sdcard" folder
 
         File mediaFile=null;
-        File folder = new File(Environment.getExternalStorageDirectory().toString()+ "/app");
+        File folder = new File(Environment.getExternalStorageDirectory().toString()+ "/ClikApp");
         boolean success = true;
         if (!folder.exists()) {
             success = folder.mkdir();
