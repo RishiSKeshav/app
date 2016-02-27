@@ -5,9 +5,13 @@ import java.util.ArrayList;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -83,4 +87,7 @@ public class SyncFullScreenAdapter extends PagerAdapter {
         ((ViewPager) container).removeView((RelativeLayout) object);
 
     }
+
+
+
 }

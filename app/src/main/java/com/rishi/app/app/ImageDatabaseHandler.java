@@ -184,4 +184,34 @@ public class ImageDatabaseHandler extends SQLiteOpenHelper {
         // return contact list
         return syncImagePathList;
     }
+
+    public int getMediaId(String path){
+
+        int mediaId=0;
+
+        String selectQuery = "SELECT media_id  FROM " + TABLE_SyncedMedia +" where link='"+path+"'";
+
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery(selectQuery, null);
+
+        // looping through all rows and adding to list
+        if (cursor.moveToFirst()) {
+            do {
+                mediaId = Integer.parseInt(cursor.getString(0));
+            } while (cursor.moveToNext());
+        }
+
+        cursor.close();
+
+        return mediaId;
+    }
+
+    public void deleteMedia(int mediaId){
+
+        //String selectQuery = "Delete  FROM " + TABLE_SyncedMedia +" where media_id='"+mediaId+"'";
+        SQLiteDatabase db = this.getWritableDatabase();
+        //Cursor cursor = db.rawQuery(selectQuery, null);
+        db.delete(TABLE_SyncedMedia,"media_id="+mediaId,null);
+        //cursor.close();
+    }
 }

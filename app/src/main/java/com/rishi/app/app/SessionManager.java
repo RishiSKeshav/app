@@ -90,6 +90,7 @@ public class SessionManager {
 
     public void logoutUser(){
         editor.putBoolean("login_status_value", false);
+
         editor.commit();
 
         LoginManager.getInstance().logOut();

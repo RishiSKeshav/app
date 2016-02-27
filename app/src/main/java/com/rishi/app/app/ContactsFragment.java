@@ -198,7 +198,7 @@ public class ContactsFragment extends Fragment implements ContactsFragmentAdapte
                                             Toast.makeText(getContext(), obj.getString("msg"), Toast.LENGTH_LONG).show();
                                         } else {
                                             SnackbarManager.show(
-                                                    com.nispok.snackbar.Snackbar.with(getContext())
+                                                    com.nispok.snackbar.Snackbar.with(getActivity())
                                                             .text(obj.getString("msg"))
                                                             .duration(Snackbar.SnackbarDuration.LENGTH_SHORT)
                                                             .eventListener(new EventListener() {
@@ -237,7 +237,7 @@ public class ContactsFragment extends Fragment implements ContactsFragmentAdapte
 
                                                                 }
                                                             })
-                                                    , getActivity().getParent());
+                                                    , getActivity());
 
                                         }
 
@@ -302,7 +302,7 @@ public class ContactsFragment extends Fragment implements ContactsFragmentAdapte
                                             Toast.makeText(getContext(), obj.getString("msg"), Toast.LENGTH_LONG).show();
                                         } else {
                                             SnackbarManager.show(
-                                                    com.nispok.snackbar.Snackbar.with(getContext())
+                                                    com.nispok.snackbar.Snackbar.with(getActivity())
                                                             .text(obj.getString("msg"))
                                                             .duration(Snackbar.SnackbarDuration.LENGTH_SHORT)
                                                             .eventListener(new EventListener() {
@@ -351,7 +351,7 @@ public class ContactsFragment extends Fragment implements ContactsFragmentAdapte
 
                                                                 }
                                                             })
-                                                    , getActivity().getParent());
+                                                    , getActivity());
                                         }
 
                                     } catch (JSONException e) {
@@ -418,7 +418,7 @@ public class ContactsFragment extends Fragment implements ContactsFragmentAdapte
                                             Toast.makeText(getContext(), obj.getString("msg"), Toast.LENGTH_LONG).show();
                                         } else {
                                             SnackbarManager.show(
-                                                    com.nispok.snackbar.Snackbar.with(getContext())
+                                                    com.nispok.snackbar.Snackbar.with(getActivity())
                                                             .text(obj.getString("msg"))
                                                             .duration(Snackbar.SnackbarDuration.LENGTH_SHORT)
                                                             .eventListener(new EventListener() {
@@ -459,7 +459,7 @@ public class ContactsFragment extends Fragment implements ContactsFragmentAdapte
 
                                                                 }
                                                             })
-                                                    , getActivity().getParent());
+                                                    , getActivity());
 
 
                                         }
@@ -525,7 +525,7 @@ public class ContactsFragment extends Fragment implements ContactsFragmentAdapte
                                             Toast.makeText(getContext(), obj.getString("msg"), Toast.LENGTH_LONG).show();
                                         } else {
                                             SnackbarManager.show(
-                                                    com.nispok.snackbar.Snackbar.with(getContext())
+                                                    com.nispok.snackbar.Snackbar.with(getActivity())
                                                             .text(obj.getString("msg"))
                                                             .duration(Snackbar.SnackbarDuration.LENGTH_SHORT)
                                                             .eventListener(new EventListener() {
@@ -566,7 +566,7 @@ public class ContactsFragment extends Fragment implements ContactsFragmentAdapte
 
                                                                 }
                                                             })
-                                                    , getActivity().getParent());
+                                                    , getActivity());
 
 
                                         }

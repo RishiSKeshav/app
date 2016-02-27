@@ -33,6 +33,7 @@ public class HomeSettings extends AppCompatActivity {
     TextView editprofile;
     LinearLayout editprofilelayout,change_email,change_password,logout,invite;
     SessionManager sessionManager;
+    TextView memorystatus;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,6 +45,8 @@ public class HomeSettings extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         sessionManager = new SessionManager(getApplicationContext());
+
+        memorystatus = (TextView) findViewById(R.id.memorystatus);
 
         editprofilelayout = (LinearLayout) findViewById(R.id.edit_profile_layout);
         editprofilelayout.setOnClickListener(new View.OnClickListener() {
@@ -112,7 +115,71 @@ public class HomeSettings extends AppCompatActivity {
             }
         });
 
+        getMemoryStatus();
         }
+
+
+    private void getMemoryStatus(){
+
+
+
+        try {
+            JSONObject obj = new JSONObject();
+            obj.put("userId", sessionManager.getId());
+            StringEntity jsonString = new StringEntity(obj.toString());
+
+
+            AsyncHttpClient client = new AsyncHttpClient();
+
+            client.post(getApplicationContext(), "http://52.89.2.186/project/webservice/public/Getmemorystatus", jsonString, "application/json", new AsyncHttpResponseHandler() {
+
+                @Override
+                public void onStart() {
+                    // called before request is started
+                }
+
+                // @Override
+                public void onSuccess(String response) {
+                    // called when response HTTP status is "200 OK"
+                    try {
+                        JSONObject obj = new JSONObject(response);
+
+                        if (obj.getBoolean("error")) {
+
+                        } else {
+                            memorystatus.setText(obj.getString("size"));
+
+                        }
+
+                    } catch (JSONException e) {
+                        // TODO Auto-generated catch block
+                        Toast.makeText(getApplicationContext(), "Error Occured [Server's JSON response might be invalid]!", Toast.LENGTH_LONG).show();
+                        e.printStackTrace();
+
+                    }
+                }
+
+                //@Override
+                public void onFailure(int statusCode, PreferenceActivity.Header[] headers, byte[] errorResponse, Throwable e) {
+                    // called when response HTTP status is "4XX" (eg. 401, 403, 404)
+                }
+
+                //@Override
+                public void onRetry(int retryNo) {
+                    // called when request is retried
+                }
+
+
+            });
+
+        }catch (JSONException e) {
+            e.printStackTrace();
+        }catch(UnsupportedEncodingException ee){
+            ee.printStackTrace();
+        }
+
+    }
+
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {

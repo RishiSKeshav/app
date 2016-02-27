@@ -5,7 +5,7 @@
     xmlns:yourapp="http://schemas.android.com/apk/res-auto"
     >
 
-    <item android:id="@+id/delete_shared_media_display"
+    <item android:id="@+id/delete_sync_media_display"
         android:title="Delete"
         android:icon="@android:drawable/ic_menu_delete"
         yourapp:showAsAction="ifRoom"/>
