@@ -98,12 +98,25 @@ public class CameraFullImageDisplayActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home:
-                onBackPressed();
+                Intent intent1 = new Intent(this,HomeActivity.class);
+                startActivity(intent1);
                 return true;
             case R.id.camera_upload:
 
+                final ProgressDialog progressDialog = new ProgressDialog(CameraFullImageDisplayActivity.this,
+                        R.style.AppTheme_Dark_Dialog);
+                progressDialog.setIndeterminate(true);
+                progressDialog.setMessage("Uploading...");
+                progressDialog.show();
+
                 startUpload(photoImageList);
-                Log.i("eee", "reached");
+
+
+                progressDialog.hide();
+
+                Intent intent2 = new Intent(this,CameraActivity.class);
+                startActivity(intent2);
+
                 return true;
         }
         return(super.onOptionsItemSelected(item));
@@ -113,11 +126,7 @@ public class CameraFullImageDisplayActivity extends AppCompatActivity {
     public void startUpload(final ArrayList<Image> unSyncedImageList)
     {
 
-        final ProgressDialog progressDialog = new ProgressDialog(CameraFullImageDisplayActivity.this,
-                R.style.AppTheme_Dark_Dialog);
-        progressDialog.setIndeterminate(true);
-        progressDialog.setMessage("Uploading...");
-        progressDialog.show();
+
 
         Log.d("Service: count ", String.valueOf(unSyncedImageList.size()));
 
@@ -126,15 +135,12 @@ public class CameraFullImageDisplayActivity extends AppCompatActivity {
         Runnable r = new Runnable() {
             public void run() {
 
-
-
-
-
                 for (int i = 0; i < unSyncedImageList.size(); i++) {
                     synchronized (this) {
                         try {
 
-                            progressDialog.setMessage("Uploading" + i+1 + "of" + unSyncedImageList.size());
+                           /* progressDialog.setMessage("Uploading" + i+1 + "of" + unSyncedImageList.size());
+                            progressDialog.show();*/
                             upload(unSyncedImageList.get(i), count);
 
                         } catch (Exception e) {
@@ -152,7 +158,6 @@ public class CameraFullImageDisplayActivity extends AppCompatActivity {
         db = new ImageDatabaseHandler(getApplicationContext(), Environment.getExternalStorageDirectory().toString()+ "/app");
         Log.d("Db count", String.valueOf(db.getCount()));
 
-        progressDialog.hide();
     }
     public void upload(Image img,int count)
     {
@@ -166,7 +171,6 @@ public class CameraFullImageDisplayActivity extends AppCompatActivity {
         String filename = img.getName();
 
         /*Bitmap bitmap = BitmapFactory.decodeFile(filePath);
-
         ByteArrayOutputStream stream = new ByteArrayOutputStream();
         bitmap.compress(Bitmap.CompressFormat.PNG, 50, stream);
         byte[] byte_arr = stream.toByteArray();
@@ -186,9 +190,9 @@ public class CameraFullImageDisplayActivity extends AppCompatActivity {
 
                             double y = (long) (((float) num / totalSize) * 100);
 
-                            Intent i = new Intent("PROGRESS_ACTION");
+                           /* Intent i = new Intent("PROGRESS_ACTION");
                             i.putExtra("NUMBER",(int)y);
-                            sendBroadcast(i);
+                            sendBroadcast(i);*/
                         }
                     });
 
@@ -199,7 +203,7 @@ public class CameraFullImageDisplayActivity extends AppCompatActivity {
             // Extra parameters if you want to pass to server
             entity.addPart("userId", new StringBody(sessionManager.getId()));
             entity.addPart("filesize", new StringBody(String.valueOf(f.length())));
-          //  entity.addPart("name", new StringBody(filename));
+            //  entity.addPart("name", new StringBody(filename));
 
             totalSize = entity.getContentLength();
             httppost.setEntity(entity);
@@ -219,9 +223,10 @@ public class CameraFullImageDisplayActivity extends AppCompatActivity {
 
                     Log.d("obh",String.valueOf(obj));
                     if (obj.getBoolean("error")) {
-                        Log.d("error true","true");
+                        Log.d("error true", "true");
 
-                        Toast.makeText(getApplicationContext(), obj.getString("message"), Toast.LENGTH_LONG).show();
+                        f.delete();
+                        //Toast.makeText(getApplicationContext(), obj.getString("message"), Toast.LENGTH_LONG).show();
                     } else {
 
                         Log.d("error false:", responseString);
