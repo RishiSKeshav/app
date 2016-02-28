@@ -664,23 +664,27 @@ public class ContactsFragment extends Fragment implements ContactsFragmentAdapte
                                             Toast.makeText(getContext(), obj.getString("msg"), Toast.LENGTH_LONG).show();
                                         } else {
                                             JSONObject numberObj = obj.getJSONObject("outputObj");
-                                            JSONArray userarray = numberObj.optJSONArray("user");
+                                            if(numberObj.getString("id").equals("")){
 
-                                            for (int i = 0; i < userarray.length(); i++) {
+                                            }else {
+                                                JSONArray userarray = numberObj.optJSONArray("user");
 
-                                                JSONObject userdetails = userarray.optJSONObject(i);
+                                                for (int i = 0; i < userarray.length(); i++) {
 
-
-                                                ContactsFriends cf = new ContactsFriends(userdetails.optString("id"), userdetails.optString("name"),
-                                                        userdetails.optString("emailId"),userdetails.optString("mobileNo"),
-                                                        userdetails.optString("mobileNo"), userdetails.optString("displayPicture"),
-                                                        userdetails.optString("facebookId"));
-
-                                                contactsfriends.add(cf);
-
-                                                cfAdapter.notifyDataSetChanged();
+                                                    JSONObject userdetails = userarray.optJSONObject(i);
 
 
+                                                    ContactsFriends cf = new ContactsFriends(userdetails.optString("id"), userdetails.optString("name"),
+                                                            userdetails.optString("emailId"), userdetails.optString("mobileNo"),
+                                                            userdetails.optString("mobileNo"), userdetails.optString("displayPicture"),
+                                                            userdetails.optString("facebookId"));
+
+                                                    contactsfriends.add(cf);
+
+                                                    cfAdapter.notifyDataSetChanged();
+
+
+                                                }
                                             }
                                         }
                                     }catch (JSONException e) {

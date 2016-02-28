@@ -22,6 +22,9 @@ import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.nispok.snackbar.SnackbarManager;
+import com.nispok.snackbar.listeners.EventListener;
+
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.ClientProtocolException;
@@ -114,8 +117,52 @@ public class CameraFullImageDisplayActivity extends AppCompatActivity {
 
                 progressDialog.hide();
 
-                Intent intent2 = new Intent(this,CameraActivity.class);
-                startActivity(intent2);
+
+                SnackbarManager.show(
+                        com.nispok.snackbar.Snackbar.with(this)
+                                .text("Uploaded Successfully")
+                                .duration(com.nispok.snackbar.Snackbar.SnackbarDuration.LENGTH_SHORT)
+                                .eventListener(new EventListener() {
+                                    @Override
+                                    public void onShow(com.nispok.snackbar.Snackbar snackbar) {
+
+                                    }
+
+                                    @Override
+                                    public void onShowByReplace(com.nispok.snackbar.Snackbar snackbar) {
+
+                                    }
+
+                                    @Override
+                                    public void onShown(com.nispok.snackbar.Snackbar snackbar) {
+
+                                    }
+
+                                    @Override
+                                    public void onDismiss(com.nispok.snackbar.Snackbar snackbar) {
+
+
+                                        Intent intent2 = new Intent(CameraFullImageDisplayActivity.this, CameraActivity.class);
+                                        startActivity(intent2);
+
+                                    }
+
+                                    @Override
+                                    public void onDismissByReplace(com.nispok.snackbar.Snackbar snackbar) {
+
+                                    }
+
+                                    @Override
+                                    public void onDismissed(com.nispok.snackbar.Snackbar snackbar) {
+
+                                    }
+                                })
+                        , CameraFullImageDisplayActivity.this);
+
+
+
+
+
 
                 return true;
         }

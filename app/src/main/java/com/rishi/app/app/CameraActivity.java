@@ -83,7 +83,8 @@ public class CameraActivity extends Activity {
         camera_cancel.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                onBackPressed();
+                Intent i = new Intent(CameraActivity.this,HomeActivity.class);
+                startActivity(i);
             }
         });
 

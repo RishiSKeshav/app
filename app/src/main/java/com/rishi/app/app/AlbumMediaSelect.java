@@ -279,7 +279,7 @@ public class AlbumMediaSelect extends AppCompatActivity implements AlbumMediaSel
 
                     SnackbarManager.show(
                             com.nispok.snackbar.Snackbar.with(AlbumMediaSelect.this)
-                                    .text("Images downloaded to App folder")
+                                    .text("Images downloaded to ClikApp folder")
                                     .duration(com.nispok.snackbar.Snackbar.SnackbarDuration.LENGTH_SHORT)
                     );
                     return true;
