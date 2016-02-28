@@ -131,33 +131,12 @@ public class Sync extends AppCompatActivity {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean bChecked) {
                 if (bChecked) {
-/*                    setPhotoVideoStatusVisibile();*/
-
                     sessionManager.changeSyncStatus(bChecked);
-
                     startOrStopSync();
-                    /*initializeImageLists();
 
-                    serviceIntent = new Intent(Sync.this, ImageUploadService.class);
-                    serviceIntent.putParcelableArrayListExtra("unSyncedImageList", unSyncedImageList);
-                    startService(serviceIntent);
-
-                    Log.d("checked", " checked reached");*/
                 } else {
-
-                    Log.d("unchecked", " unchecked reached");
-
                     sessionManager.changeSyncStatus(bChecked);
-
                     startOrStopSync();
-
-                    /*setPhotoVideoStatusInvisibile();
-                    imgView.setVisibility(View.INVISIBLE);
-                    pBar.setVisibility(View.INVISIBLE);
-
-                    serviceIntent = new Intent(Sync.this, ImageUploadService.class);
-                    stopService(serviceIntent);*/
-
                 }
             }
         });
@@ -413,7 +392,7 @@ public class Sync extends AppCompatActivity {
 
         if(db!=null){
 
-            syncedPathList= db.getAllImagePath();
+            syncedPathList= db.getAllImagePath(sessionManager.getId());
 
             Iterator<String> abc = syncedPathList.iterator();
 
@@ -528,97 +507,5 @@ public class Sync extends AppCompatActivity {
 
         unregisterReceiver(myReceiver);
         unregisterReceiver(finalCountReceiver);
-        //unregisterReceiver(networkChangeReceiver1);
     }
-
-   /*private BroadcastReceiver networkChangeReceiver1 = new BroadcastReceiver(){
-
-       @Override
-       public void onReceive(Context context, Intent intent) {
-
-
-           Log.d("NetworkChangeReceiver1","network change");
-           //startOrStopSync();
-       }
-   };*/
-
-
-
-    /*public class NetworkChangeReceiver extends BroadcastReceiver {
-
-       SessionManager sessionManager1;
-
-        public NetworkChangeReceiver(){
-
-
-        }
-
-        @Override
-        public void onReceive(Context context, Intent intent) {
-
-            sessionManager1 = new SessionManager(context.getApplicationContext());
-
-            Log.d("network change", "network change");
-
-            Sync.this.startOrStopSync();
-
-        }
-
-       *//*public void startOrStopSync1(Context context) {
-           ConnectivityManager cm =
-                   (ConnectivityManager) context.getApplicationContext().getSystemService(Context.CONNECTIVITY_SERVICE);
-
-           NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
-
-           if (activeNetwork != null && activeNetwork.isConnected()) {
-
-               boolean isMobileData = activeNetwork.getType() == ConnectivityManager.TYPE_MOBILE;
-               boolean isWIFI = activeNetwork.getType() == ConnectivityManager.TYPE_WIFI;
-
-               if (sessionManager1.getSyncStatus()) {
-                   switchButton.setChecked(true);
-                   setPhotoVideoStatusVisibile();
-
-                   if (isWIFI) {
-                       startSync();
-                   } else if (isMobileData) {
-                       if (sessionManager.getPhotoSyncStatus())
-                           startSync();
-                       else
-                           stopSync();
-                   }
-
-            *//**//*initializeImageLists();
-            serviceIntent = new Intent(Sync.this,ImageUploadService.class);
-            serviceIntent.putParcelableArrayListExtra("unSyncedImageList", unSyncedImageList);
-            startService(serviceIntent);*//**//*
-               } else {
-                   switchButton.setChecked(false);
-                   imgView.setVisibility(View.INVISIBLE);
-                   pBar.setVisibility(View.INVISIBLE);
-
-                   setPhotoVideoStatusInvisibile();
-
-                   stopSync();
-               }
-           }
-       }
-
-       private void startSync(){
-
-           initializeImageLists();
-
-           serviceIntent = new Intent(Sync.this,ImageUploadService.class);
-           serviceIntent.putParcelableArrayListExtra("unSyncedImageList", unSyncedImageList);
-           startService(serviceIntent);
-       }
-
-       private void stopSync(){
-           serviceIntent = new Intent(Sync.this, ImageUploadService.class);
-           stopService(serviceIntent);
-       }*//*
-
-
-
-    }*/
 }

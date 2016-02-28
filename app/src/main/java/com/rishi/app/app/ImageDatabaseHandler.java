@@ -41,7 +41,8 @@ public class ImageDatabaseHandler extends SQLiteOpenHelper {
                 + " name TEXT,"
                 + " path TEXT,"
                 + " link TEXT,"
-                + " source TEXT"
+                + " source TEXT,"
+                + " userId TEXT"
                  + ")";
 
         db.execSQL(CREATE_CONTACTS_TABLE);
@@ -53,7 +54,7 @@ public class ImageDatabaseHandler extends SQLiteOpenHelper {
 
     }
 
-    void addImage(Image img) {
+    void addImage(Image img,String userId) {
         SQLiteDatabase db = this.getWritableDatabase();
 
         ContentValues values = new ContentValues();
@@ -62,13 +63,14 @@ public class ImageDatabaseHandler extends SQLiteOpenHelper {
         values.put("path", img.getPath());
         values.put("link", img.getLink());
         values.put("source", "sync");
+        values.put("userId", userId);
 
         // Inserting Row
         db.insert(TABLE_SyncedMedia, null, values);
         db.close(); // Closing database connection
     }
 
-    void addCameraImage(Image img) {
+    void addCameraImage(Image img,String userId) {
         SQLiteDatabase db = this.getWritableDatabase();
 
         ContentValues values = new ContentValues();
@@ -77,6 +79,7 @@ public class ImageDatabaseHandler extends SQLiteOpenHelper {
         values.put("path", img.getPath());
         values.put("link", img.getLink());
         values.put("source","camera");
+        values.put("userId", userId);
 
         // Inserting Row
         db.insert(TABLE_SyncedMedia, null, values);
@@ -96,10 +99,10 @@ public class ImageDatabaseHandler extends SQLiteOpenHelper {
         return count;
     }
 
-    public ArrayList<SyncImages> getAllImages() {
+    public ArrayList<SyncImages> getAllImages(String userId) {
         ArrayList<SyncImages> syncedImageList = new ArrayList<SyncImages>();
         // Select All Query
-        String selectQuery = "SELECT  * FROM " + TABLE_SyncedMedia;
+        String selectQuery = "SELECT  * FROM " + TABLE_SyncedMedia +" where userId='"+userId+"'";
 
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.rawQuery(selectQuery, null);
@@ -125,10 +128,10 @@ public class ImageDatabaseHandler extends SQLiteOpenHelper {
         return syncedImageList;
     }
 
-    public ArrayList<String> getAllImagePath() {
+    public ArrayList<String> getAllImagePath(String userId) {
         ArrayList<String> syncedImagePathList = new ArrayList<String>();
         // Select All Query
-        String selectQuery = "SELECT  * FROM " + TABLE_SyncedMedia;
+        String selectQuery = "SELECT  * FROM " + TABLE_SyncedMedia +" where userId='"+userId+"'";
 
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.rawQuery(selectQuery, null);
@@ -145,10 +148,10 @@ public class ImageDatabaseHandler extends SQLiteOpenHelper {
         return syncedImagePathList;
     }
 
-    public ArrayList<String> getAllCameraImagePath() {
+    public ArrayList<String> getAllCameraImagePath(String userId) {
         ArrayList<String> cameraImagePathList = new ArrayList<String>();
         // Select All Query
-        String selectQuery = "SELECT  * FROM " + TABLE_SyncedMedia +" where source='camera'";
+        String selectQuery = "SELECT  * FROM " + TABLE_SyncedMedia +" where source='camera' and userId='"+userId+"'";
 
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.rawQuery(selectQuery, null);
@@ -165,10 +168,10 @@ public class ImageDatabaseHandler extends SQLiteOpenHelper {
         return cameraImagePathList;
     }
 
-    public ArrayList<String> getAllSyncImagePath() {
+    public ArrayList<String> getAllSyncImagePath(String userId) {
         ArrayList<String> syncImagePathList = new ArrayList<String>();
         // Select All Query
-        String selectQuery = "SELECT  * FROM " + TABLE_SyncedMedia +" where source='sync'";
+        String selectQuery = "SELECT  * FROM " + TABLE_SyncedMedia +" where source='sync' and userId='"+userId+"'";
 
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.rawQuery(selectQuery, null);
@@ -185,11 +188,11 @@ public class ImageDatabaseHandler extends SQLiteOpenHelper {
         return syncImagePathList;
     }
 
-    public int getMediaId(String path){
+    public int getMediaId(String path,String userId){
 
         int mediaId=0;
 
-        String selectQuery = "SELECT media_id  FROM " + TABLE_SyncedMedia +" where link='"+path+"'";
+        String selectQuery = "SELECT media_id  FROM " + TABLE_SyncedMedia +" where link='"+path+"' and userId='"+userId+"'";
 
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.rawQuery(selectQuery, null);

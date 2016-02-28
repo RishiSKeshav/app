@@ -117,7 +117,7 @@ public class NetworkChangeReceiver extends BroadcastReceiver {
 
         if(db!=null){
 
-            syncedPathList= db.getAllImagePath();
+            syncedPathList= db.getAllImagePath(sessionManager.getId());
 
             Iterator<String> abc = syncedPathList.iterator();
 

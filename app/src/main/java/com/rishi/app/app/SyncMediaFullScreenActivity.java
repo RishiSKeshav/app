@@ -108,7 +108,7 @@ public class SyncMediaFullScreenActivity extends AppCompatActivity {
 
 
         db = new ImageDatabaseHandler(getApplicationContext(), Environment.getExternalStorageDirectory().toString() + "/ClikApp");
-        final int mediaId = db.getMediaId(path);
+        final int mediaId = db.getMediaId(path,sessionManager.getId());
         db.close();
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
         alertDialogBuilder.setMessage("Are you sure you want to delete? This media will be deleted from all personal and shared album.");
@@ -241,7 +241,4 @@ public class SyncMediaFullScreenActivity extends AppCompatActivity {
         AlertDialog alertDialog = alertDialogBuilder.create();
         alertDialog.show();
     }
-
-
-
 }
