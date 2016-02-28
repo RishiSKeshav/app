@@ -664,9 +664,7 @@ public class ContactsFragment extends Fragment implements ContactsFragmentAdapte
                                             Toast.makeText(getContext(), obj.getString("msg"), Toast.LENGTH_LONG).show();
                                         } else {
                                             JSONObject numberObj = obj.getJSONObject("outputObj");
-                                            if(numberObj.getString("id").equals("")){
-
-                                            }else {
+                                            if(numberObj.getJSONArray("user").length() > 0){
                                                 JSONArray userarray = numberObj.optJSONArray("user");
 
                                                 for (int i = 0; i < userarray.length(); i++) {
