@@ -298,6 +298,7 @@ public class FragmentFacebook extends Fragment implements FragmentFacebookAdapte
                     try {
 
                         JSONObject obj = new JSONObject();
+                        obj.put("userId",sessionManager.getId());
                         obj.put("emailId", object.getString("email").toString());
                         obj.put("password","");
                         obj.put("name", object.getString("name").toString());
@@ -309,7 +310,7 @@ public class FragmentFacebook extends Fragment implements FragmentFacebookAdapte
 
                         AsyncHttpClient client = new AsyncHttpClient();
 
-                        client.post(getContext(), "http://52.89.2.186/project/webservice/public/Facebooklogin", jsonString, "application/json", new AsyncHttpResponseHandler() {
+                        client.post(getContext(), "http://52.89.2.186/project/webservice/public/Associatefblogin", jsonString, "application/json", new AsyncHttpResponseHandler() {
 
                             @Override
                             public void onStart() {
@@ -329,17 +330,19 @@ public class FragmentFacebook extends Fragment implements FragmentFacebookAdapte
                                     } else {
 
                                         JSONObject outputObj = obj.getJSONObject("outputObj");
-                                        JSONObject user = outputObj.getJSONObject("user");
-                                        sessionManager.createLoginSession(user);
+                                        sessionManager.changedisplayPicture(outputObj.getString("displayPicture"));
 
-                                        if(outputObj.optString("gcm").equals("")) {
-                                            if (checkPlayServices()) {
-                                                registerGCM();
-                                            }
-
-                                        }else{
-
-                                        }
+//                                        JSONObject user = outputObj.getJSONObject("user");
+//                                        sessionManager.createLoginSession(user);
+//
+//                                        if(outputObj.optString("gcm").equals("")) {
+//                                            if (checkPlayServices()) {
+//                                                registerGCM();
+//                                            }
+//
+//                                        }else{
+//
+//                                        }
 
                                     }
 

@@ -94,6 +94,7 @@ public class NewAlbumAdapter extends SelectableAdapter<NewAlbumAdapter.MyViewHol
         Media m = mediaList.get(position);
 
         Context context = holder.path.getContext();
+
         Picasso.with(context).load(m.getPath()).error(R.mipmap.ic_launcher).placeholder(R.mipmap.ic_launcher)
                 .into(holder.path);
 

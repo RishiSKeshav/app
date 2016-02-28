@@ -41,7 +41,7 @@ import java.util.List;
 /**
  * Created by amitrajula on 2/4/16.
  */
-public class NewAlbum extends AppCompatActivity implements NewAlbumAdapter.MyViewHolder.ClickListener{
+public class    NewAlbum extends AppCompatActivity implements NewAlbumAdapter.MyViewHolder.ClickListener{
 
     private ArrayList<Media> mediaList = new ArrayList<Media>();
     private NewAlbumAdapter nmAdapter;
