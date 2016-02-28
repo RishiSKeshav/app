@@ -1,6 +1,7 @@
 package com.rishi.app.app;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageInstaller;
@@ -40,6 +41,8 @@ import com.facebook.Profile;
 import com.facebook.login.LoginManager;
 import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.GoogleApiAvailability;
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.nispok.snackbar.Snackbar;
@@ -75,6 +78,7 @@ public class FragmentFacebook extends Fragment implements FragmentFacebookAdapte
     String ID,NAME,ACTION,ALBUM_NAME,SHARED,imagedisplay;
     SessionManager sessionManager;
     Context context;
+    private static final int PLAY_SERVICES_RESOLUTION_REQUEST = 9000;
 
     AccessTokenTracker at;
     AccessToken a ;
@@ -282,7 +286,100 @@ public class FragmentFacebook extends Fragment implements FragmentFacebookAdapte
     private FacebookCallback<LoginResult> mcallback = new FacebookCallback<LoginResult>() {
 
         @Override
-        public void onSuccess(LoginResult login_result) {
+        public void onSuccess(LoginResult loginResult) {
+
+            GraphRequest request = GraphRequest.newMeRequest(loginResult.getAccessToken(), new GraphRequest.GraphJSONObjectCallback() {
+                @Override
+                public void onCompleted(
+                        JSONObject object,
+                        GraphResponse response) {
+
+                    Log.e("responsefrom login: ", response + "");
+                    try {
+
+                        JSONObject obj = new JSONObject();
+                        obj.put("emailId", object.getString("email").toString());
+                        obj.put("password","");
+                        obj.put("name", object.getString("name").toString());
+                        obj.put("mobileNo", "");
+                        obj.put("displayPicture","https://graph.facebook.com/" + object.getString("id").toString() +"/picture?type=large");
+                        obj.put("facebookId",object.getString("id").toString());
+                        StringEntity jsonString = new StringEntity(obj.toString());
+
+
+                        AsyncHttpClient client = new AsyncHttpClient();
+
+                        client.post(getContext(), "http://52.89.2.186/project/webservice/public/Facebooklogin", jsonString, "application/json", new AsyncHttpResponseHandler() {
+
+                            @Override
+                            public void onStart() {
+                                // called before request is started
+                            }
+
+                            // @Override
+                            public void onSuccess(String response) {
+                                // called when response HTTP status is "200 OK"
+                                Log.i("res",response);
+                                try {
+                                    JSONObject obj = new JSONObject(response);
+
+
+                                    if (obj.getBoolean("error")) {
+                                        Toast.makeText(getContext(), obj.getString("msg"), Toast.LENGTH_LONG).show();
+                                    } else {
+
+                                        JSONObject outputObj = obj.getJSONObject("outputObj");
+                                        JSONObject user = outputObj.getJSONObject("user");
+                                        sessionManager.createLoginSession(user);
+
+                                        if(outputObj.optString("gcm").equals("")) {
+                                            if (checkPlayServices()) {
+                                                registerGCM();
+                                            }
+
+                                        }else{
+
+                                        }
+
+                                    }
+
+                                } catch (JSONException e) {
+                                    // TODO Auto-generated catch block
+                                    Toast.makeText(getContext(), "Error Occured [Server's JSON response might be invalid]!", Toast.LENGTH_LONG).show();
+                                    e.printStackTrace();
+
+                                }
+                            }
+
+                            //@Override
+                            public void onFailure(int statusCode, PreferenceActivity.Header[] headers, byte[] errorResponse, Throwable e) {
+                                // called when response HTTP status is "4XX" (eg. 401, 403, 404)
+                            }
+
+                            //@Override
+                            public void onRetry(int retryNo) {
+                                // called when request is retried
+                            }
+
+
+                        });
+
+
+
+
+
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+
+            });
+
+            Bundle parameters = new Bundle();
+            parameters.putString("fields", "id,name,email,gender, birthday");
+            request.setParameters(parameters);
+            request.executeAsync();
+
 
         }
 
@@ -296,6 +393,29 @@ public class FragmentFacebook extends Fragment implements FragmentFacebookAdapte
             //  code to handle error
         }
     };
+
+    private boolean checkPlayServices() {
+        GoogleApiAvailability apiAvailability = GoogleApiAvailability.getInstance();
+        int resultCode = apiAvailability.isGooglePlayServicesAvailable(getContext());
+        if (resultCode != ConnectionResult.SUCCESS) {
+            if (apiAvailability.isUserResolvableError(resultCode)) {
+                apiAvailability.getErrorDialog(getActivity(), resultCode, PLAY_SERVICES_RESOLUTION_REQUEST)
+                        .show();
+            } else {
+               // Log.i(TAG, "This device is not supported. Google Play Services not installed!");
+                Toast.makeText(getContext(), "This device is not supported. Google Play Services not installed!", Toast.LENGTH_LONG).show();
+              //  finish();
+            }
+            return false;
+        }
+        return true;
+    }
+
+    private void registerGCM() {
+        Intent intent = new Intent(getContext(), GcmIntentService.class);
+        intent.putExtra("key", "register");
+        getContext().startService(intent);
+    }
 
 
 
