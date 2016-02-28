@@ -197,7 +197,7 @@ public class SyncMediaPageFragment extends Fragment {
 
         if(db!=null){
 
-            syncedPathList= db.getAllImagePath();
+            syncedPathList= db.getAllImagePath(sessionManager.getId());
 
         }
         else
@@ -243,7 +243,7 @@ public class SyncMediaPageFragment extends Fragment {
 
         if(db!=null){
 
-            cameraImageList= db.getAllCameraImagePath();
+            cameraImageList= db.getAllCameraImagePath(sessionManager.getId());
 
         }
         else
@@ -260,7 +260,7 @@ public class SyncMediaPageFragment extends Fragment {
 
         if(db!=null){
 
-            syncImageList= db.getAllSyncImagePath();
+            syncImageList= db.getAllSyncImagePath(sessionManager.getId());
 
 
 

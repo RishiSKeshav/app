@@ -199,7 +199,7 @@ public class ImageUploadService extends Service {
                                 image.setName(filename);
                                 image.setLink(link);
 
-                                db.addImage(image);
+                                db.addImage(image,sessionManager.getId());
 
                                 count--;
                                 Log.d("count", String.valueOf(count));

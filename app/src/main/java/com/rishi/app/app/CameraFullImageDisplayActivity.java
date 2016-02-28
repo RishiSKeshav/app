@@ -299,7 +299,7 @@ public class CameraFullImageDisplayActivity extends AppCompatActivity {
                         image.setName(fileName);
                         image.setLink(link);
 
-                        db.addCameraImage(image);
+                        db.addCameraImage(image,sessionManager.getId());
 
                         count--;
 
