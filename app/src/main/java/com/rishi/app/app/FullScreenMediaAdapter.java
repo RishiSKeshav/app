@@ -54,10 +54,6 @@ public class FullScreenMediaAdapter extends PagerAdapter {
 
         imgDisplay = (ImageView) viewLayout.findViewById(R.id.imgDisplay);
 
-//        BitmapFactory.Options options = new BitmapFactory.Options();
-//        options.inPreferredConfig = Bitmap.Config.ARGB_8888;
-//        Bitmap bitmap = BitmapFactory.decodeFile(_imagePaths.get(position), options);
-//        imgDisplay.setImageBitmap(bitmap);
         Context context = imgDisplay.getContext();
         Picasso.with(context).load(_imagePaths.get(position)).error(R.mipmap.ic_launcher).placeholder(R.mipmap.ic_launcher)
                 .into(imgDisplay);

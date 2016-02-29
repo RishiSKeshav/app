@@ -197,6 +197,7 @@ public class ToSharedAlbum extends AppCompatActivity implements ToSharedAlbumAda
                             JSONArray albumids = new JSONArray(albumid);
                             JSONObject obj = new JSONObject();
                             obj.put("userId",sessionManager.getId() );
+                            obj.put("userName", sessionManager.getName());
                             obj.put("mediaId", mediapos);
                             obj.put("albumId", albumids);
                             obj.put("shared", "yes");

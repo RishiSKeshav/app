@@ -151,7 +151,7 @@ public class AddMoreMedia extends AppCompatActivity implements AddMoreMediaAdapt
             final ProgressDialog progressDialog = new ProgressDialog(AddMoreMedia.this,
                     R.style.AppTheme_Dark_Dialog);
             progressDialog.setIndeterminate(true);
-            progressDialog.setMessage("Creating Album...");
+            progressDialog.setMessage("Adding Media...");
             progressDialog.show();
 
             try {
