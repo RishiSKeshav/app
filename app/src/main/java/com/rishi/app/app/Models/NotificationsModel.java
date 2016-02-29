@@ -11,14 +11,15 @@ import java.sql.Timestamp;
 public class NotificationsModel {
 
     private String id,message,datathumbnail;
-    private String date;
+    private String date,action;
     private String from,dataId,dataName;
 
     public NotificationsModel(){
 
     }
 
-    public NotificationsModel(String id,String from,String messgage,String datathumbnail,String date,String dataId,String dataName){
+    public NotificationsModel(String id,String from,String messgage,String datathumbnail,
+                              String date,String dataId,String dataName,String action){
         this.id = id;
         this.from  = from;
         this.message = messgage;
@@ -26,6 +27,7 @@ public class NotificationsModel {
         this.date = date;
         this.dataId = dataId;
         this.dataName = dataName;
+        this.action = action;
     }
 
 
@@ -84,5 +86,13 @@ public class NotificationsModel {
 
     public void setDataName(String dataName){
         this.dataName = dataName;
+    }
+
+    public String getAction(){
+        return action;
+    }
+
+    public void setAction(String action){
+        this.action = action;
     }
 }

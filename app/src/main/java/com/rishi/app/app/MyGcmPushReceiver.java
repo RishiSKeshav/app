@@ -28,17 +28,60 @@ public class MyGcmPushReceiver extends GcmListenerService {
 
     @Override
     public void onMessageReceived(String from, Bundle bundle) {
-        String title = bundle.getString("title");
-        String message = bundle.getString("message");
-        String image = bundle.getString("image");
-        String timestamp = "2016-02-16 04:16:21";
-        String sharedAlbumId = bundle.getString("sharedAlbumId");
-        String albumName = bundle.getString("albumName");
-        Log.e(TAG, "From: " + from);
-        Log.e(TAG, "Title: " + title);
-        Log.e(TAG, "message: " + message);
-        Log.e(TAG, "image: " + sharedAlbumId);
-        Log.e(TAG, "timestamp: " + timestamp);
+        String action = bundle.getString("action");
+
+        if(action.equals("shared_album")) {
+            String title = bundle.getString("title");
+            String message = bundle.getString("message");
+            String image = bundle.getString("image");
+            String timestamp = "2016-02-16 04:16:21";
+            String sharedAlbumId = bundle.getString("sharedAlbumId");
+            String albumName = bundle.getString("albumName");
+
+
+
+            Intent resultIntent = new Intent(getApplicationContext(), SharedAlbumMediaDisplay.class);
+            resultIntent.putExtra("message", message);
+            resultIntent.putExtra("Id",sharedAlbumId);
+            resultIntent.putExtra("Name",albumName);
+
+            if (TextUtils.isEmpty(image)) {
+                showNotificationMessage(getApplicationContext(), title, message, timestamp, resultIntent);
+            } else {
+                showNotificationMessageWithBigImage(getApplicationContext(), title, message, timestamp, resultIntent, image);
+            }
+
+
+
+        }else{
+            String title = bundle.getString("title");
+            String message = bundle.getString("message");
+            String image = bundle.getString("image");
+            String timestamp = bundle.getString("timestamp");
+            String dataId = bundle.getString("dataId");
+            String dataPath = bundle.getString("dataPath");
+
+
+
+            Intent resultIntent = new Intent(getApplicationContext(), SharedMediaDisplay.class);
+            resultIntent.putExtra("message", message);
+            resultIntent.putExtra("Id",dataId);
+            resultIntent.putExtra("image",dataPath);
+
+            if (TextUtils.isEmpty(image)) {
+                showNotificationMessage(getApplicationContext(), title, message, timestamp, resultIntent);
+            } else {
+                showNotificationMessageWithBigImage(getApplicationContext(), title, message, timestamp, resultIntent, image);
+            }
+
+
+
+        }
+//        Log.e(TAG, "From: " + from);
+//        Log.e(TAG, "Title: " + title);
+//        Log.e(TAG, "message: " + message);
+//        Log.e(TAG, "image: " + sharedAlbumId);
+//        Log.e(TAG, "timestamp: " + timestamp);
 
 //        if (!NotificationUtils.isAppIsInBackground(getApplicationContext())) {
 //
@@ -52,16 +95,7 @@ public class MyGcmPushReceiver extends GcmListenerService {
 //            notificationUtils.playNotificationSound();
 //        } else {
 
-            Intent resultIntent = new Intent(getApplicationContext(), SharedAlbumMediaDisplay.class);
-            resultIntent.putExtra("message", message);
-            resultIntent.putExtra("Id",sharedAlbumId);
-            resultIntent.putExtra("Name",albumName);
 
-            if (TextUtils.isEmpty(image)) {
-                showNotificationMessage(getApplicationContext(), title, message, timestamp, resultIntent);
-            } else {
-                showNotificationMessageWithBigImage(getApplicationContext(), title, message, timestamp, resultIntent, image);
-            }
         //}
     }
 

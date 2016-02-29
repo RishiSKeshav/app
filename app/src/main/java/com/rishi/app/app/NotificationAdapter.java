@@ -57,10 +57,17 @@ public class NotificationAdapter extends SelectableAdapter<NotificationAdapter.M
 
             Context context = v.getContext();
             NotificationsModel nm = notifications.get(getPosition());
-            Intent intent = new Intent(context,SharedAlbumMediaDisplay.class);
-            intent.putExtra("Id",nm.getDataId());
-            intent.putExtra("Name",nm.getDataName());
-            context.startActivity(intent);
+            if(nm.getAction().equals("shared_album")) {
+                Intent intent = new Intent(context, SharedAlbumMediaDisplay.class);
+                intent.putExtra("Id", nm.getDataId());
+                intent.putExtra("Name", nm.getDataName());
+                context.startActivity(intent);
+            }else{
+                Intent intent = new Intent(context, SharedMediaDisplay.class);
+                intent.putExtra("Id", nm.getDataId());
+                intent.putExtra("image", nm.getDataName());
+                context.startActivity(intent);
+            }
         }
 
 

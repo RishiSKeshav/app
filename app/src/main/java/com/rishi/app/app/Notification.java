@@ -267,7 +267,8 @@ public class Notification extends AppCompatActivity {
                                     JSONObject notidetails = notiarray.optJSONObject(i);
                                     NotificationsModel n = new NotificationsModel(notidetails.optString("id"), notidetails.optString("from"),
                                             notidetails.optString("message"), notidetails.optString("dataThumbnail"),
-                                            notidetails.optString("date"), notidetails.optString("dataId"), notidetails.optString("dataName"));
+                                            notidetails.optString("date"), notidetails.optString("dataId"),
+                                            notidetails.optString("dataName"),notidetails.optString("destination"));
 
                                     notifications.add(n);
                                     nAdapter.notifyDataSetChanged();
