@@ -3,12 +3,15 @@ package com.rishi.app.app;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Environment;
 import android.preference.PreferenceActivity;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.util.Base64;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -22,10 +25,21 @@ import com.nispok.snackbar.Snackbar;
 import com.nispok.snackbar.SnackbarManager;
 import com.nispok.snackbar.listeners.EventListener;
 
+import org.apache.http.HttpEntity;
+import org.apache.http.HttpResponse;
+import org.apache.http.client.ClientProtocolException;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.StringEntity;
+import org.apache.http.entity.mime.content.StringBody;
+import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.util.EntityUtils;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 
@@ -33,7 +47,7 @@ public class SyncMediaFullScreenActivity extends AppCompatActivity {
 
     private ViewPager viewPager;
     SyncFullScreenAdapter adapter;
-    String action;
+    String action,position;
     SessionManager sessionManager;
     ArrayList<String> data = new ArrayList<>();
     ImageDatabaseHandler db;
@@ -48,21 +62,17 @@ public class SyncMediaFullScreenActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-
         viewPager = (ViewPager) findViewById(R.id.syncViewPager);
 
         Intent i = getIntent();
-        String position = i.getStringExtra("Position");
+        position = i.getStringExtra("Position");
         action = i.getStringExtra("action");
-
-         data = i.getStringArrayListExtra("data");
-
+        data = i.getStringArrayListExtra("data");
         adapter = new SyncFullScreenAdapter(SyncMediaFullScreenActivity.this,
                 data);
 
         viewPager.setAdapter(adapter);
 
-        // displaying selected image first
         viewPager.setCurrentItem(Integer.parseInt(position));
     }
 
@@ -74,7 +84,13 @@ public class SyncMediaFullScreenActivity extends AppCompatActivity {
 
         if(action.equals("unsync")){
             menu.getItem(0).setVisible(false);
+            menu.getItem(2).setVisible(false);
         }
+        if(action.equals("sync")){
+            menu.getItem(1).setVisible(false);
+        }
+        if(action.equals("camera"))
+            menu.getItem(1).setVisible(false);
         return true;
     }
 
@@ -84,15 +100,53 @@ public class SyncMediaFullScreenActivity extends AppCompatActivity {
 
         int id = item.getItemId();
         if (id == android.R.id.home) {
-//            Intent intent = new Intent(SyncMediaFullScreenActivity.this,SyncMediaDisplayActivity.class);
-//            intent.putExtra("action",action);
-//            startActivity(intent);
-            Log.i("ooo","reachedback");
             onBackPressed();
     }
         if(id == R.id.delete_sync_media_display){
 
             deleteMedia();
+        }
+
+        if(id == R.id.upload_sync_media_display){
+
+            int pos = viewPager.getCurrentItem();
+            String path = data.get(pos);
+
+            upload(path);
+        }
+
+        if (id == R.id.to_personal_album) {
+            final int mediaId = getMediaId();
+            Log.i("idssss",String.valueOf(mediaId));
+            ArrayList<Integer> mediaIDS = new ArrayList<>();
+            mediaIDS.add(mediaId);
+            Intent i = new Intent(SyncMediaFullScreenActivity.this,ToPersonalAlbum.class);
+            i.putExtra("action",action);
+            i.putExtra("mediaId", mediaIDS);
+            startActivity(i);
+        }
+
+        if (id == R.id.to_shared_album) {
+            final int mediaId = getMediaId();
+            ArrayList<Integer> mediaIDS = new ArrayList<>();
+            mediaIDS.add(mediaId);
+            Intent i = new Intent(SyncMediaFullScreenActivity.this,ToSharedAlbum.class);
+            i.putExtra("action",action);
+            i.putExtra("mediaId", mediaIDS);
+            startActivity(i);
+        }
+
+        if (id == R.id.to_others) {
+            final int mediaId = getMediaId();
+            ArrayList<Integer> mediaIDS = new ArrayList<>();
+            mediaIDS.add(mediaId);
+            Intent i = new Intent(SyncMediaFullScreenActivity.this,Userbase.class);
+            i.putExtra("action",action);
+            i.putExtra("data",data);
+            i.putExtra("position",position);
+            i.putIntegerArrayListExtra("mediaId", mediaIDS);
+//
+            startActivity(i);
         }
 
 
@@ -101,15 +155,16 @@ public class SyncMediaFullScreenActivity extends AppCompatActivity {
     }
 
 
+
+    public void upload(String path) {
+
+    }
+
+
     private void deleteMedia(){
 
-        int pos = viewPager.getCurrentItem();
-        String path = data.get(pos);
+        final int mediaId = getMediaId();
 
-
-        db = new ImageDatabaseHandler(getApplicationContext(), Environment.getExternalStorageDirectory().toString() + "/ClikApp");
-        final int mediaId = db.getMediaId(path,sessionManager.getId());
-        db.close();
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
         alertDialogBuilder.setMessage("Are you sure you want to delete? This media will be deleted from all personal and shared album.");
 
@@ -240,5 +295,18 @@ public class SyncMediaFullScreenActivity extends AppCompatActivity {
 
         AlertDialog alertDialog = alertDialogBuilder.create();
         alertDialog.show();
+    }
+
+
+    private int getMediaId(){
+
+        int pos = viewPager.getCurrentItem();
+        String path = data.get(pos);
+
+        db = new ImageDatabaseHandler(getApplicationContext(), Environment.getExternalStorageDirectory().toString() + "/ClikApp");
+        final int mediaId = db.getMediaId(path,sessionManager.getId());
+        db.close();
+
+        return mediaId;
     }
 }

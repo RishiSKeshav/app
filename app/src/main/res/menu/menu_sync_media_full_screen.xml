@@ -6,19 +6,36 @@
     >
 
     <item android:id="@+id/delete_sync_media_display"
-        android:title="Delete"
-        android:icon="@android:drawable/ic_menu_delete"
+    android:title="Delete"
+    android:icon="@android:drawable/ic_menu_delete"
+    yourapp:showAsAction="ifRoom"/>
+
+    <item android:id="@+id/upload_sync_media_display"
+        android:title="Upload"
+        android:icon="@android:drawable/ic_menu_upload"
         yourapp:showAsAction="ifRoom"/>
 
+    <item android:id="@+id/move"    android:title="Forward"
+        yourapp:showAsAction="ifRoom">
 
-    <!--<item android:id="@+id/share_personal_album_media_display"-->
-    <!--android:title="Personal Album"></item>-->
+        <menu>
 
-    <!--<item android:id="@+id/shared_album_media_display"-->
-    <!--android:title="Shared Album"></item>-->
+            <item android:id="@+id/to_personal_album"
 
-    <!--<item android:id="@+id/other_album_media_display"-->
-    <!--android:title="Others"></item>-->
+                android:title="Personal Album" />
+
+            <item android:id="@+id/to_shared_album"
+
+                android:title="Shared Album" />
+
+            <item android:id="@+id/to_others"
+
+                android:title="User" />
+
+
+        </menu>
+
+    </item>
 
 
 

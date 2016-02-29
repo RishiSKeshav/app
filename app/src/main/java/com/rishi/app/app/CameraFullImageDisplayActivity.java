@@ -118,46 +118,7 @@ public class CameraFullImageDisplayActivity extends AppCompatActivity {
                 progressDialog.hide();
 
 
-                SnackbarManager.show(
-                        com.nispok.snackbar.Snackbar.with(this)
-                                .text("Uploaded Successfully")
-                                .duration(com.nispok.snackbar.Snackbar.SnackbarDuration.LENGTH_SHORT)
-                                .eventListener(new EventListener() {
-                                    @Override
-                                    public void onShow(com.nispok.snackbar.Snackbar snackbar) {
 
-                                    }
-
-                                    @Override
-                                    public void onShowByReplace(com.nispok.snackbar.Snackbar snackbar) {
-
-                                    }
-
-                                    @Override
-                                    public void onShown(com.nispok.snackbar.Snackbar snackbar) {
-
-                                    }
-
-                                    @Override
-                                    public void onDismiss(com.nispok.snackbar.Snackbar snackbar) {
-
-
-                                        Intent intent2 = new Intent(CameraFullImageDisplayActivity.this, CameraActivity.class);
-                                        startActivity(intent2);
-
-                                    }
-
-                                    @Override
-                                    public void onDismissByReplace(com.nispok.snackbar.Snackbar snackbar) {
-
-                                    }
-
-                                    @Override
-                                    public void onDismissed(com.nispok.snackbar.Snackbar snackbar) {
-
-                                    }
-                                })
-                        , CameraFullImageDisplayActivity.this);
 
 
 
@@ -273,6 +234,13 @@ public class CameraFullImageDisplayActivity extends AppCompatActivity {
                         Log.d("error true", "true");
 
                         f.delete();
+
+                        SnackbarManager.show(
+                                com.nispok.snackbar.Snackbar.with(this)
+                                        .text("Upload failed")
+                                        .duration(com.nispok.snackbar.Snackbar.SnackbarDuration.LENGTH_SHORT)
+                        );
+
                         //Toast.makeText(getApplicationContext(), obj.getString("message"), Toast.LENGTH_LONG).show();
                     } else {
 
@@ -299,13 +267,55 @@ public class CameraFullImageDisplayActivity extends AppCompatActivity {
                         image.setName(fileName);
                         image.setLink(link);
 
-                        db.addCameraImage(image,sessionManager.getId());
+                        db.addCameraImage(image, sessionManager.getId());
 
                         count--;
 
                         f.delete();
 
-                        Log.d("image inserted",String.valueOf(db.getCount()));
+                        Log.d("image inserted", String.valueOf(db.getCount()));
+
+                        SnackbarManager.show(
+                                com.nispok.snackbar.Snackbar.with(this)
+                                        .text("Uploaded Successfully")
+                                        .duration(com.nispok.snackbar.Snackbar.SnackbarDuration.LENGTH_SHORT)
+                                        .eventListener(new EventListener() {
+                                            @Override
+                                            public void onShow(com.nispok.snackbar.Snackbar snackbar) {
+
+                                            }
+
+                                            @Override
+                                            public void onShowByReplace(com.nispok.snackbar.Snackbar snackbar) {
+
+                                            }
+
+                                            @Override
+                                            public void onShown(com.nispok.snackbar.Snackbar snackbar) {
+
+                                            }
+
+                                            @Override
+                                            public void onDismiss(com.nispok.snackbar.Snackbar snackbar) {
+
+
+                                                Intent intent2 = new Intent(CameraFullImageDisplayActivity.this, CameraActivity.class);
+                                                startActivity(intent2);
+
+                                            }
+
+                                            @Override
+                                            public void onDismissByReplace(com.nispok.snackbar.Snackbar snackbar) {
+
+                                            }
+
+                                            @Override
+                                            public void onDismissed(com.nispok.snackbar.Snackbar snackbar) {
+
+                                            }
+                                        })
+                                , CameraFullImageDisplayActivity.this);
+
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();

@@ -33,8 +33,10 @@ public class Userbase extends AppCompatActivity {
     private ViewPager viewPager;
     private FragmentFacebookAdapter fAdapter;
     ArrayList<Integer> mediaIDS = new ArrayList<>();
+    ArrayList<String> data = new ArrayList<>();
+
     private ArrayList<AlbumMedia> albummediaList = new ArrayList<>();
-    String ID,NAME,ACTION,ALBUM_NAME,SHARED,imagedisplay;
+    String ID,NAME,ACTION,ALBUM_NAME,SHARED,imagedisplay,position;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -83,8 +85,14 @@ public class Userbase extends AppCompatActivity {
             mediaIDS = i. getIntegerArrayListExtra("mediaId");
 
         }
+        if(ACTION.equals("sync") || ACTION.equals("camera")){
+            mediaIDS = i. getIntegerArrayListExtra("mediaId");
+            data = i.getStringArrayListExtra("data");
+            position = i.getStringExtra("position");
+        }
 
-         viewPager = (ViewPager) findViewById(R.id.userbase_viewpager);
+
+        viewPager = (ViewPager) findViewById(R.id.userbase_viewpager);
         setupViewPager(viewPager);
 
         tabLayout = (TabLayout) findViewById(R.id.userbase_tabs);
@@ -120,6 +128,9 @@ public class Userbase extends AppCompatActivity {
                 i.putExtra("Id",ID);
                 i.putExtra("image",imagedisplay);
                 Userbase.this.startActivity(i);
+            }
+            else if(ACTION.equals("sync") || ACTION.equals("camera")){
+               onBackPressed();
             }
             else{
                 if(SHARED.equals("no")) {
@@ -192,6 +203,7 @@ public class Userbase extends AppCompatActivity {
             return mFragmentList.size();
         }
 
+
         public void addFrag(Fragment fragment, String title) {
             mFragmentList.add(fragment);
             mFragmentTitleList.add(title);
@@ -211,8 +223,8 @@ public class Userbase extends AppCompatActivity {
                 bundle.putString("action",ACTION);
                 bundle.putString("Name", NAME);
                 bundle.putString("Id",ID);
-                bundle.putIntegerArrayList("mediaId",mediaIDS);
-                bundle.putString("shared",SHARED);
+                bundle.putIntegerArrayList("mediaId", mediaIDS);
+                bundle.putString("shared", SHARED);
                 fragment.setArguments(bundle);
             }
 
@@ -220,18 +232,26 @@ public class Userbase extends AppCompatActivity {
 
                 bundle.putString("action",ACTION);
                 bundle.putString("Name", NAME);
-                bundle.putString("Id",ID);
+                bundle.putString("Id", ID);
                 bundle.putString("shared",SHARED);
                 fragment.setArguments(bundle);
             }
 
             if(ACTION.equals("shared_media")) {
                 bundle.putString("action",ACTION);
-                bundle.putIntegerArrayList("mediaId",mediaIDS);
-                bundle.putString("Id",ID);
-                bundle.putString("imagedisplay",imagedisplay);
+                bundle.putIntegerArrayList("mediaId", mediaIDS);
+                bundle.putString("Id", ID);
+                bundle.putString("imagedisplay", imagedisplay);
                 fragment.setArguments(bundle);
             }
+            if(ACTION.equals("sync") || ACTION.equals("camera")){
+                bundle.putString("action",ACTION);
+                bundle.putIntegerArrayList("mediaId", mediaIDS);
+                bundle.putStringArrayList("data", data);
+                bundle.putString("position",position);
+                fragment.setArguments(bundle);
+            }
+
         }
 
         @Override

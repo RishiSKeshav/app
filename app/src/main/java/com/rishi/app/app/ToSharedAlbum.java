@@ -45,7 +45,7 @@ public class ToSharedAlbum extends AppCompatActivity implements ToSharedAlbumAda
     SessionManager sessionManager;
 
     String ID,NAME,SHARED;
-    String imagedisplay="";
+    String imagedisplay="",action="";
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -63,13 +63,19 @@ public class ToSharedAlbum extends AppCompatActivity implements ToSharedAlbumAda
             imagedisplay = i.getStringExtra("imagedisplay");
             ID = i.getStringExtra("Id");
         }else {
-            pos = i.getIntegerArrayListExtra("mediaId");
-            ID = i.getStringExtra("Id");
-            NAME = i.getStringExtra("Name");
-            SHARED = i.getStringExtra("shared");
 
-            if (SHARED.equals("no")) {
-                albummediaList = i.getParcelableArrayListExtra("al");
+            if(i.hasExtra("action")){
+                action = i.getStringExtra("action");
+                pos = i.getIntegerArrayListExtra("mediaId");
+            }else {
+                pos = i.getIntegerArrayListExtra("mediaId");
+                ID = i.getStringExtra("Id");
+                NAME = i.getStringExtra("Name");
+                SHARED = i.getStringExtra("shared");
+
+                if (SHARED.equals("no")) {
+                    albummediaList = i.getParcelableArrayListExtra("al");
+                }
             }
         }
 
@@ -90,18 +96,25 @@ public class ToSharedAlbum extends AppCompatActivity implements ToSharedAlbumAda
 
         if (id == android.R.id.home) {
             if(imagedisplay.equals("")) {
-                if (SHARED.equals("no")) {
-                    Intent i = new Intent(ToSharedAlbum.this, AlbumMediaSelect.class);
-                    i.putParcelableArrayListExtra("al", albummediaList);
-                    i.putExtra("id", ID);
-                    i.putExtra("name", NAME);
-                    ToSharedAlbum.this.startActivity(i);
-                } else {
-                    Intent i = new Intent(ToSharedAlbum.this, SharedAlbumMediaSelect.class);
-                    i.putExtra("Id", ID);
-                    i.putExtra("Name", NAME);
-                    ToSharedAlbum.this.startActivity(i);
+                if(action.equals("sync") || action.equals("camera")){
+                    onBackPressed();
+                }else {
+
+
+                    if (SHARED.equals("no")) {
+                        Intent i = new Intent(ToSharedAlbum.this, AlbumMediaSelect.class);
+                        i.putParcelableArrayListExtra("al", albummediaList);
+                        i.putExtra("id", ID);
+                        i.putExtra("name", NAME);
+                        ToSharedAlbum.this.startActivity(i);
+                    } else {
+                        Intent i = new Intent(ToSharedAlbum.this, SharedAlbumMediaSelect.class);
+                        i.putExtra("Id", ID);
+                        i.putExtra("Name", NAME);
+                        ToSharedAlbum.this.startActivity(i);
+                    }
                 }
+
             }else{
                 Intent i = new Intent(ToSharedAlbum.this, SharedMediaDisplay.class);
                 i.putExtra("image", imagedisplay);
@@ -177,7 +190,7 @@ public class ToSharedAlbum extends AppCompatActivity implements ToSharedAlbumAda
             switch (item.getItemId()) {
                 case R.id.done_to_shared_album:
 
-                    if(imagedisplay.equals("")) {
+                    if(imagedisplay.equals("") || action.equals("sync") || action.equals("camera")){
 
                         try {
                             JSONArray mediapos = new JSONArray(pos);
@@ -236,21 +249,27 @@ public class ToSharedAlbum extends AppCompatActivity implements ToSharedAlbumAda
                                                                 @Override
                                                                 public void onDismiss(com.nispok.snackbar.Snackbar snackbar) {
 
+                                                                    if(action.equals("sync") || action.equals("camera")){
+                                                                        onBackPressed();
 
-                                                                    if (SHARED.equals("no")) {
-                                                                        Intent i = new Intent(ToSharedAlbum.this, AlbumMediaDisplay.class);
-                                                                        i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                                                                        i.putExtra("Id", ID);
-                                                                        i.putExtra("Name", NAME);
-                                                                        i.putExtra("shared", SHARED);
-                                                                        ToSharedAlbum.this.startActivity(i);
-                                                                    } else {
-                                                                        Intent i = new Intent(ToSharedAlbum.this, SharedAlbumMediaDisplay.class);
-                                                                        i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                                                                        i.putExtra("Id", ID);
-                                                                        i.putExtra("Name", NAME);
-                                                                        i.putExtra("shared", SHARED);
-                                                                        ToSharedAlbum.this.startActivity(i);
+                                                                    }else {
+
+
+                                                                        if (SHARED.equals("no")) {
+                                                                            Intent i = new Intent(ToSharedAlbum.this, AlbumMediaDisplay.class);
+                                                                            i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                                                                            i.putExtra("Id", ID);
+                                                                            i.putExtra("Name", NAME);
+                                                                            i.putExtra("shared", SHARED);
+                                                                            ToSharedAlbum.this.startActivity(i);
+                                                                        } else {
+                                                                            Intent i = new Intent(ToSharedAlbum.this, SharedAlbumMediaDisplay.class);
+                                                                            i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                                                                            i.putExtra("Id", ID);
+                                                                            i.putExtra("Name", NAME);
+                                                                            i.putExtra("shared", SHARED);
+                                                                            ToSharedAlbum.this.startActivity(i);
+                                                                        }
                                                                     }
 
                                                                 }

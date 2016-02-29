@@ -51,9 +51,11 @@ public class ContactsFragment extends Fragment implements ContactsFragmentAdapte
     private ActionMode actionMode;
     private RecyclerView recyclerView;
     private ContactsFragmentAdapter cfAdapter;
-    String ID,NAME,ACTION,ALBUM_NAME,SHARED,imagedisplay;
+    String ID,NAME,ACTION,ALBUM_NAME,SHARED,imagedisplay,position;
     private ArrayList<Integer> mediaIDS = new ArrayList<>();
     private ArrayList<Integer> userIDS = new ArrayList<Integer>();
+    private ArrayList<String> data = new ArrayList<String>();
+
     SessionManager sessionManager;
     String phoneNumber;
 
@@ -101,6 +103,11 @@ public class ContactsFragment extends Fragment implements ContactsFragmentAdapte
             mediaIDS = getArguments().getIntegerArrayList("mediaId");
             ID = getArguments().getString("Id");
             imagedisplay = getArguments().getString("imagedisplay");
+        }
+        if(ACTION.equals("sync")||ACTION.equals("camera")){
+            mediaIDS = getArguments().getIntegerArrayList("mediaId");
+            data = getArguments().getStringArrayList("data");
+            position = getArguments().getString("position");
         }
 
         recyclerView = (RecyclerView) vq.findViewById(R.id.contacts_friends);
@@ -493,7 +500,7 @@ public class ContactsFragment extends Fragment implements ContactsFragmentAdapte
 
                     }
 
-                    if(ACTION.equals("shared_media")){
+                    if(ACTION.equals("shared_media") || ACTION.equals("sync") || ACTION.equals("camera")){
 
                         try {
                             JSONArray a = new JSONArray(userIDS);
@@ -547,11 +554,21 @@ public class ContactsFragment extends Fragment implements ContactsFragmentAdapte
                                                                 @Override
                                                                 public void onDismiss(com.nispok.snackbar.Snackbar snackbar) {
 
-                                                                    Intent i = new Intent(getContext(), SharedMediaDisplay.class);
-                                                                    i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                                                                    i.putExtra("Id", ID);
-                                                                    i.putExtra("image", imagedisplay);
-                                                                    getContext().startActivity(i);
+                                                                    if(ACTION.equals("sync") || ACTION.equals("camera")){
+                                                                        Intent i = new Intent(getContext(),Userbase.class);
+                                                                        i.putExtra("action",ACTION);
+                                                                        i.putStringArrayListExtra("data",data);
+                                                                        i.putExtra("Position",position);
+                                                                        getContext().startActivity(i);
+
+                                                                    }else {
+
+                                                                        Intent i = new Intent(getContext(), SharedMediaDisplay.class);
+                                                                        i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                                                                        i.putExtra("Id", ID);
+                                                                        i.putExtra("image", imagedisplay);
+                                                                        getContext().startActivity(i);
+                                                                    }
 
 
                                                                 }

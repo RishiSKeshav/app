@@ -43,7 +43,7 @@ public class ToPersonalAlbum extends AppCompatActivity implements ToPersonalAlbu
     private ArrayList<Integer> pos = new ArrayList<Integer>();
     private ArrayList<Integer> albumid = new ArrayList<>();
     String ID,NAME,SHARED;
-    String imagedisplay="";
+    String imagedisplay="",action ="";
 
     SessionManager sessionManager;
 
@@ -59,13 +59,20 @@ public class ToPersonalAlbum extends AppCompatActivity implements ToPersonalAlbu
             imagedisplay = i.getStringExtra("imagedisplay");
             ID = i.getStringExtra("Id");
         }else {
-            pos = i.getIntegerArrayListExtra("mediaId");
-            ID = i.getStringExtra("Id");
-            NAME = i.getStringExtra("Name");
-            SHARED = i.getStringExtra("shared");
 
-            if (SHARED.equals("no")) {
-                albummediaList = i.getParcelableArrayListExtra("al");
+            if(i.hasExtra("action")){
+                action = i.getStringExtra("action");
+                pos = i.getIntegerArrayListExtra("mediaId");
+            }else {
+
+                pos = i.getIntegerArrayListExtra("mediaId");
+                ID = i.getStringExtra("Id");
+                NAME = i.getStringExtra("Name");
+                SHARED = i.getStringExtra("shared");
+
+                if (SHARED.equals("no")) {
+                    albummediaList = i.getParcelableArrayListExtra("al");
+                }
             }
         }
 
@@ -91,6 +98,10 @@ public class ToPersonalAlbum extends AppCompatActivity implements ToPersonalAlbu
         if (id == android.R.id.home) {
             if(imagedisplay.equals("")){
 
+                if(action.equals("sync") || action.equals("camera")){
+                    onBackPressed();
+                }else{
+
                 if (SHARED.equals("no")) {
                     Intent i = new Intent(ToPersonalAlbum.this, AlbumMediaSelect.class);
                     i.putParcelableArrayListExtra("al", albummediaList);
@@ -102,6 +113,7 @@ public class ToPersonalAlbum extends AppCompatActivity implements ToPersonalAlbu
                     i.putExtra("Id", ID);
                     i.putExtra("Name", NAME);
                     ToPersonalAlbum.this.startActivity(i);
+                }
                 }
             }else {
                 Intent i = new Intent(ToPersonalAlbum.this, SharedMediaDisplay.class);
@@ -166,18 +178,19 @@ public class ToPersonalAlbum extends AppCompatActivity implements ToPersonalAlbu
             switch (item.getItemId()) {
                 case R.id.done_to_personal_album:
 
-                    if(imagedisplay.equals("")){
+                    if(imagedisplay.equals("") || action.equals("sync") || action.equals("camera")){
 
                        // if(SHARED.equals("no")) {
                             try {
-                                JSONArray mediapos = new JSONArray(pos);
-                                JSONArray albumids = new JSONArray(albumid);
-                                JSONObject obj = new JSONObject();
-                                obj.put("userId",sessionManager.getId() );
-                                obj.put("mediaId", mediapos);
-                                obj.put("albumId", albumids);
-                                obj.put("shared", "no");
-                                StringEntity jsonString = new StringEntity(obj.toString());
+                                    JSONArray mediapos = new JSONArray(pos);
+                                    JSONArray albumids = new JSONArray(albumid);
+                                    JSONObject obj = new JSONObject();
+                                    obj.put("userId", sessionManager.getId());
+                                    obj.put("mediaId", mediapos);
+                                    obj.put("albumId", albumids);
+                                    obj.put("shared", "no");
+
+                                    StringEntity jsonString = new StringEntity(obj.toString());
 
 
                                 AsyncHttpClient client = new AsyncHttpClient();
@@ -225,20 +238,26 @@ public class ToPersonalAlbum extends AppCompatActivity implements ToPersonalAlbu
                                                                     @Override
                                                                     public void onDismiss(com.nispok.snackbar.Snackbar snackbar) {
 
-                                                                        if (SHARED.equals("no")) {
-                                                                            Intent i = new Intent(ToPersonalAlbum.this, AlbumMediaDisplay.class);
-                                                                            i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                                                                            i.putExtra("Id", ID);
-                                                                            i.putExtra("Name", NAME);
-                                                                            i.putExtra("shared", SHARED);
-                                                                            ToPersonalAlbum.this.startActivity(i);
-                                                                        } else {
-                                                                            Intent i = new Intent(ToPersonalAlbum.this, SharedAlbumMediaDisplay.class);
-                                                                            i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                                                                            i.putExtra("Id", ID);
-                                                                            i.putExtra("Name", NAME);
-                                                                            i.putExtra("shared", SHARED);
-                                                                            ToPersonalAlbum.this.startActivity(i);
+                                                                        if(action.equals("sync") || action.equals("camera")){
+                                                                            onBackPressed();
+
+                                                                        }else {
+
+                                                                            if (SHARED.equals("no")) {
+                                                                                Intent i = new Intent(ToPersonalAlbum.this, AlbumMediaDisplay.class);
+                                                                                i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                                                                                i.putExtra("Id", ID);
+                                                                                i.putExtra("Name", NAME);
+                                                                                i.putExtra("shared", SHARED);
+                                                                                ToPersonalAlbum.this.startActivity(i);
+                                                                            } else {
+                                                                                Intent i = new Intent(ToPersonalAlbum.this, SharedAlbumMediaDisplay.class);
+                                                                                i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                                                                                i.putExtra("Id", ID);
+                                                                                i.putExtra("Name", NAME);
+                                                                                i.putExtra("shared", SHARED);
+                                                                                ToPersonalAlbum.this.startActivity(i);
+                                                                            }
                                                                         }
 
                                                                     }

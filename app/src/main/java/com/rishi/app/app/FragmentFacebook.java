@@ -75,7 +75,9 @@ public class FragmentFacebook extends Fragment implements FragmentFacebookAdapte
     private Userbase u;
     private ArrayList<Integer> userIDS = new ArrayList<Integer>();
     private ArrayList<Integer> mediaIDS = new ArrayList<>();
-    String ID,NAME,ACTION,ALBUM_NAME,SHARED,imagedisplay;
+    private ArrayList<String> data = new ArrayList<String>();
+
+    String ID,NAME,ACTION,ALBUM_NAME,SHARED,imagedisplay,position;
     SessionManager sessionManager;
     Context context;
     private static final int PLAY_SERVICES_RESOLUTION_REQUEST = 9000;
@@ -132,6 +134,11 @@ public class FragmentFacebook extends Fragment implements FragmentFacebookAdapte
             mediaIDS = getArguments().getIntegerArrayList("mediaId");
             ID = getArguments().getString("Id");
             imagedisplay = getArguments().getString("imagedisplay");
+        }
+        if(ACTION.equals("sync")||ACTION.equals("camera")){
+            mediaIDS = getArguments().getIntegerArrayList("mediaId");
+            data = getArguments().getStringArrayList("data");
+            position = getArguments().getString("position");
         }
 
         recyclerView = (RecyclerView) vq.findViewById(R.id.facebook_friends);
@@ -809,7 +816,7 @@ public class FragmentFacebook extends Fragment implements FragmentFacebookAdapte
 
                     }
 
-                    if(ACTION.equals("shared_media")){
+                    if(ACTION.equals("shared_media") || ACTION.equals("sync") || ACTION.equals("camera")){
 
                         try {
                             JSONArray a = new JSONArray(userIDS);
@@ -864,11 +871,20 @@ public class FragmentFacebook extends Fragment implements FragmentFacebookAdapte
                                                                 @Override
                                                                 public void onDismiss(com.nispok.snackbar.Snackbar snackbar) {
 
-                                                                    Intent i = new Intent(getContext(), SharedMediaDisplay.class);
-                                                i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                                                i.putExtra("Id", ID);
-                                                i.putExtra("image", imagedisplay);
-                                                getContext().startActivity(i);
+                                                                    if(ACTION.equals("sync") || ACTION.equals("camera")){
+                                                                        Intent i = new Intent(getContext(),SyncMediaDisplayActivity.class);
+                                                                        i.putExtra("action",ACTION);
+                                                                        getContext().startActivity(i);
+
+
+                                                                    }else {
+
+                                                                        Intent i = new Intent(getContext(), SharedMediaDisplay.class);
+                                                                        i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                                                                        i.putExtra("Id", ID);
+                                                                        i.putExtra("image", imagedisplay);
+                                                                        getContext().startActivity(i);
+                                                                    }
 
 
 
