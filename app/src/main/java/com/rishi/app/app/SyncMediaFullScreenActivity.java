@@ -110,9 +110,16 @@ public class SyncMediaFullScreenActivity extends AppCompatActivity {
         if(id == R.id.upload_sync_media_display){
 
             int pos = viewPager.getCurrentItem();
-            String path = data.get(pos);
+            final String path = data.get(pos);
 
-            upload(path);
+            Runnable r = new Runnable() {
+                public void run() {
+                   upload(path);
+                }
+            };
+
+            Thread t = new Thread(r);
+            t.start();
         }
 
         if (id == R.id.to_personal_album) {
@@ -157,7 +164,148 @@ public class SyncMediaFullScreenActivity extends AppCompatActivity {
 
 
     public void upload(String path) {
+        File imgFile = new File(path);
 
+        if (imgFile.exists()) {
+
+            Long fileSize = imgFile.length();
+            //Log.d("Image upload size",String.valueOf(imgFile.length()));
+
+            Bitmap bitmap = BitmapFactory.decodeFile(imgFile.toString());
+
+            ByteArrayOutputStream stream = new ByteArrayOutputStream();
+            bitmap.compress(Bitmap.CompressFormat.PNG, 50, stream);
+            byte[] byte_arr = stream.toByteArray();
+            String encodedString = Base64.encodeToString(byte_arr, 0);
+
+            String responseString = null;
+
+            HttpClient httpclient = new DefaultHttpClient();
+            HttpPost httppost = new HttpPost("http://52.89.2.186/project/webservice/uploadMedia.php");
+
+            try {
+                AndroidMultiPartEntity entity = new AndroidMultiPartEntity(
+                        new AndroidMultiPartEntity.ProgressListener() {
+
+                            @Override
+                            public void transferred(long num) {
+                            }
+                        });
+
+                // Adding file data to http body
+                entity.addPart("image", new StringBody(encodedString));
+
+                // Extra parameters if you want to pass to server
+                entity.addPart("userId", new StringBody(sessionManager.getId()));
+                entity.addPart("filename", new StringBody(imgFile.getName()));
+                entity.addPart("filesize", new StringBody(fileSize.toString()));
+
+                httppost.setEntity(entity);
+
+                Log.d("entity",entity.toString());
+
+                // Making server call
+                HttpResponse response = httpclient.execute(httppost);
+                HttpEntity r_entity = response.getEntity();
+
+                int statusCode = response.getStatusLine().getStatusCode();
+                if (statusCode == 200) {
+                    // Server response
+                    responseString = EntityUtils.toString(r_entity);
+
+                    Log.d("response", responseString);
+                    try {
+                        JSONObject obj = new JSONObject(responseString);
+
+                        if (obj.getBoolean("error")) {
+
+                            Log.d("file error", obj.getString("msg"));
+                            //Toast.makeText(getApplicationContext(), obj.getString("msg"), Toast.LENGTH_LONG).show();
+                        } else {
+                            int mediaId = Integer.parseInt(obj.getString("mediaId"));
+                            String link = obj.getString("link");
+
+                            Log.d("response ok", String.valueOf(mediaId) + " " + link);
+
+                            Log.d("link", link);
+
+                            File folder = new File(Environment.getExternalStorageDirectory().toString() + "/ClikApp");
+                            boolean success = true;
+                            if (!folder.exists()) {
+                                success = folder.mkdir();
+                            }
+
+                            db = new ImageDatabaseHandler(getApplicationContext(), folder.toString());
+
+                            Image image = new Image();
+
+                            image.setId(mediaId);
+                            image.setPath(path);
+                            image.setName(imgFile.getName());
+                            image.setLink(link);
+
+                            db.addImage(image, sessionManager.getId());
+
+                            db.close();
+
+                            SnackbarManager.show(
+                                    com.nispok.snackbar.Snackbar.with(getApplicationContext())
+                                            .text("Media Uploaded Successfully")
+                                            .duration(Snackbar.SnackbarDuration.LENGTH_SHORT)
+                                            .eventListener(new EventListener() {
+                                                @Override
+                                                public void onShow(com.nispok.snackbar.Snackbar snackbar) {
+
+                                                }
+
+                                                @Override
+                                                public void onShowByReplace(com.nispok.snackbar.Snackbar snackbar) {
+
+                                                }
+
+                                                @Override
+                                                public void onShown(com.nispok.snackbar.Snackbar snackbar) {
+
+                                                }
+
+                                                @Override
+                                                public void onDismiss(com.nispok.snackbar.Snackbar snackbar) {
+
+                                                    Intent i = new Intent(getApplicationContext(),SyncMediaDisplayActivity.class);
+                                                    i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                                                    i.putExtra("action",action);
+                                                    getApplicationContext().startActivity(i);
+                                                }
+
+                                                @Override
+                                                public void onDismissByReplace(com.nispok.snackbar.Snackbar snackbar) {
+
+                                                }
+
+                                                @Override
+                                                public void onDismissed(com.nispok.snackbar.Snackbar snackbar) {
+
+                                                }
+                                            })
+                                    , SyncMediaFullScreenActivity.this);
+
+
+                        }
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+
+                } else {
+                    responseString = "Error occurred! Http Status Code: "
+                            + statusCode;
+                }
+
+            } catch (ClientProtocolException e) {
+                responseString = e.toString();
+            } catch (IOException e) {
+                responseString = e.toString();
+            }
+        }
     }
 
 
@@ -226,9 +374,8 @@ public class SyncMediaFullScreenActivity extends AppCompatActivity {
 
                                                             db = new ImageDatabaseHandler(getApplicationContext(), Environment.getExternalStorageDirectory().toString() + "/ClikApp");
 
+                                                            Log.i("count initial", String.valueOf(db.getCount()));
                                                             db.deleteMedia(mediaId);
-
-
 
                                                             Log.i("countafte", String.valueOf(db.getCount()));
 
@@ -238,8 +385,6 @@ public class SyncMediaFullScreenActivity extends AppCompatActivity {
                                                             i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                                                             i.putExtra("action",action);
                                                             getApplicationContext().startActivity(i);
-
-
                                                         }
 
                                                         @Override
@@ -304,7 +449,7 @@ public class SyncMediaFullScreenActivity extends AppCompatActivity {
         String path = data.get(pos);
 
         db = new ImageDatabaseHandler(getApplicationContext(), Environment.getExternalStorageDirectory().toString() + "/ClikApp");
-        final int mediaId = db.getMediaId(path,sessionManager.getId());
+        final int mediaId = db.getMediaId(path, sessionManager.getId());
         db.close();
 
         return mediaId;
