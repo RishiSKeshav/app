@@ -268,6 +268,8 @@ public class HomeActivity extends AppCompatActivity {
 
 
     private  void navHeaderData(){
+
+
         try {
             JSONObject obj = new JSONObject();
             obj.put("userId", sessionManager.getId());

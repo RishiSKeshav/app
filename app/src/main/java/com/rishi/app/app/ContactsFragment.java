@@ -670,7 +670,7 @@ public class ContactsFragment extends Fragment implements ContactsFragmentAdapte
 
                                 // @Override
                                 public void onSuccess(String response) {
-                                    Log.i("bnnm",response);
+                                   // Log.i("bnnm",response);
                                     // called when response HTTP status is "200 OK"
                                     try {
                                         JSONObject obj = new JSONObject(response);

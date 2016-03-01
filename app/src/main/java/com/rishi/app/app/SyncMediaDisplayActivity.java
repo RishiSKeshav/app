@@ -91,8 +91,6 @@ public class SyncMediaDisplayActivity extends AppCompatActivity {
         t2 = (TextView) hView.findViewById(R.id.personal_album_id);
         t3 = (TextView) hView.findViewById(R.id.shared_album_id);
 
-        navHeaderData();
-
 
         final ViewPager viewPager = (ViewPager) findViewById(R.id.sync_images_viewpager);
         viewPager.setAdapter(new SyncMediaPagerAdapter(getSupportFragmentManager(),
@@ -169,9 +167,14 @@ public class SyncMediaDisplayActivity extends AppCompatActivity {
 
         }*/
 
+        navHeaderData();
+
     }
 
     private  void navHeaderData(){
+
+        Log.i("reached","reached");
+
         try {
             JSONObject obj = new JSONObject();
             obj.put("userId", sessionManager.getId());
@@ -193,7 +196,10 @@ public class SyncMediaDisplayActivity extends AppCompatActivity {
                     try {
                         JSONObject obj = new JSONObject(response);
 
+                        Log.i("dddSync",response.toString());
+
                         if (obj.getBoolean("error")) {
+
                             SnackbarManager.show(
                                     com.nispok.snackbar.Snackbar.with(getApplicationContext())
                                             .text("Something went wrong")
@@ -201,7 +207,7 @@ public class SyncMediaDisplayActivity extends AppCompatActivity {
                             );
                         } else {
 
-                            Log.i("dddSync",obj.getJSONObject("user").toString());
+
 
                             JSONObject user = obj.getJSONObject("user");
                             t1.setText(user.optString("photos"));

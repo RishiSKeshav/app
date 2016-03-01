@@ -126,7 +126,7 @@ public class SharedMediaDisplay extends AppCompatActivity{
 
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
         alertDialogBuilder.setTitle("Discard Media?");
-        alertDialogBuilder.setMessage("You can still have this media from Media library");
+        alertDialogBuilder.setMessage("Are you sure?");
 
         alertDialogBuilder.setPositiveButton("yes", new DialogInterface.OnClickListener() {
             @Override
