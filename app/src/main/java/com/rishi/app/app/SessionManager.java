@@ -92,16 +92,16 @@ public class SessionManager {
 
 //     //   FacebookSdk.sdkInitialize(Sess);
 //
-//        editor.putBoolean("login_status_value", false);
-//
-//        editor.commit();
-//        LoginManager.getInstance().logOut();
+       editor.putBoolean("login_status_value", false);
+
+        editor.commit();
+        LoginManager.getInstance().logOut();
 
        // SharedPreferences sharedpreferences = getSharedPreferences(MainActivity.MyPREFERENCES, Context.MODE_PRIVATE);
         //SharedPreferences.Editor editor = sharedpreferences.edit();
-        editor.clear();
+        /*editor.clear();
         editor.commit();
-        LoginManager.getInstance().logOut();
+        LoginManager.getInstance().logOut();*/
 
 
 

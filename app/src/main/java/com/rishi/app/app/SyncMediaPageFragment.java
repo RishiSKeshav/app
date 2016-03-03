@@ -268,8 +268,9 @@ public class SyncMediaPageFragment extends Fragment {
         else
             Log.i("databasae_name","DB not created");
 
+        Log.d("userId of 2468",db.getPath(2514));
         db.close();
 
-        Log.d("DB list count ",String.valueOf(syncImageList.size()));
+        Log.d("SyncMediaSyncAdpter cnt",String.valueOf(syncImageList.size()));
     }
 }

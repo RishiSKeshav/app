@@ -99,6 +99,24 @@ public class ImageDatabaseHandler extends SQLiteOpenHelper {
         return count;
     }
 
+    public String getPath(int mediaId){
+        String path="";
+        String selectQuery = "SELECT userId FROM " + TABLE_SyncedMedia +" where media_id='"+mediaId+"'";
+
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery(selectQuery, null);
+
+        // looping through all rows and adding to list
+        if (cursor.moveToFirst()) {
+            do {
+                path = cursor.getString(0);
+            } while (cursor.moveToNext());
+        }
+
+        cursor.close();
+        return path;
+    }
+
     public ArrayList<SyncImages> getAllImages(String userId) {
         ArrayList<SyncImages> syncedImageList = new ArrayList<SyncImages>();
         // Select All Query
