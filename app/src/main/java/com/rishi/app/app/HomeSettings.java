@@ -1,6 +1,7 @@
 package com.rishi.app.app;
 
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
@@ -35,6 +36,8 @@ public class HomeSettings extends AppCompatActivity {
     LinearLayout editprofilelayout,change_email,change_password,logout,invite;
     SessionManager sessionManager;
     TextView memorystatus;
+    Intent serviceIntent;
+    Context c;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -88,7 +91,9 @@ public class HomeSettings extends AppCompatActivity {
                     @Override
                     public void onClick(DialogInterface arg0, int arg1) {
 
-                    sessionManager.logoutUser();
+                        serviceIntent = new Intent(c, ImageUploadService.class);
+                        c.stopService(serviceIntent);
+                        sessionManager.logoutUser();
                         Intent i = new Intent(HomeSettings.this,LoginActivity.class);
                         i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                         startActivity(i);
