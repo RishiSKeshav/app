@@ -25,11 +25,13 @@ public class LaunchScreen extends AppCompatActivity {
             //user is already logged in!
            Intent i = new Intent(LaunchScreen.this,HomeActivity.class);
             startActivity(i);
+            finish();
 
         } else {
             //user is logged out!
             Intent i = new Intent(LaunchScreen.this,LoginActivity.class);
             startActivity(i);
+            finish();
         }
 
 

@@ -41,7 +41,7 @@ public class GetCode extends AppCompatActivity {
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.get_code_toolbar);
         setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+       // getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         Intent i = getIntent();
         EMAILID = i.getStringExtra("emailId");
@@ -98,6 +98,7 @@ public class GetCode extends AppCompatActivity {
                                         i.putExtra("emailId",EMAILID);
                                         i.putExtra("action","password_rest");
                                         startActivity(i);
+                                        finish();
                                 }
 
                             } catch (JSONException e) {

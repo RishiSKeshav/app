@@ -244,6 +244,7 @@ public class RegisterActivity extends Activity {
                                 i.putExtra("code",obj.getString("code"));
                                 i.putExtra("emailId",object.optString("emailId"));
                                 startActivity(i);
+                                finish();
 
                             }
 
@@ -291,7 +292,7 @@ public class RegisterActivity extends Activity {
      * Method which navigates from Register Activity to Login Activity
      */
     public void navigatetoLoginActivity(View view){
-        Intent loginIntent = new Intent(getApplicationContext(),LoginActivity.class);
+        Intent loginIntent = new Intent(getApplicationContext(),LaunchScreen.class);
         loginIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         startActivity(loginIntent);
     }

@@ -90,6 +90,7 @@ public class HomeSettings extends AppCompatActivity {
 
                     sessionManager.logoutUser();
                         Intent i = new Intent(HomeSettings.this,LoginActivity.class);
+                        i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                         startActivity(i);
 
                     }

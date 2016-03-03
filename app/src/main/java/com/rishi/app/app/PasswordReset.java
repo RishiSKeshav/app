@@ -115,8 +115,10 @@ public class PasswordReset extends AppCompatActivity {
 
 
                                                                     Intent homeIntent = new Intent(getApplicationContext(), LoginActivity.class);
+                                                                    //homeIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                                                                     homeIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                                                                     startActivity(homeIntent);
+                                                                    //finish();
 
 
                                                                 }

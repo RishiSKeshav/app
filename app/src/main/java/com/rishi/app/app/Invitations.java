@@ -42,7 +42,7 @@ public class Invitations extends AppCompatActivity {
                 sendIntent.setAction(Intent.ACTION_SEND);
                 sendIntent
                         .putExtra(Intent.EXTRA_TEXT,
-                                "<---YOUR TEXT HERE--->.");
+                                "Hey there,do you want to try ClikApp. Here's the playstore link... https://play.google.com/store/apps/details?id=com.rishi.app.app&hl=en");
                 sendIntent.setType("text/plain");
                 sendIntent.setPackage("com.facebook.orca");
                 try
@@ -68,7 +68,7 @@ public class Invitations extends AppCompatActivity {
 
                     Intent waIntent = new Intent(Intent.ACTION_SEND);
                     waIntent.setType("text/plain");
-                    String text = "YOUR TEXT HERE";
+                    String text = "Hey there,do you want to try ClikApp. Here's the playstore link... https://play.google.com/store/apps/details?id=com.rishi.app.app&hl=en";
 
                     PackageInfo info=pm.getPackageInfo("com.whatsapp", PackageManager.GET_META_DATA);
                     //Check if package exists or not. If not then code

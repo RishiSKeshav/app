@@ -59,10 +59,12 @@ public class EmailAuthentication extends AppCompatActivity {
                         Intent i = new Intent(EmailAuthentication.this, RegistrationDetails.class);
                         i.putExtra("emailId", EMAILID);
                         startActivity(i);
+                        finish();
                     }else{
                         Intent i = new Intent(EmailAuthentication.this, PasswordReset.class);
                         i.putExtra("emailId", EMAILID);
                         startActivity(i);
+                        finish();
                     }
 
 

@@ -106,7 +106,7 @@ public class LoginActivity extends ActionBarActivity {
                                     final ProgressDialog progressDialog = new ProgressDialog(LoginActivity.this,
                                             R.style.AppTheme_Dark_Dialog);
                                     progressDialog.setIndeterminate(true);
-                                    progressDialog.setMessage("Creating Album...");
+                                    progressDialog.setMessage("Authenticating...");
                                     progressDialog.show();
 //                                    user.email = object.getString("email").toString();
 
@@ -386,18 +386,20 @@ public class LoginActivity extends ActionBarActivity {
         Intent loginIntent = new Intent(getApplicationContext(),RegisterActivity.class);
         loginIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         startActivity(loginIntent);
+        finish();
     }
 
     public void goToSearchUser(View view){
         final ProgressDialog progressDialog = new ProgressDialog(LoginActivity.this,
                 R.style.AppTheme_Dark_Dialog);
         progressDialog.setIndeterminate(true);
-        progressDialog.setMessage("Authenticating...");
+        progressDialog.setMessage("Loading...");
         progressDialog.show();
 
         Intent homeIntent = new Intent(getApplicationContext(),SearchUser.class);
         homeIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         startActivity(homeIntent);
+       // finish();
 
         progressDialog.hide();
     }
@@ -408,6 +410,7 @@ public class LoginActivity extends ActionBarActivity {
         Intent homeIntent = new Intent(getApplicationContext(),HomeActivity.class);
         homeIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         startActivity(homeIntent);
+        finish();
 
 
     }

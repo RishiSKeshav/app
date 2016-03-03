@@ -87,7 +87,8 @@ public class InvitationsContactsAdapter extends RecyclerView.Adapter<Invitations
                 Intent smsIntent = new Intent(android.content.Intent.ACTION_VIEW);
                 smsIntent.setType("vnd.android-dir/mms-sms");
                 smsIntent.putExtra("address", icm.getNumber());
-                smsIntent.putExtra("sms_body", "Test");
+                smsIntent.putExtra("sms_body", "Hey there,do you want to try ClikApp. " +
+                        "Here's the playstore link... https://play.google.com/store/apps/details?id=com.rishi.app.app&hl=en");
                 c.startActivity(Intent.createChooser(smsIntent, "SMS:"));
 
             }

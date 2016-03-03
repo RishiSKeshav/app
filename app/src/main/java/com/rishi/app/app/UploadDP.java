@@ -300,6 +300,7 @@ public class UploadDP extends AppCompatActivity {
 
             Intent i = new Intent(this,HomeActivity.class);
             this.startActivity(i);
+            finish();
 
         }
 
@@ -307,6 +308,7 @@ public class UploadDP extends AppCompatActivity {
 
             Intent i = new Intent(this,HomeActivity.class);
             this.startActivity(i);
+            finish();
 
         }
 

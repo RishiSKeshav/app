@@ -118,6 +118,7 @@ public class RegistrationDetails extends AppCompatActivity {
                             if (checkPlayServices()) {
                                registerGCM();
                                 navigatetoUploadDisplayPicture();
+
                             }
 
                         }
@@ -180,6 +181,7 @@ public class RegistrationDetails extends AppCompatActivity {
     public void navigatetoUploadDisplayPicture(){
         Intent homeIntent = new Intent(getApplicationContext(),UploadDP.class);
         startActivity(homeIntent);
+        finish();
     }
 
 }

@@ -90,43 +90,24 @@ public class SessionManager {
 
     public void logoutUser(){
 
-     //   FacebookSdk.sdkInitialize(Sess);
+//     //   FacebookSdk.sdkInitialize(Sess);
+//
+//        editor.putBoolean("login_status_value", false);
+//
+//        editor.commit();
+//        LoginManager.getInstance().logOut();
 
-        editor.putBoolean("login_status_value", false);
-
+       // SharedPreferences sharedpreferences = getSharedPreferences(MainActivity.MyPREFERENCES, Context.MODE_PRIVATE);
+        //SharedPreferences.Editor editor = sharedpreferences.edit();
+        editor.clear();
         editor.commit();
-
         LoginManager.getInstance().logOut();
 
 
 
 
-//        AccessTokenTracker at = new AccessTokenTracker() {
-//            @Override
-//            protected void onCurrentAccessTokenChanged(AccessToken oldAccessToken, AccessToken currentAccessToken) {
-//
-//
-//                updateWithToken(currentAccessToken);
-//
-//
-//            }
-//        };
 
-
-
-
-        // LoginManager.getInstance().logOut();
-//
     }
-
-//    private void updateWithToken(AccessToken token) {
-//        if(token!=null){
-//
-//            LoginManager.getInstance().logOut();
-//
-//
-//        }
-//    }
 
     public String getId()
     {

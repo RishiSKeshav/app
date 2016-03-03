@@ -136,6 +136,7 @@ public class SearchUser extends AppCompatActivity {
                                     i.putExtra("emailId",userdetails.optString("emailId"));
                                     i.putExtra("displayPicture",userdetails.optString("displayPicture"));
                                     startActivity(i);
+                                    finish();
                             }
 
                         }

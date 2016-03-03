@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
+import android.net.Uri;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -101,14 +102,16 @@ public class SyncMediaUnsyncAdapter extends RecyclerView.Adapter<SyncMediaUnsync
 
             Context c = holder.path.getContext();
 
-            BitmapFactory.Options option = new BitmapFactory.Options();
-            option.inScaled=false;
+//            BitmapFactory.Options option = new BitmapFactory.Options();
+//            option.inScaled=false;
+//
+//            Bitmap bitmap = decodeSampledBitmapFromPath(sm.getPath(),300,300);
+//            holder.path.setImageBitmap(bitmap);
 
-            Bitmap bitmap = decodeSampledBitmapFromPath(sm.getPath(),300,300);
-            holder.path.setImageBitmap(bitmap);
-
+        Uri uri = Uri.fromFile(new File(sm.getPath()));
+        Picasso.with(c).load(uri)
+                .resize(96, 96).centerCrop().into(holder.path);
             holder.check.setVisibility(View.VISIBLE);
-
             imgPath = unsyncMediaList.get(position).getPath();
             unsyncMediaPathList.add(imgPath);
        // }
