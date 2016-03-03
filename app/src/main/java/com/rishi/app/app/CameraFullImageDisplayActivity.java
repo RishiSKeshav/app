@@ -106,23 +106,9 @@ public class CameraFullImageDisplayActivity extends AppCompatActivity {
                 return true;
             case R.id.camera_upload:
 
-                final ProgressDialog progressDialog = new ProgressDialog(CameraFullImageDisplayActivity.this,
-                        R.style.AppTheme_Dark_Dialog);
-                progressDialog.setIndeterminate(true);
-                progressDialog.setMessage("Uploading...");
-                progressDialog.show();
+
 
                 startUpload(photoImageList);
-
-
-                progressDialog.hide();
-
-
-
-
-
-
-
 
 
                 return true;
@@ -134,7 +120,8 @@ public class CameraFullImageDisplayActivity extends AppCompatActivity {
     public void startUpload(final ArrayList<Image> unSyncedImageList)
     {
 
-
+        final ProgressDialog ringProgressDialog = ProgressDialog.show(CameraFullImageDisplayActivity.this, "Please wait ...", "Uploading Image ...", true);
+        ringProgressDialog.setCancelable(true);
 
         Log.d("Service: count ", String.valueOf(unSyncedImageList.size()));
 
@@ -150,6 +137,7 @@ public class CameraFullImageDisplayActivity extends AppCompatActivity {
                            /* progressDialog.setMessage("Uploading" + i+1 + "of" + unSyncedImageList.size());
                             progressDialog.show();*/
                             upload(unSyncedImageList.get(i), count);
+                            ringProgressDialog.dismiss();
 
                         } catch (Exception e) {
                         }

@@ -4,6 +4,7 @@ package com.rishi.app.app;
 import android.content.ContentResolver;
 import android.content.Context;
 import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.os.Environment;
 import android.preference.PreferenceActivity;
@@ -41,9 +42,9 @@ public class SyncMediaPageFragment extends Fragment {
 
     private int mPage,countalbum,countsharedalbum,countsharedmedia;
     Context context;
-    private ArrayList<com.rishi.app.app.Image> imageList;
+    private ArrayList<com.rishi.app.app.Image> imageList = new ArrayList<>();
     private ArrayList<String> syncedPathList = new ArrayList<>();
-    private ArrayList<com.rishi.app.app.Image> unSyncImageList;
+    private ArrayList<com.rishi.app.app.Image> unSyncImageList = new ArrayList<>();
     private ArrayList<String> cameraImageList = new ArrayList<>();
     private ArrayList<String> syncImageList = new ArrayList<>();
     private RecyclerView recyclerView;
@@ -66,9 +67,9 @@ public class SyncMediaPageFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mPage = getArguments().getInt(ARG_PAGE);
-
         sessionManager= new SessionManager(getContext());
     }
+
 
 
 
@@ -78,10 +79,9 @@ public class SyncMediaPageFragment extends Fragment {
         View view = inflater.inflate(R.layout.sync_media_fragment_page, container, false);
 
         aswipeRefreshLayout = (SwipeRefreshLayout)view.findViewById(R.id.sync_media_refresh_layout);
-        initializeImageLists();
 
         if(mPage == 1) {
-
+            Log.i("rrr","A");
             recyclerView = (RecyclerView) view.findViewById(R.id.sync_media_recycler_view);
             smuAdapter = new SyncMediaUnsyncAdapter(unSyncImageList);
             recyclerView.setHasFixedSize(true);
@@ -89,17 +89,19 @@ public class SyncMediaPageFragment extends Fragment {
             recyclerView.setLayoutManager(mLayoutManager);
             recyclerView.setAdapter(smuAdapter);
 
-//            prepareUnsyncData();
-//
+            generateImageList();
+
             aswipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
                 @Override
                 public void onRefresh() {
-                    initializeImageLists();
+                    generateImageList();
                 }
             });
+
         }
 
         if (mPage == 2){
+            Log.i("rrr","B");
             recyclerView = (RecyclerView) view.findViewById(R.id.sync_media_recycler_view);
             smsAdapter = new SyncMediaSyncAdapter(syncImageList);
 
@@ -107,112 +109,54 @@ public class SyncMediaPageFragment extends Fragment {
             RecyclerView.LayoutManager sLayoutManager = new GridLayoutManager(getContext(),3);
             recyclerView.setLayoutManager(sLayoutManager);
             recyclerView.setAdapter(smsAdapter);
-//            prepareSyncData();
-//
+
+            generateSyncImageList();
+
             aswipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
                 @Override
                 public void onRefresh() {
-                    initializeImageLists();
+                    generateSyncImageList();
                 }
             });
+
 
         }
 
         if(mPage == 3){
+
+
             recyclerView = (RecyclerView) view.findViewById(R.id.sync_media_recycler_view);
             smcAdapter = new SyncMediaCameraAdapter(cameraImageList);
             recyclerView.setHasFixedSize(true);
             RecyclerView.LayoutManager smLayoutManager = new GridLayoutManager(getContext(),3);
             recyclerView.setLayoutManager(smLayoutManager);
             recyclerView.setAdapter(smcAdapter);
-//            prepareCameraData();
-//
+
+            generateCameraImageList();
+
             aswipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
                 @Override
                 public void onRefresh() {
-                    initializeImageLists();
+                    generateCameraImageList();
                 }
             });
+
         }
 
         return view;
     }
 
 
-    private void initializeImageLists() {
-
-        generateImageList();
-        generateDBImageList();
-        generateUnsyncedImageList();
-        generateCameraImageList();
-        generateSyncImageList();
-
-
-        aswipeRefreshLayout.setRefreshing(false);
-    }
-
-//    private void prepareUnsyncData() {
-//
-//        generateImageList();
-//        generateDBImageList();
-//        generateUnsyncedImageList();
-//
-//    }
-//
-//    private void prepareSyncData(){
-//
-//        generateSyncImageList();
-//
-//    }
-//
-//
-//    private void prepareCameraData(){
-//
-//        generateCameraImageList();
-//
-//    }
-
-
-
-
-
-    private void generateUnsyncedImageList() {
-
-        unSyncImageList = new ArrayList<Image>();
-
-        for(com.rishi.app.app.Image img : imageList){
-
-            if(!syncedPathList.contains(img.path))
-
-                unSyncImageList.add(img);
-//                smuAdapter.notifyDataSetChanged();
-        }
-
-        // Log.i("eeee", unSyncImageList.toString());
-    }
-
-    private void generateDBImageList() {
-
+    private void generateImageList() {
+        unSyncImageList.clear();
         ImageDatabaseHandler db = new ImageDatabaseHandler(getContext(), Environment.getExternalStorageDirectory().toString()+ "/ClikApp");
-
         if(db!=null){
-
             syncedPathList= db.getAllImagePath(sessionManager.getId());
-
         }
         else
             Log.i("databasae_name","DB not created");
-
         db.close();
 
-        Log.d("DB list count ",String.valueOf(syncedPathList.size()));
-    }
-
-
-
-    private void generateImageList() {
-
-        imageList = new ArrayList<com.rishi.app.app.Image>();
 
         ContentResolver cr = getContext().getContentResolver();
 
@@ -234,16 +178,40 @@ public class SyncMediaPageFragment extends Fragment {
         }
         cursor.close();
 
-        Log.d("image list count", String.valueOf(imageList.size()));
+
+        for(com.rishi.app.app.Image img : imageList){
+
+            if(!syncedPathList.contains(img.path))
+                unSyncImageList.add(img);
+                smuAdapter.notifyDataSetChanged();
+        }
+
+        aswipeRefreshLayout.setRefreshing(false);
+
+
     }
 
     private void generateCameraImageList() {
+        cameraImageList.clear();
 
         ImageDatabaseHandler db = new ImageDatabaseHandler(getContext(), Environment.getExternalStorageDirectory().toString()+ "/ClikApp");
 
         if(db!=null){
 
-            cameraImageList= db.getAllCameraImagePath(sessionManager.getId());
+            String selectQuery = "SELECT  * FROM table_syncimage where source='camera' and userId='"+ sessionManager.getId()+"'";
+
+            SQLiteDatabase db1 = db.getReadableDatabase();
+            Cursor cursor = db1.rawQuery(selectQuery, null);
+
+            // looping through all rows and adding to list
+            if (cursor.moveToFirst()) {
+                do {
+                    cameraImageList.add(cursor.getString(3));
+                    smcAdapter.notifyDataSetChanged();
+                } while (cursor.moveToNext());
+            }
+
+            cursor.close();
 
         }
         else
@@ -251,26 +219,41 @@ public class SyncMediaPageFragment extends Fragment {
 
         db.close();
 
-        Log.d("DB list count ",String.valueOf(cameraImageList.size()));
+        Log.d("DB list count ", String.valueOf(cameraImageList.size()));
+
+        aswipeRefreshLayout.setRefreshing(false);
     }
 
     private void generateSyncImageList() {
+        syncImageList.clear();
 
         ImageDatabaseHandler db = new ImageDatabaseHandler(getContext(), Environment.getExternalStorageDirectory().toString()+ "/ClikApp");
 
         if(db!=null){
 
-            syncImageList= db.getAllSyncImagePath(sessionManager.getId());
+            String selectQuery = "SELECT  * FROM table_syncimage where source='sync' and userId='"+ sessionManager.getId()+"'";
 
+            SQLiteDatabase db1 = db.getReadableDatabase();
+            Cursor cursor = db1.rawQuery(selectQuery, null);
 
+            if (cursor.moveToFirst()) {
+                do {
+                    syncImageList.add(cursor.getString(3));
+                    smsAdapter.notifyDataSetChanged();
+                    Log.i("reached","reached");
+                } while (cursor.moveToNext());
+            }
 
+            cursor.close();
         }
         else
             Log.i("databasae_name","DB not created");
 
-        Log.d("userId of 2468",db.getPath(2514));
         db.close();
 
-        Log.d("SyncMediaSyncAdpter cnt",String.valueOf(syncImageList.size()));
+        aswipeRefreshLayout.setRefreshing(false);
+
     }
+
+
 }

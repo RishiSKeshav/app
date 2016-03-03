@@ -1,6 +1,7 @@
 package com.rishi.app.app;
 
 import android.app.AlertDialog;
+import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -66,15 +67,24 @@ public class SyncMediaFullScreenActivity extends AppCompatActivity {
 
         Intent i = getIntent();
         position = i.getStringExtra("Position");
+
+        Log.i("position",position);
         action = i.getStringExtra("action");
         data = i.getStringArrayListExtra("data");
         adapter = new SyncFullScreenAdapter(SyncMediaFullScreenActivity.this,
                 data);
 
         viewPager.setAdapter(adapter);
+        adapter.notifyDataSetChanged();
 
-        viewPager.setCurrentItem(Integer.parseInt(position));
+        viewPager.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                viewPager.setCurrentItem(Integer.parseInt(position));
+            }
+        },100);
     }
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu){
@@ -109,17 +119,24 @@ public class SyncMediaFullScreenActivity extends AppCompatActivity {
 
         if(id == R.id.upload_sync_media_display){
 
+            final ProgressDialog ringProgressDialog = ProgressDialog.show(SyncMediaFullScreenActivity.this, "Please wait ...", "Uploading Image ...", true);
+            ringProgressDialog.setCancelable(true);
+
             int pos = viewPager.getCurrentItem();
             final String path = data.get(pos);
 
             Runnable r = new Runnable() {
                 public void run() {
                    upload(path);
+                    ringProgressDialog.dismiss();
+
                 }
             };
 
             Thread t = new Thread(r);
             t.start();
+
+
         }
 
         if (id == R.id.to_personal_album) {
@@ -164,6 +181,9 @@ public class SyncMediaFullScreenActivity extends AppCompatActivity {
 
 
     public void upload(String path) {
+
+
+
         File imgFile = new File(path);
 
         if (imgFile.exists()) {

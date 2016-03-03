@@ -112,8 +112,9 @@ public class SyncMediaUnsyncAdapter extends RecyclerView.Adapter<SyncMediaUnsync
         Picasso.with(c).load(uri)
                 .resize(96, 96).centerCrop().into(holder.path);
             holder.check.setVisibility(View.VISIBLE);
-            imgPath = unsyncMediaList.get(position).getPath();
-            unsyncMediaPathList.add(imgPath);
+            //imgPath = unsyncMediaList.get(position).getPath();
+
+            unsyncMediaPathList.add(sm.getPath());
        // }
     }
 
