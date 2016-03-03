@@ -51,9 +51,9 @@ public class EmailAuthentication extends AppCompatActivity {
 
         TextView tv = (TextView)findViewById(R.id.text_code);
         if(ACTION.equals("")) {
-            tv.setText("You should have received a email with activation code. It was sent to " + EMAILID);
+            tv.setText("You should have received an email with activation code. It was sent to " + EMAILID);
         }else{
-            tv.setText("You should have received a email with pass reset code. It was sent to " + EMAILID);
+            tv.setText("You should have received an email with pass reset code. It was sent to " + EMAILID);
         }
         et = (EditText) findViewById(R.id.code);
         et.addTextChangedListener(new TextWatcher() {
