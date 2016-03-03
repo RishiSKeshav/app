@@ -91,8 +91,8 @@ public class HomeSettings extends AppCompatActivity {
                     @Override
                     public void onClick(DialogInterface arg0, int arg1) {
 
-                        serviceIntent = new Intent(c, ImageUploadService.class);
-                        c.stopService(serviceIntent);
+                        serviceIntent = new Intent(HomeSettings.this, ImageUploadService.class);
+                        HomeSettings.this.stopService(serviceIntent);
                         sessionManager.logoutUser();
                         Intent i = new Intent(HomeSettings.this,LoginActivity.class);
                         i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
