@@ -75,14 +75,14 @@ public class GcmIntentService extends IntentService {
             token = instanceID.getToken(getString(R.string.gcm_defaultSenderId),
                     GoogleCloudMessaging.INSTANCE_ID_SCOPE, null);
 
-            Log.e(TAG, "GCM Registration Token: " + token);
+            //Log.e(TAG, "GCM Registration Token: " + token);
 
             // sending the registration id to our server
             sendRegistrationToServer(token);
 
             sharedPreferences.edit().putBoolean(Config.SENT_TOKEN_TO_SERVER, true).apply();
         } catch (Exception e) {
-            Log.e(TAG, "Failed to complete token refresh", e);
+            //Log.e(TAG, "Failed to complete token refresh", e);
 
             sharedPreferences.edit().putBoolean(Config.SENT_TOKEN_TO_SERVER, false).apply();
         }

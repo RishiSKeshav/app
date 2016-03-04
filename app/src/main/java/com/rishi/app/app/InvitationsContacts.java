@@ -173,7 +173,7 @@ public class InvitationsContacts extends AppCompatActivity
                     while (phoneCursor.moveToNext()) {
 
                         phoneNumber = phoneCursor.getString(phoneCursor.getColumnIndex(NUMBER));
-                        Log.i("kkk",phoneNumber);
+                        //Log.i("kkk",phoneNumber);
                         String no = phoneNumber.replaceAll("\\p{P}","");
                         String no1= no.replaceAll("\\s+","");
 

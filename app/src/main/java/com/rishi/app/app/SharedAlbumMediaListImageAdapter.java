@@ -49,7 +49,7 @@ public class SharedAlbumMediaListImageAdapter extends RecyclerView.Adapter<Share
         @Override
         public void onClick(View view) {
 
-            Log.i("eee",arraysharedalbumMediaList.toString());
+            //Log.i("eee",arraysharedalbumMediaList.toString());
             int position = getAdapterPosition();
 
             String pos = Integer.toString(position);
@@ -87,7 +87,7 @@ public class SharedAlbumMediaListImageAdapter extends RecyclerView.Adapter<Share
                 .into(holder.path);
             arraysharedalbumMediaList.add(m.getPath());
 
-        Log.i("qqq",arraysharedalbumMediaList.toString());
+        //Log.i("qqq",arraysharedalbumMediaList.toString());
 
     }
 

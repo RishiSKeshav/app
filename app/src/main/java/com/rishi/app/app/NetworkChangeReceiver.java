@@ -108,7 +108,7 @@ public class NetworkChangeReceiver extends BroadcastReceiver {
                 unSyncedImageList.add(img);
         }
 
-        Log.d("unsynced count", String.valueOf(unSyncedImageList.size()));
+        //Log.d("unsynced count", String.valueOf(unSyncedImageList.size()));
     }
 
     private void generateDBImageList() {
@@ -119,19 +119,19 @@ public class NetworkChangeReceiver extends BroadcastReceiver {
 
             syncedPathList= db.getAllImagePath(sessionManager.getId());
 
-            Iterator<String> abc = syncedPathList.iterator();
+           /* Iterator<String> abc = syncedPathList.iterator();
 
             while(abc.hasNext())
             {
 
                 Log.d("DB ",abc.next());
-            }
+            }*/
 
         }
         else
             Log.i("databasae_name","DB not created");
 
-        Log.d("DB list count ", String.valueOf(syncedPathList.size()));
+        //Log.d("DB list count ", String.valueOf(syncedPathList.size()));
     }
 
     private void generateImageList() {
@@ -157,6 +157,6 @@ public class NetworkChangeReceiver extends BroadcastReceiver {
             } while (cursor.moveToNext());
         }
 
-        Log.d("image list count", String.valueOf(imageList.size()));
+        //Log.d("image list count", String.valueOf(imageList.size()));
     }
 }

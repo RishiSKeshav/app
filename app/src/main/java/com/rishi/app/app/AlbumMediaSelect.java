@@ -345,7 +345,7 @@ public class AlbumMediaSelect extends AppCompatActivity implements AlbumMediaSel
                 if(!myDir.exists())
                 {
                     myDir.mkdir();
-                    Log.v("", "inside mkdir");
+                    //Log.v("", "inside mkdir");
                 }
 
                         /* checks the file and if it already exist delete */
@@ -379,7 +379,7 @@ public class AlbumMediaSelect extends AppCompatActivity implements AlbumMediaSel
                 }
 
                 fos.close();
-                Log.d("test", "Image Saved in sdcard..");
+                //Log.d("test", "Image Saved in sdcard..");
             }
             catch(IOException io)
             {

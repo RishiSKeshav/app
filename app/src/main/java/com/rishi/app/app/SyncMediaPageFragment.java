@@ -219,7 +219,7 @@ public class SyncMediaPageFragment extends Fragment {
 
         db.close();
 
-        Log.d("DB list count ", String.valueOf(cameraImageList.size()));
+        //Log.d("DB list count ", String.valueOf(cameraImageList.size()));
 
         aswipeRefreshLayout.setRefreshing(false);
     }
@@ -240,14 +240,14 @@ public class SyncMediaPageFragment extends Fragment {
                 do {
                     syncImageList.add(cursor.getString(3));
                     smsAdapter.notifyDataSetChanged();
-                    Log.i("reached","reached");
+                    //Log.i("reached","reached");
                 } while (cursor.moveToNext());
             }
 
             cursor.close();
         }
         else
-            Log.i("databasae_name","DB not created");
+            //Log.i("databasae_name","DB not created");
 
         db.close();
 

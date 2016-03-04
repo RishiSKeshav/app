@@ -73,7 +73,7 @@ public class CameraFullImageDisplayActivity extends AppCompatActivity {
         photoImageList =intent.getParcelableArrayListExtra("photoImageList");
         ArrayList<String> photoList = intent.getStringArrayListExtra("photoFileList");
 
-        Log.d("photolist size",photoList.toString());
+        //Log.d("photolist size",photoList.toString());
 
         ArrayList<File> photoFileList = new ArrayList<File>();
 
@@ -123,7 +123,7 @@ public class CameraFullImageDisplayActivity extends AppCompatActivity {
         final ProgressDialog ringProgressDialog = ProgressDialog.show(CameraFullImageDisplayActivity.this, "Please wait ...", "Uploading Image ...", true);
         ringProgressDialog.setCancelable(true);
 
-        Log.d("Service: count ", String.valueOf(unSyncedImageList.size()));
+        //Log.d("Service: count ", String.valueOf(unSyncedImageList.size()));
 
         count = unSyncedImageList.size();
 
@@ -152,7 +152,7 @@ public class CameraFullImageDisplayActivity extends AppCompatActivity {
         t.start();
 
         db = new ImageDatabaseHandler(getApplicationContext(), Environment.getExternalStorageDirectory().toString()+ "/ClikApp");
-        Log.d("Db count", String.valueOf(db.getCount()));
+        //Log.d("Db count", String.valueOf(db.getCount()));
 
     }
     public void upload(Image img,int count)
@@ -212,14 +212,14 @@ public class CameraFullImageDisplayActivity extends AppCompatActivity {
             if (statusCode == 200) {
                 // Server response
                 responseString = EntityUtils.toString(r_entity);
-                Log.d("response 200",responseString);
+                //Log.d("response 200",responseString);
 
                 try {
                     JSONObject obj = new JSONObject(responseString);
 
-                    Log.d("obh",String.valueOf(obj));
+                    //Log.d("obh",String.valueOf(obj));
                     if (obj.getBoolean("error")) {
-                        Log.d("error true", "true");
+                        //Log.d("error true", "true");
 
                         f.delete();
 
@@ -232,13 +232,13 @@ public class CameraFullImageDisplayActivity extends AppCompatActivity {
                         //Toast.makeText(getApplicationContext(), obj.getString("message"), Toast.LENGTH_LONG).show();
                     } else {
 
-                        Log.d("error false:", responseString);
+                        //Log.d("error false:", responseString);
                         //Toast.makeText(getApplicationContext(), obj.getString("message"), Toast.LENGTH_LONG).show();
                         int mediaId = Integer.parseInt(obj.getString("mediaId"));
                         String link = obj.getString("link");
                         String fileName = obj.getString("fileName");
 
-                        Log.d("link",link);
+                        //Log.d("link",link);
 
                         File folder = new File(Environment.getExternalStorageDirectory().toString() + "/ClikApp");
                         boolean success = true;
@@ -261,7 +261,7 @@ public class CameraFullImageDisplayActivity extends AppCompatActivity {
 
                         f.delete();
 
-                        Log.d("image inserted", String.valueOf(db.getCount()));
+                        //Log.d("image inserted", String.valueOf(db.getCount()));
 
                         SnackbarManager.show(
                                 com.nispok.snackbar.Snackbar.with(this)
@@ -313,7 +313,7 @@ public class CameraFullImageDisplayActivity extends AppCompatActivity {
                 responseString = "Error occurred! Http Status Code: "
                         + statusCode;
 
-                Log.d("response error",responseString);
+                //Log.d("response error",responseString);
             }
 
         } catch (ClientProtocolException e) {

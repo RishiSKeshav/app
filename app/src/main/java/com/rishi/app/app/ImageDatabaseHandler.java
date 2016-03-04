@@ -35,7 +35,7 @@ public class ImageDatabaseHandler extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase db) {
 
-        Log.d("Database handler","Database created");
+        //Log.d("Database handler","Database created");
 
         String CREATE_CONTACTS_TABLE = "CREATE TABLE IF NOT EXISTS " + TABLE_SyncedMedia + "( media_id INTEGER PRIMARY KEY,"
                 + " name TEXT,"

@@ -268,7 +268,7 @@ public class SharedAlbumMediaSelect extends AppCompatActivity implements SharedA
 
         private void downloadImagesToSdCard(String downloadUrl,String imageName)
         {
-            Log.i("qqq",downloadUrl);
+            //Log.i("qqq",downloadUrl);
             try
             {
                 URL url = new URL(downloadUrl);
@@ -280,7 +280,7 @@ public class SharedAlbumMediaSelect extends AppCompatActivity implements SharedA
                 if(!myDir.exists())
                 {
                     myDir.mkdir();
-                    Log.v("", "inside mkdir");
+                    //Log.v("", "inside mkdir");
                 }
 
                         /* checks the file and if it already exist delete */
@@ -314,7 +314,7 @@ public class SharedAlbumMediaSelect extends AppCompatActivity implements SharedA
                 }
 
                 fos.close();
-                Log.d("test", "Image Saved in sdcard..");
+                //Log.d("test", "Image Saved in sdcard..");
             }
             catch(IOException io)
             {

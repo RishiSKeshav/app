@@ -70,7 +70,7 @@ public class AddMoreMedia extends AppCompatActivity implements AddMoreMediaAdapt
         NAME = intent.getStringExtra("name");
         SHARED = intent.getStringExtra("shared");
 
-        Log.i("gggg",ids.toString());
+        //Log.i("gggg",ids.toString());
 
         recyclerView = (RecyclerView)findViewById(R.id.recycler_add_more_media);
 
@@ -180,7 +180,7 @@ public class AddMoreMedia extends AppCompatActivity implements AddMoreMediaAdapt
                     public void onSuccess(String response) {
                         // called when response HTTP status is "200 OK"
                         try {
-                            Log.i("eee",response);
+                            //Log.i("eee",response);
                             JSONObject obj = new JSONObject(response);
 
                             if (obj.getBoolean("error")) {
@@ -327,7 +327,7 @@ public class AddMoreMedia extends AppCompatActivity implements AddMoreMediaAdapt
                                 mmAdapter.notifyDataSetChanged();
 
                                 if(ids.contains(mediadetails.optString("id"))){
-                                    Log.i("dttttt","reached");
+                                    //Log.i("dttttt","reached");
                                     pos.add(Integer.parseInt(mediadetails.optString("id")));
                                     mmAdapter.toggleSelection(i);
                                 }

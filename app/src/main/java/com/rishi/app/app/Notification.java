@@ -121,7 +121,7 @@ public class Notification extends AppCompatActivity {
                             );
                         } else {
 
-                            Log.i("ddd",obj.getJSONObject("user").toString());
+                            //Log.i("ddd",obj.getJSONObject("user").toString());
 
                             JSONObject user = obj.getJSONObject("user");
                             t1.setText(user.optString("photos"));
@@ -249,7 +249,7 @@ public class Notification extends AppCompatActivity {
                 public void onSuccess(String response) {
                     // called when response HTTP status is "200 OK"
                     try {
-                        Log.i("ee", response);
+                        //Log.i("ee", response);
                         JSONObject obj = new JSONObject(response);
 
                         if (obj.getBoolean("error")) {

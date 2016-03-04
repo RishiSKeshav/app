@@ -240,7 +240,7 @@ public class Sync extends AppCompatActivity {
                             );
                         } else {
 
-                            Log.i("ddd",obj.getJSONObject("user").toString());
+                            //Log.i("ddd",obj.getJSONObject("user").toString());
 
                             JSONObject user = obj.getJSONObject("user");
                             t1.setText(user.optString("photos"));
@@ -383,7 +383,7 @@ public class Sync extends AppCompatActivity {
 
         count=unSyncedImageList.size();
 
-        Log.d("unsynced count", String.valueOf(unSyncedImageList.size()));
+        //Log.d("unsynced count", String.valueOf(unSyncedImageList.size()));
     }
 
     private void generateDBImageList() {
@@ -394,19 +394,19 @@ public class Sync extends AppCompatActivity {
 
             syncedPathList= db.getAllImagePath(sessionManager.getId());
 
-            Iterator<String> abc = syncedPathList.iterator();
+            /*Iterator<String> abc = syncedPathList.iterator();
 
             while(abc.hasNext())
             {
 
-                Log.d("DB ",abc.next());
-            }
+                //Log.d("DB ",abc.next());
+            }*/
 
         }
         else
             Log.i("databasae_name","DB not created");
 
-        Log.d("DB list count ",String.valueOf(syncedPathList.size()));
+        //Log.d("DB list count ",String.valueOf(syncedPathList.size()));
     }
 
     private void generateImageList() {
@@ -432,7 +432,7 @@ public class Sync extends AppCompatActivity {
             } while (cursor.moveToNext());
         }
 
-        Log.d("image list count", String.valueOf(imageList.size()));
+        //Log.d("image list count", String.valueOf(imageList.size()));
     }
 
     private BroadcastReceiver myReceiver = new BroadcastReceiver() {

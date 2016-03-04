@@ -347,7 +347,7 @@ public class    NewAlbum extends AppCompatActivity implements NewAlbumAdapter.My
                             Toast.makeText(getApplicationContext(), obj.getString("msg"), Toast.LENGTH_LONG).show();
                         } else {
 
-                            Log.i("res",response.toString());
+                            //Log.i("res",response.toString());
 
                             JSONObject mediaObj = obj.getJSONObject("outputObj");
                             JSONArray mediaarray = mediaObj.optJSONArray("media");

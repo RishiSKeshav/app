@@ -73,7 +73,7 @@ public class FullScreenMediaDisplay extends AppCompatActivity {
                 i.putExtra("Id", ID);
                 i.putExtra("Name", NAME);
                 FullScreenMediaDisplay.this.startActivity(i);
-                Log.i("dd",ID);
+                //Log.i("dd",ID);
             }
 
            // onBackPressed();

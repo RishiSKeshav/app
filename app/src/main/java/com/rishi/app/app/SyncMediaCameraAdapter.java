@@ -61,7 +61,7 @@ public class SyncMediaCameraAdapter extends RecyclerView.Adapter<SyncMediaCamera
 
     public SyncMediaCameraAdapter(ArrayList<String> List) {
         this.cameraMediaList = List;
-        Log.d("SyncMediaCameraAdapter",String.valueOf(cameraMediaList.size()));
+        //Log.d("SyncMediaCameraAdapter",String.valueOf(cameraMediaList.size()));
 
     }
 

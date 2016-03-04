@@ -253,7 +253,7 @@ public class EditProfile extends AppCompatActivity {
                     @Override
                     public void onSuccess(String response) {
                         try {
-                            Log.i("response", response);
+                            //Log.i("response", response);
                             JSONObject obj = new JSONObject(response);
                             if (obj.getBoolean("error")) {
                                 Toast.makeText(getApplicationContext(), obj.getString("msg"), Toast.LENGTH_LONG).show();
@@ -336,7 +336,7 @@ public class EditProfile extends AppCompatActivity {
                     public void onSuccess(String response) {
                         // called when response HTTP status is "200 OK"
                         try {
-                            Log.i("sss", response);
+                            //Log.i("sss", response);
                             JSONObject obj = new JSONObject(response);
 
                             if (obj.getBoolean("error")) {

@@ -213,7 +213,7 @@ public class SharedAlbumMediaDisplay extends AppCompatActivity {
                         public void onSuccess(String response) {
                             // called when response HTTP status is "200 OK"
                             try {
-                                Log.i("name",response.toString());
+                                //Log.i("name",response.toString());
                                 JSONObject obj = new JSONObject(response);
 
                                 if (obj.getBoolean("error")) {

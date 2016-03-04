@@ -76,7 +76,7 @@ public class NewAlbumAdapter extends SelectableAdapter<NewAlbumAdapter.MyViewHol
     public NewAlbumAdapter(List<Media> mediaList, MyViewHolder.ClickListener clickListener) {
         super();
         this.mediaList = mediaList;
-        Log.i("data",mediaList.toString());
+        //Log.i("data",mediaList.toString());
         this.clickListener = clickListener;
         // this.context = context;
     }

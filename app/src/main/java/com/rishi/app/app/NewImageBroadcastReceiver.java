@@ -19,7 +19,7 @@ public class NewImageBroadcastReceiver extends BroadcastReceiver {
         cursor.moveToFirst();
         String image_path = cursor.getString(cursor.getColumnIndex("_data"));
 
-        Log.d("BroadcastReceiver","onReceive");
+        //Log.d("BroadcastReceiver","onReceive");
         Toast.makeText(context,image_path, Toast.LENGTH_SHORT).show();
 
     }

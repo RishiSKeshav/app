@@ -321,8 +321,8 @@ public class ToSharedAlbum extends AppCompatActivity implements ToSharedAlbumAda
                         mode.finish();
                         return true;
                     }else{
-                        Log.i("ddd",ID);
-                        Log.i("ggg",albumid.toString());
+                        //Log.i("ddd",ID);
+                        //Log.i("ggg",albumid.toString());
                         try {
                             JSONArray albumids = new JSONArray(albumid);
                             JSONObject obj = new JSONObject();
@@ -345,7 +345,7 @@ public class ToSharedAlbum extends AppCompatActivity implements ToSharedAlbumAda
                                 public void onSuccess(String response) {
                                     // called when response HTTP status is "200 OK"
                                     try {
-                                        Log.i("response",response);
+                                        //Log.i("response",response);
                                         JSONObject obj = new JSONObject(response);
 
                                         if (obj.getBoolean("error")) {

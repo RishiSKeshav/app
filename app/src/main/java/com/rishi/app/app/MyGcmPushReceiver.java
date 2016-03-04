@@ -37,11 +37,11 @@ public class MyGcmPushReceiver extends GcmListenerService {
             String timestamp = bundle.getString("createdOn");
             String sharedAlbumId = bundle.getString("sharedAlbumId");
             String albumName = bundle.getString("albumName");
-            Log.e(TAG, "From: " + from);
-            Log.e(TAG, "Title: " + title);
-            Log.e(TAG, "message: " + message);
-            Log.e(TAG, "image: " + sharedAlbumId);
-            Log.e(TAG, "timestamp: " + timestamp);
+            //Log.e(TAG, "From: " + from);
+            //Log.e(TAG, "Title: " + title);
+            //Log.e(TAG, "message: " + message);
+            //Log.e(TAG, "image: " + sharedAlbumId);
+            //Log.e(TAG, "timestamp: " + timestamp);
 
 //        if (!NotificationUtils.isAppIsInBackground(getApplicationContext())) {
 //
@@ -72,11 +72,11 @@ public class MyGcmPushReceiver extends GcmListenerService {
             String timestamp = bundle.getString("createdOn");
             String dataId = bundle.getString("dataId");
             String dataPath = bundle.getString("dataPath");
-            Log.e(TAG, "From: " + from);
+            /*Log.e(TAG, "From: " + from);
             Log.e(TAG, "Title: " + title);
             Log.e(TAG, "message: " + message);
             Log.e(TAG, "image: " + dataId);
-            Log.e(TAG, "timestamp: " + timestamp);
+            Log.e(TAG, "timestamp: " + timestamp);*/
 
 
             Intent resultIntent = new Intent(getApplicationContext(), SharedMediaDisplay.class);

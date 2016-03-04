@@ -68,7 +68,7 @@ public class SyncMediaFullScreenActivity extends AppCompatActivity {
         Intent i = getIntent();
         position = i.getStringExtra("Position");
 
-        Log.i("position",position);
+        //Log.i("position",position);
         action = i.getStringExtra("action");
         data = i.getStringArrayListExtra("data");
         adapter = new SyncFullScreenAdapter(SyncMediaFullScreenActivity.this,
@@ -141,7 +141,7 @@ public class SyncMediaFullScreenActivity extends AppCompatActivity {
 
         if (id == R.id.to_personal_album) {
             final int mediaId = getMediaId();
-            Log.i("idssss",String.valueOf(mediaId));
+            //Log.i("idssss",String.valueOf(mediaId));
             ArrayList<Integer> mediaIDS = new ArrayList<>();
             mediaIDS.add(mediaId);
             Intent i = new Intent(SyncMediaFullScreenActivity.this,ToPersonalAlbum.class);
@@ -222,7 +222,7 @@ public class SyncMediaFullScreenActivity extends AppCompatActivity {
 
                 httppost.setEntity(entity);
 
-                Log.d("entity",entity.toString());
+                //Log.d("entity",entity.toString());
 
                 // Making server call
                 HttpResponse response = httpclient.execute(httppost);
@@ -233,21 +233,21 @@ public class SyncMediaFullScreenActivity extends AppCompatActivity {
                     // Server response
                     responseString = EntityUtils.toString(r_entity);
 
-                    Log.d("response", responseString);
+                    //Log.d("response", responseString);
                     try {
                         JSONObject obj = new JSONObject(responseString);
 
                         if (obj.getBoolean("error")) {
 
-                            Log.d("file error", obj.getString("msg"));
+                            //Log.d("file error", obj.getString("msg"));
                             //Toast.makeText(getApplicationContext(), obj.getString("msg"), Toast.LENGTH_LONG).show();
                         } else {
                             int mediaId = Integer.parseInt(obj.getString("mediaId"));
                             String link = obj.getString("link");
 
-                            Log.d("response ok", String.valueOf(mediaId) + " " + link);
+                            //Log.d("response ok", String.valueOf(mediaId) + " " + link);
 
-                            Log.d("link", link);
+                            //Log.d("link", link);
 
                             File folder = new File(Environment.getExternalStorageDirectory().toString() + "/ClikApp");
                             boolean success = true;
@@ -394,10 +394,10 @@ public class SyncMediaFullScreenActivity extends AppCompatActivity {
 
                                                             db = new ImageDatabaseHandler(getApplicationContext(), Environment.getExternalStorageDirectory().toString() + "/ClikApp");
 
-                                                            Log.i("count initial", String.valueOf(db.getCount()));
+                                                            //Log.i("count initial", String.valueOf(db.getCount()));
                                                             db.deleteMedia(mediaId);
 
-                                                            Log.i("countafte", String.valueOf(db.getCount()));
+                                                            //Log.i("countafte", String.valueOf(db.getCount()));
 
                                                             db.close();
 

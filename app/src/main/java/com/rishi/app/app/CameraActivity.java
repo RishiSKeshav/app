@@ -62,7 +62,7 @@ public class CameraActivity extends Activity {
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
         myContext = this;
 
-        Log.d("camera", "on create");
+        //Log.d("camera", "on create");
         cameraFlag=0;
         layout = (RelativeLayout) findViewById(R.id.layout);
         photoFileList = new ArrayList<String>();
@@ -145,7 +145,7 @@ public class CameraActivity extends Activity {
 
         }
 
-        Log.d("camera","on resume");
+        //Log.d("camera","on resume");
     }
 
     public void initialize() {
@@ -279,7 +279,7 @@ public class CameraActivity extends Activity {
                 FileOutputStream outStream = null;
                 try {
 
-                    Log.d("Log", "File path: " + myPath.toString());
+                    //Log.d("Log", "File path: " + myPath.toString());
                     outStream = new FileOutputStream(myPath);
                     outStream.write(pictureBytes);
                     outStream.close();
@@ -292,7 +292,7 @@ public class CameraActivity extends Activity {
                     photoImageList.add(img);
                     photoFileList.add(myPath.toString());
 
-                    Log.d("Log", "onPictureTaken - wrote bytes: " + data.length);
+                    //Log.d("Log", "onPictureTaken - wrote bytes: " + data.length);
 
                 } catch (FileNotFoundException e) {
                     e.printStackTrace();

@@ -185,11 +185,11 @@ public class FragmentFacebook extends Fragment implements FragmentFacebookAdapte
     private void updateWithToken(AccessToken currentAccessToken) {
 
         if (currentAccessToken != null) {
-            Log.i("A","A");
+            //Log.i("A","A");
             callFacebook(currentAccessToken);
 
         } else {
-            Log.i("B","come");
+            //Log.i("B","come");
             aswipeRefreshLayout.setRefreshing(false);
         }
     }
@@ -206,7 +206,7 @@ public class FragmentFacebook extends Fragment implements FragmentFacebookAdapte
                     HttpMethod.GET,
                     new GraphRequest.Callback() {
                         public void onCompleted(GraphResponse response) {
-                            Log.i("ddddddd",response.toString());
+                            //Log.i("ddddddd",response.toString());
 
                             try {
                                 JSONArray rawName = response.getJSONObject().getJSONArray("data");
@@ -301,7 +301,7 @@ public class FragmentFacebook extends Fragment implements FragmentFacebookAdapte
                         JSONObject object,
                         GraphResponse response) {
 
-                    Log.e("responsefrom login: ", response + "");
+                    //Log.e("responsefrom login: ", response + "");
                     try {
 
                         JSONObject obj = new JSONObject();
@@ -327,7 +327,7 @@ public class FragmentFacebook extends Fragment implements FragmentFacebookAdapte
                             // @Override
                             public void onSuccess(String response) {
                                 // called when response HTTP status is "200 OK"
-                                Log.i("res",response);
+                                //Log.i("res",response);
                                 try {
                                     JSONObject obj = new JSONObject(response);
 
@@ -505,7 +505,7 @@ public class FragmentFacebook extends Fragment implements FragmentFacebookAdapte
                                 public void onSuccess(String response) {
                                     // called when response HTTP status is "200 OK"
                                     try {
-                                        Log.i("zzz", response);
+                                       // Log.i("zzz", response);
                                         JSONObject obj = new JSONObject(response);
 
                                         if (obj.getBoolean("error")) {
@@ -613,7 +613,7 @@ public class FragmentFacebook extends Fragment implements FragmentFacebookAdapte
                                 public void onSuccess(String response) {
                                     // called when response HTTP status is "200 OK"
                                     try {
-                                        Log.i("zzz", response);
+                                        //Log.i("zzz", response);
                                         JSONObject obj = new JSONObject(response);
 
                                         if (obj.getBoolean("error")) {
@@ -731,7 +731,7 @@ public class FragmentFacebook extends Fragment implements FragmentFacebookAdapte
                                 public void onSuccess(String response) {
                                     // called when response HTTP status is "200 OK"
                                     try {
-                                        Log.i("zzz", response);
+                                        //Log.i("zzz", response);
                                         JSONObject obj = new JSONObject(response);
 
                                         if (obj.getBoolean("error")) {
@@ -841,7 +841,7 @@ public class FragmentFacebook extends Fragment implements FragmentFacebookAdapte
                                 public void onSuccess(String response) {
                                     // called when response HTTP status is "200 OK"
                                     try {
-                                        Log.i("zzz", response);
+                                       // Log.i("zzz", response);
                                         JSONObject obj = new JSONObject(response);
 
                                         if (obj.getBoolean("error")) {

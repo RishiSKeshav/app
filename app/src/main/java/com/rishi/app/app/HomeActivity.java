@@ -299,7 +299,7 @@ public class HomeActivity extends AppCompatActivity {
                             );
                         } else {
 
-                            Log.i("ddd",obj.getJSONObject("user").toString());
+                           // Log.i("ddd",obj.getJSONObject("user").toString());
 
                             JSONObject user = obj.getJSONObject("user");
                             t1.setText(user.optString("photos"));
@@ -537,7 +537,7 @@ public class HomeActivity extends AppCompatActivity {
                     @Override
                     public void onSuccess(String response) {
                         try {
-                            Log.i("response", response);
+                            //Log.i("response", response);
                             JSONObject obj = new JSONObject(response);
                             if (obj.getBoolean("error")) {
                                 Toast.makeText(getApplicationContext(), obj.getString("msg"), Toast.LENGTH_LONG).show();

@@ -336,7 +336,7 @@ public class LoginActivity extends ActionBarActivity {
             public void onSuccess(String response) {
                 // called when response HTTP status is "200 OK"
                 try{
-                    Log.i("fff",response);
+                   // Log.i("fff",response);
                     JSONObject obj = new JSONObject(response);
 
                     if(obj.getBoolean("error")){
@@ -382,7 +382,7 @@ public class LoginActivity extends ActionBarActivity {
 
     public void goToRegisterActivity(View view)
     {
-        Log.i("SER", "invoked navigatetoRegisterActivity() method");
+        //Log.i("SER", "invoked navigatetoRegisterActivity() method");
         Intent loginIntent = new Intent(getApplicationContext(),RegisterActivity.class);
         loginIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         startActivity(loginIntent);

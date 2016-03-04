@@ -173,7 +173,7 @@ public class SyncMediaDisplayActivity extends AppCompatActivity {
 
     private  void navHeaderData(){
 
-        Log.i("reached","reached");
+        //Log.i("reached","reached");
 
         try {
             JSONObject obj = new JSONObject();
@@ -196,7 +196,7 @@ public class SyncMediaDisplayActivity extends AppCompatActivity {
                     try {
                         JSONObject obj = new JSONObject(response);
 
-                        Log.i("dddSync",response.toString());
+                        //Log.i("dddSync",response.toString());
 
                         if (obj.getBoolean("error")) {
 

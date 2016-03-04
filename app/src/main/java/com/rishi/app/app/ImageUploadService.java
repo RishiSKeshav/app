@@ -41,7 +41,7 @@ public class ImageUploadService extends Service {
 
     @Override
     public IBinder onBind(Intent intent) {
-        Log.i("ee", intent.toString());
+        //Log.i("ee", intent.toString());
         return null;
     }
 
@@ -49,7 +49,7 @@ public class ImageUploadService extends Service {
     public void onCreate() {
         super.onCreate();
 
-        Log.d("service", "");
+        //Log.d("service", "");
     }
 
     @Override
@@ -68,11 +68,11 @@ public class ImageUploadService extends Service {
         unSyncedImageList.clear();
         stopSelf();
 
-        Log.d("service", " service ended");
+        //Log.d("service", " service ended");
     }
 
     public void startUpload(final ArrayList<Image> unSyncedImageList) {
-        Log.d("Service: count ", String.valueOf(unSyncedImageList.size()));
+        //Log.d("Service: count ", String.valueOf(unSyncedImageList.size()));
 
         count = unSyncedImageList.size();
 
@@ -95,7 +95,7 @@ public class ImageUploadService extends Service {
         t.start();
 
         db = new ImageDatabaseHandler(getApplicationContext(), Environment.getExternalStorageDirectory().toString() + "/ClikApp");
-        Log.d("Db count", String.valueOf(db.getCount()));
+        //Log.d("Db count", String.valueOf(db.getCount()));
     }
 
     public void upload(Image img) {
@@ -114,7 +114,7 @@ public class ImageUploadService extends Service {
                 intent.putExtra("leftCount", count);
                 sendBroadcast(intent);
 
-                Log.d("userID", sessionManager.getId());
+                //Log.d("userID", sessionManager.getId());
                 String filePath = img.getPath();
                 String filename = img.getName();
 
@@ -156,7 +156,7 @@ public class ImageUploadService extends Service {
                     totalSize = entity.getContentLength();
                     httppost.setEntity(entity);
 
-                    Log.d("entity",entity.toString());
+                    //Log.d("entity",entity.toString());
 
                     // Making server call
                     HttpResponse response = httpclient.execute(httppost);
@@ -167,22 +167,22 @@ public class ImageUploadService extends Service {
                         // Server response
                         responseString = EntityUtils.toString(r_entity);
 
-                        Log.d("response", responseString);
+                        //Log.d("response", responseString);
                         try {
                             JSONObject obj = new JSONObject(responseString);
 
                             if (obj.getBoolean("error")) {
 
-                                Log.d("file error", obj.getString("msg"));
+                                //Log.d("file error", obj.getString("msg"));
                                 //Toast.makeText(getApplicationContext(), obj.getString("msg"), Toast.LENGTH_LONG).show();
                             } else {
 
                                 int mediaId = Integer.parseInt(obj.getString("mediaId"));
                                 String link = obj.getString("link");
 
-                                Log.d("response ok", String.valueOf(mediaId) + " " + link);
+                                //Log.d("response ok", String.valueOf(mediaId) + " " + link);
 
-                                Log.d("link", link);
+                                //Log.d("link", link);
 
                                 File folder = new File(Environment.getExternalStorageDirectory().toString() + "/ClikApp");
                                 boolean success = true;
@@ -202,7 +202,7 @@ public class ImageUploadService extends Service {
                                 db.addImage(image,sessionManager.getId());
 
                                 count--;
-                                Log.d("count", String.valueOf(count));
+                                //Log.d("count", String.valueOf(count));
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();

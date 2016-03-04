@@ -80,7 +80,7 @@ public class EditEmail extends AppCompatActivity {
                     public void onSuccess(String response) {
                         // called when response HTTP status is "200 OK"
                         try {
-                            Log.i("ddd", response);
+                            //Log.i("ddd", response);
                             JSONObject obj = new JSONObject(response);
 
                             if (obj.getBoolean("error")) {

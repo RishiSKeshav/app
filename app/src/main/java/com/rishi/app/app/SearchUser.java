@@ -108,7 +108,7 @@ public class SearchUser extends AppCompatActivity {
                 public void onSuccess(String response) {
                     // called when response HTTP status is "200 OK"
                     try {
-                        Log.i("res", response.toString());
+                        //Log.i("res", response.toString());
                         JSONObject obj = new JSONObject(response);
 
                         if (obj.getBoolean("error")) {

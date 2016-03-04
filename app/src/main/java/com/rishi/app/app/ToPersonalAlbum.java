@@ -331,7 +331,7 @@ public class ToPersonalAlbum extends AppCompatActivity implements ToPersonalAlbu
                                 public void onSuccess(String response) {
                                     // called when response HTTP status is "200 OK"
                                     try {
-                                        Log.i("response",response);
+                                        //Log.i("response",response);
                                         JSONObject obj = new JSONObject(response);
 
                                         if (obj.getBoolean("error")) {

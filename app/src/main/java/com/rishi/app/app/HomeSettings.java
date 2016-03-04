@@ -148,7 +148,8 @@ public class HomeSettings extends AppCompatActivity {
                 // @Override
                 public void onSuccess(String response) {
 
-                    Log.i("memory",response.toString());
+                    //
+                    // Log.i("memory",response.toString());
                     // called when response HTTP status is "200 OK"
                     try {
                         JSONObject obj = new JSONObject(response);
