@@ -219,6 +219,7 @@ public class RegisterActivity extends Activity {
 
                 // @Override
                 public void onSuccess(String response) {
+                    Log.i("res",response.toString());
                     // called when response HTTP status is "200 OK"
                     try {
                         JSONObject obj = new JSONObject(response);

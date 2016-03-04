@@ -36,8 +36,8 @@ public class NetworkChangeReceiver extends BroadcastReceiver {
 
         sessionManager = new SessionManager(context.getApplicationContext());
         c = context.getApplicationContext();
-        Log.d("network change", "network change");
-        Log.d("onReceive",sessionManager.getName());
+        //Log.d("network change", "network change");
+       // Log.d("onReceive",sessionManager.getName());
 
         startOrStopSync();
 
