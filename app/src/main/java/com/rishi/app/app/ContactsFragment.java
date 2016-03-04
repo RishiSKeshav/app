@@ -198,7 +198,7 @@ public class ContactsFragment extends Fragment implements ContactsFragmentAdapte
                                 public void onSuccess(String response) {
                                     // called when response HTTP status is "200 OK"
                                     try {
-                                        Log.i("zzz", response);
+                                    //    Log.i("zzz", response);
                                         JSONObject obj = new JSONObject(response);
 
                                         if (obj.getBoolean("error")) {
@@ -302,7 +302,7 @@ public class ContactsFragment extends Fragment implements ContactsFragmentAdapte
                                 public void onSuccess(String response) {
                                     // called when response HTTP status is "200 OK"
                                     try {
-                                        Log.i("zzz", response);
+                                      //  Log.i("zzz", response);
                                         JSONObject obj = new JSONObject(response);
 
                                         if (obj.getBoolean("error")) {
@@ -418,7 +418,7 @@ public class ContactsFragment extends Fragment implements ContactsFragmentAdapte
                                 public void onSuccess(String response) {
                                     // called when response HTTP status is "200 OK"
                                     try {
-                                        Log.i("zzz", response);
+                                     //   Log.i("zzz", response);
                                         JSONObject obj = new JSONObject(response);
 
                                         if (obj.getBoolean("error")) {
@@ -525,7 +525,7 @@ public class ContactsFragment extends Fragment implements ContactsFragmentAdapte
                                 public void onSuccess(String response) {
                                     // called when response HTTP status is "200 OK"
                                     try {
-                                        Log.i("zzz", response);
+                                      //  Log.i("zzz", response);
                                         JSONObject obj = new JSONObject(response);
 
                                         if (obj.getBoolean("error")) {
@@ -681,7 +681,7 @@ public class ContactsFragment extends Fragment implements ContactsFragmentAdapte
                                 // @Override
                                 public void onSuccess(String response) {
 
-                                    Log.i("response",response.toString());
+                                  //  Log.i("response",response.toString());
                                    // Log.i("bnnm",response);
                                     // called when response HTTP status is "200 OK"
                                     try {
