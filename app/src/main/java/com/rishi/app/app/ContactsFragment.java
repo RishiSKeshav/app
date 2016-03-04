@@ -643,7 +643,17 @@ public class ContactsFragment extends Fragment implements ContactsFragmentAdapte
             phoneNumber = phones.getString(phones.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER));
             String no = phoneNumber.replaceAll("\\p{P}","");
             String no1= no.replaceAll("\\s+","");
-            numbers.add(no1);
+
+            if(no1.length() > 10){
+               String no2 = no1.substring(no1.length() - 10);
+                if(!numbers.contains(no2)){
+                    numbers.add(no2);
+                }
+            }else{
+                if(!numbers.contains(no1)) {
+                    numbers.add(no1);
+                }
+            }
 
         }
 
@@ -670,6 +680,8 @@ public class ContactsFragment extends Fragment implements ContactsFragmentAdapte
 
                                 // @Override
                                 public void onSuccess(String response) {
+
+                                    Log.i("response",response.toString());
                                    // Log.i("bnnm",response);
                                     // called when response HTTP status is "200 OK"
                                     try {
