@@ -93,15 +93,17 @@ public class SharedMediaDisplay extends AppCompatActivity{
         if (id == R.id.to_personal_album) {
             Intent i = new Intent(SharedMediaDisplay.this,ToPersonalAlbum.class);
             i.putExtra("imagedisplay",imagedisplay);
-            i.putExtra("Id",ID);
+            i.putExtra("Id", ID);
             startActivity(i);
+
         }
 
         if (id == R.id.to_shared_album) {
             Intent i = new Intent(SharedMediaDisplay.this,ToSharedAlbum.class);
             i.putExtra("imagedisplay",imagedisplay);
-            i.putExtra("Id",ID);
+            i.putExtra("Id", ID);
             startActivity(i);
+
         }
 
         if (id == R.id.to_others) {
@@ -188,8 +190,10 @@ public class SharedMediaDisplay extends AppCompatActivity{
 
 
                                                     Intent i = new Intent(SharedMediaDisplay.this, HomeActivity.class);
-                                                    i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                                                    i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+                                                    i.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
                                                     SharedMediaDisplay.this.startActivity(i);
+                                                    finish();
 
 
                                                 }

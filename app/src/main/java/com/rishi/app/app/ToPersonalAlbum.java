@@ -245,18 +245,20 @@ public class ToPersonalAlbum extends AppCompatActivity implements ToPersonalAlbu
 
                                                                             if (SHARED.equals("no")) {
                                                                                 Intent i = new Intent(ToPersonalAlbum.this, AlbumMediaDisplay.class);
-                                                                                i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                                                                                i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                                                                                 i.putExtra("Id", ID);
                                                                                 i.putExtra("Name", NAME);
                                                                                 i.putExtra("shared", SHARED);
                                                                                 ToPersonalAlbum.this.startActivity(i);
+                                                                                finish();
                                                                             } else {
                                                                                 Intent i = new Intent(ToPersonalAlbum.this, SharedAlbumMediaDisplay.class);
-                                                                                i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                                                                                i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                                                                                 i.putExtra("Id", ID);
                                                                                 i.putExtra("Name", NAME);
                                                                                 i.putExtra("shared", SHARED);
                                                                                 ToPersonalAlbum.this.startActivity(i);
+                                                                                finish();
                                                                             }
                                                                         }
 
@@ -365,9 +367,10 @@ public class ToPersonalAlbum extends AppCompatActivity implements ToPersonalAlbu
                                                                 public void onDismiss(com.nispok.snackbar.Snackbar snackbar) {
 
                                                                         Intent i = new Intent(ToPersonalAlbum.this, HomeActivity.class);
-                                                                        i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                                                                    i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                                                                         i.putExtra("shared_media", "2");
                                                                         ToPersonalAlbum.this.startActivity(i);
+                                                                    finish();
                                                                 }
 
                                                                 @Override

@@ -63,6 +63,7 @@ public class AlbumMediaAdapter extends RecyclerView.Adapter<AlbumMediaAdapter.My
             intent.putExtra("Id",ID);
             intent.putExtra("Name",NAME);
             context.startActivity(intent);
+
         }
     }
 

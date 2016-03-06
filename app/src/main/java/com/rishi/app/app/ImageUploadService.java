@@ -99,6 +99,7 @@ public class ImageUploadService extends Service {
     }
 
     public void upload(Image img) {
+        Log.i("response", "reached");
 
         if(sessionManager.getSyncStatus()) {
 
@@ -128,7 +129,7 @@ public class ImageUploadService extends Service {
                 String responseString = null;
 
                 HttpClient httpclient = new DefaultHttpClient();
-                HttpPost httppost = new HttpPost("http://52.89.2.186/project/webservice/uploadMedia.php");
+                HttpPost httppost = new HttpPost("http://52.89.2.186/project/webservice/up.php");
 
                 try {
                     AndroidMultiPartEntity entity = new AndroidMultiPartEntity(
@@ -167,7 +168,7 @@ public class ImageUploadService extends Service {
                         // Server response
                         responseString = EntityUtils.toString(r_entity);
 
-                        //Log.d("response", responseString);
+                        Log.i("response", responseString);
                         try {
                             JSONObject obj = new JSONObject(responseString);
 

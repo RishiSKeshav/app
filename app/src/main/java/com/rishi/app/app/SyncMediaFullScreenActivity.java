@@ -405,6 +405,7 @@ public class SyncMediaFullScreenActivity extends AppCompatActivity {
                                                             i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                                                             i.putExtra("action",action);
                                                             getApplicationContext().startActivity(i);
+                                                            finish();
                                                         }
 
                                                         @Override

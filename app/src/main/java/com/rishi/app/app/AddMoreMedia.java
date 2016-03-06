@@ -219,16 +219,18 @@ public class AddMoreMedia extends AppCompatActivity implements AddMoreMediaAdapt
                                                     public void onDismiss(com.nispok.snackbar.Snackbar snackbar) {
                                                         if(SHARED.equals("no")) {
                                                         Intent i = new Intent(AddMoreMedia.this, AlbumMediaDisplay.class);
-                                                        i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                                                        i.putExtra("Id", ID);
+                                                            i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                                                            i.putExtra("Id", ID);
                                                         i.putExtra("Name", NAME);
                                                         AddMoreMedia.this.startActivity(i);
+                                                            finish();
                                                         }else{
                                                         Intent i = new Intent(AddMoreMedia.this, SharedAlbumMediaDisplay.class);
-                                                        i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                                                        i.putExtra("Id", ID);
+                                                            i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                                                            i.putExtra("Id", ID);
                                                         i.putExtra("Name", NAME);
                                                         AddMoreMedia.this.startActivity(i);
+                                                            finish();
                                                     }
 
                                                     }

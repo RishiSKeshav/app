@@ -539,8 +539,9 @@ public class FragmentFacebook extends Fragment implements FragmentFacebookAdapte
                                                                 public void onDismiss(com.nispok.snackbar.Snackbar snackbar) {
 
                                                                     Intent i = new Intent(getContext(), HomeActivity.class);
-                                                                    i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                                                                    i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                                                                     getContext().startActivity(i);
+                                                                    getActivity().finish();
 
 
                                                                 }
@@ -645,16 +646,18 @@ public class FragmentFacebook extends Fragment implements FragmentFacebookAdapte
 
                                                                     if (SHARED.equals("no")) {
                                                                         Intent i = new Intent(getContext(), AlbumMediaDisplay.class);
-                                                                        i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                                                                        i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                                                                         i.putExtra("Id", ID);
                                                                         i.putExtra("Name", NAME);
                                                                         getContext().startActivity(i);
+                                                                        getActivity().finish();
                                                                     } else {
                                                                         Intent i = new Intent(getContext(), SharedAlbumMediaDisplay.class);
-                                                                        i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                                                                        i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                                                                         i.putExtra("Id", ID);
                                                                         i.putExtra("Name", NAME);
                                                                         getContext().startActivity(i);
+                                                                        getActivity().finish();
                                                                     }
 
 
@@ -762,12 +765,12 @@ public class FragmentFacebook extends Fragment implements FragmentFacebookAdapte
                                                                 public void onDismiss(com.nispok.snackbar.Snackbar snackbar) {
 
                                                                     Intent i = new Intent(getContext(), SharedAlbumMediaDisplay.class);
-                                            i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                                            i.putExtra("Id", ID);
-                                            i.putExtra("Name", NAME);
-                                            getContext().startActivity(i);
-
-
+                                                                    i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+                                                                    i.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
+                                                                    i.putExtra("Id", ID);
+                                                                    i.putExtra("Name", NAME);
+                                                                    getContext().startActivity(i);
+                                                                    getActivity().finish();
                                                                 }
 
                                                                 @Override
@@ -875,15 +878,18 @@ public class FragmentFacebook extends Fragment implements FragmentFacebookAdapte
                                                                         Intent i = new Intent(getContext(),SyncMediaDisplayActivity.class);
                                                                         i.putExtra("action",ACTION);
                                                                         getContext().startActivity(i);
+                                                                        getActivity().finish();
 
 
                                                                     }else {
 
                                                                         Intent i = new Intent(getContext(), SharedMediaDisplay.class);
-                                                                        i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                                                                        i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+                                                                        i.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
                                                                         i.putExtra("Id", ID);
                                                                         i.putExtra("image", imagedisplay);
                                                                         getContext().startActivity(i);
+                                                                        getActivity().finish();
                                                                     }
 
 

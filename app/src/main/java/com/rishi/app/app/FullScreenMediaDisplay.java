@@ -65,14 +65,18 @@ public class FullScreenMediaDisplay extends AppCompatActivity {
         if (id == android.R.id.home) {
             if(SHARED.equals("no")) {
                 Intent i = new Intent(FullScreenMediaDisplay.this, AlbumMediaDisplay.class);
+                i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 i.putExtra("Id", ID);
                 i.putExtra("Name", NAME);
                 FullScreenMediaDisplay.this.startActivity(i);
+                finish();
             }else{
                 Intent i = new Intent(FullScreenMediaDisplay.this, SharedAlbumMediaDisplay.class);
+                i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 i.putExtra("Id", ID);
                 i.putExtra("Name", NAME);
                 FullScreenMediaDisplay.this.startActivity(i);
+                finish();
                 //Log.i("dd",ID);
             }
 

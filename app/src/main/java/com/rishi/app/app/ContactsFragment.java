@@ -228,8 +228,9 @@ public class ContactsFragment extends Fragment implements ContactsFragmentAdapte
                                                                 public void onDismiss(com.nispok.snackbar.Snackbar snackbar) {
 
                                                                     Intent i = new Intent(getContext(), HomeActivity.class);
-                                                                    i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                                                                    i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                                                                     getContext().startActivity(i);
+                                                                    getActivity().finish();
 
 
                                                                 }
@@ -333,16 +334,18 @@ public class ContactsFragment extends Fragment implements ContactsFragmentAdapte
 
                                                                     if (SHARED.equals("no")) {
                                                                         Intent i = new Intent(getContext(), AlbumMediaDisplay.class);
-                                                                        i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                                                                        i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                                                                         i.putExtra("Id", ID);
                                                                         i.putExtra("Name", NAME);
                                                                         getContext().startActivity(i);
+                                                                        getActivity().finish();
                                                                     } else {
                                                                         Intent i = new Intent(getContext(), SharedAlbumMediaDisplay.class);
-                                                                        i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                                                                        i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                                                                         i.putExtra("Id", ID);
                                                                         i.putExtra("Name", NAME);
                                                                         getContext().startActivity(i);
+                                                                        getActivity().finish();
                                                                     }
 
 
@@ -448,10 +451,12 @@ public class ContactsFragment extends Fragment implements ContactsFragmentAdapte
                                                                 public void onDismiss(com.nispok.snackbar.Snackbar snackbar) {
 
                                                                     Intent i = new Intent(getContext(), SharedAlbumMediaDisplay.class);
-                                                                    i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                                                                    i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+                                                                    i.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
                                                                     i.putExtra("Id", ID);
                                                                     i.putExtra("Name", NAME);
                                                                     getContext().startActivity(i);
+                                                                    getActivity().finish();
 
 
                                                                 }
@@ -555,21 +560,22 @@ public class ContactsFragment extends Fragment implements ContactsFragmentAdapte
                                                                 public void onDismiss(com.nispok.snackbar.Snackbar snackbar) {
 
                                                                     if(ACTION.equals("sync") || ACTION.equals("camera")){
-                                                                        Intent i = new Intent(getContext(),Userbase.class);
-                                                                        i.putExtra("action",ACTION);
-                                                                        i.putStringArrayListExtra("data",data);
-                                                                        i.putExtra("Position",position);
+                                                                        Intent i = new Intent(getContext(),SyncMediaDisplayActivity.class);
+                                                                        i.putExtra("action", ACTION);
                                                                         getContext().startActivity(i);
+                                                                        getActivity().finish();
+
 
                                                                     }else {
 
                                                                         Intent i = new Intent(getContext(), SharedMediaDisplay.class);
-                                                                        i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                                                                        i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+                                                                        i.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
                                                                         i.putExtra("Id", ID);
                                                                         i.putExtra("image", imagedisplay);
                                                                         getContext().startActivity(i);
+                                                                        getActivity().finish();
                                                                     }
-
 
                                                                 }
 

@@ -258,18 +258,20 @@ public class ToSharedAlbum extends AppCompatActivity implements ToSharedAlbumAda
 
                                                                         if (SHARED.equals("no")) {
                                                                             Intent i = new Intent(ToSharedAlbum.this, AlbumMediaDisplay.class);
-                                                                            i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                                                                            i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                                                                             i.putExtra("Id", ID);
                                                                             i.putExtra("Name", NAME);
                                                                             i.putExtra("shared", SHARED);
                                                                             ToSharedAlbum.this.startActivity(i);
+                                                                            finish();
                                                                         } else {
                                                                             Intent i = new Intent(ToSharedAlbum.this, SharedAlbumMediaDisplay.class);
-                                                                            i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                                                                            i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                                                                             i.putExtra("Id", ID);
                                                                             i.putExtra("Name", NAME);
                                                                             i.putExtra("shared", SHARED);
                                                                             ToSharedAlbum.this.startActivity(i);
+                                                                            finish();
                                                                         }
                                                                     }
 
@@ -379,9 +381,10 @@ public class ToSharedAlbum extends AppCompatActivity implements ToSharedAlbumAda
                                                                 public void onDismiss(com.nispok.snackbar.Snackbar snackbar) {
 
                                                                     Intent i = new Intent(ToSharedAlbum.this, HomeActivity.class);
-                                                                    i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                                                                    i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                                                                     i.putExtra("shared_media", "2");
                                                                     ToSharedAlbum.this.startActivity(i);
+                                                                    finish();
                                                                 }
 
                                                                 @Override

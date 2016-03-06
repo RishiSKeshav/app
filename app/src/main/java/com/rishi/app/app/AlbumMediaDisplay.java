@@ -217,6 +217,7 @@ public class AlbumMediaDisplay extends AppCompatActivity{
                                                             i.putExtra("Id", ID);
                                                             i.putExtra("Name",edt1.getText().toString());
                                                             AlbumMediaDisplay.this.startActivity(i);
+                                                            finish();
 
                                                         }
 
@@ -339,8 +340,10 @@ public class AlbumMediaDisplay extends AppCompatActivity{
                                                         public void onDismiss(com.nispok.snackbar.Snackbar snackbar) {
 
                                                             Intent i = new Intent(getApplicationContext(),HomeActivity.class);
-                                                            i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                                                            i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+                                                            i.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
                                                             getApplicationContext().startActivity(i);
+                                                            finish();
 
 
                                                         }

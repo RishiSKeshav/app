@@ -252,6 +252,7 @@ public class SharedAlbumMediaDisplay extends AppCompatActivity {
                                                     i.putExtra("Id", ID);
                                                     i.putExtra("Name", edt1.getText().toString());
                                                     SharedAlbumMediaDisplay.this.startActivity(i);
+                                                    finish();
 
                                                 }
 
@@ -377,6 +378,7 @@ public class SharedAlbumMediaDisplay extends AppCompatActivity {
                                                             Intent i = new Intent(getApplicationContext(),HomeActivity.class);
                                                             i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                                                             getApplicationContext().startActivity(i);
+                                                            finish();
 
                                                         }
 

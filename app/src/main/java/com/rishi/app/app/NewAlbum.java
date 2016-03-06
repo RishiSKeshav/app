@@ -250,6 +250,7 @@ public class    NewAlbum extends AppCompatActivity implements NewAlbumAdapter.My
                                                                         homeIntent.putExtra("Id", obj.getString("albumId"));
                                                                         homeIntent.putExtra("Name", obj.getString("name"));
                                                                         startActivity(homeIntent);
+                                                                        finish();
 
                                                                     }catch (JSONException e) {
                                                                         // TODO Auto-generated catch block
