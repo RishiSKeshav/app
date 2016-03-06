@@ -129,7 +129,7 @@ public class ImageUploadService extends Service {
                 String responseString = null;
 
                 HttpClient httpclient = new DefaultHttpClient();
-                HttpPost httppost = new HttpPost("http://52.89.2.186/project/webservice/up.php");
+                HttpPost httppost = new HttpPost("http://52.89.2.186/project/webservice/uploadMedia.php");
 
                 try {
                     AndroidMultiPartEntity entity = new AndroidMultiPartEntity(
