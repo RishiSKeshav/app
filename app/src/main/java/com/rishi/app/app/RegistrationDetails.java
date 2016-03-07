@@ -101,6 +101,8 @@ public class RegistrationDetails extends AppCompatActivity {
                 // @Override
                 public void onSuccess(String response) {
                     // called when response HTTP status is "200 OK"
+
+                    Log.i("responseRegister",response.toString());
                     try {
                         JSONObject obj = new JSONObject(response);
 

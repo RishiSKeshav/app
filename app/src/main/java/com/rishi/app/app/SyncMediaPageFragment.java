@@ -240,7 +240,7 @@ public class SyncMediaPageFragment extends Fragment {
                 do {
                     syncImageList.add(cursor.getString(3));
                     smsAdapter.notifyDataSetChanged();
-                    //Log.i("reached","reached");
+                    Log.i("synclink", cursor.getString(3));
                 } while (cursor.moveToNext());
             }
 

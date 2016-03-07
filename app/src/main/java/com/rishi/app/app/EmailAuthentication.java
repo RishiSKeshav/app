@@ -42,7 +42,7 @@ public class EmailAuthentication extends AppCompatActivity {
         CODE = i.getStringExtra("code");
         EMAILID = i.getStringExtra("emailId");
 
-        //Log.i("CODE",CODE);
+        Log.i("CODE",CODE);
 
         if(i.hasExtra("action")){
             ACTION = "reset_password";

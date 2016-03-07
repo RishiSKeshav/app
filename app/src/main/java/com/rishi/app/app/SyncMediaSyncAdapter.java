@@ -79,6 +79,7 @@ public class SyncMediaSyncAdapter extends RecyclerView.Adapter<SyncMediaSyncAdap
     public void onBindViewHolder(MyViewHolder holder, int position) {
         Context c = holder.path.getContext();
 
+
         Picasso.with(c).load(syncMediaList.get(position)).fit().centerCrop().error(R.mipmap.ic_launcher).placeholder(R.mipmap.ic_launcher)
                     .into(holder.path);
 

@@ -354,25 +354,26 @@ public class HomeActivity extends AppCompatActivity {
         switch(menuItem.getItemId()) {
             case R.id.nav_first_fragment:
                 Intent i = new Intent(HomeActivity.this,HomeActivity.class);
-                i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+               i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 startActivity(i);
+                finish();
                 break;
 
             case R.id.nav_second_fragment:
                 Intent i2 = new Intent(HomeActivity.this,CameraActivity.class);
-                i2.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                //i2.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                 startActivity(i2);
                 break;
 
             case R.id.nav_third_fragment:
                 Intent i3 = new Intent(HomeActivity.this,Notification.class);
-                i3.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                //i3.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                 startActivity(i3);
                 break;
 
             case R.id.nav_fourth_fragment:
                 Intent i4 = new Intent(HomeActivity.this,Sync.class);
-                i4.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                //i4.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                 startActivity(i4);
                 break;
 
@@ -383,7 +384,7 @@ public class HomeActivity extends AppCompatActivity {
                 progressDialog.setMessage("Loading...");
                 progressDialog.show();
                 Intent i5 = new Intent(HomeActivity.this,SyncMediaDisplayActivity.class);
-                i5.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+               // i5.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                 startActivity(i5);
                 progressDialog.hide();
                 break;

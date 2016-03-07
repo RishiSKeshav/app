@@ -354,7 +354,7 @@ public class SharedAlbumMediaSelect extends AppCompatActivity implements SharedA
                 try {
                     JSONArray a = new JSONArray(pos);
                     JSONObject obj = new JSONObject();
-                    obj.put("userId", "1");
+                    obj.put("userId", sessionManager.getId());
                     obj.put("mediaId", a);
                     obj.put("albumId", ID);
                     StringEntity jsonString = new StringEntity(obj.toString());
@@ -381,7 +381,7 @@ public class SharedAlbumMediaSelect extends AppCompatActivity implements SharedA
                                     Toast.makeText(getApplicationContext(), obj.getString("msg"), Toast.LENGTH_LONG).show();
 
                                     Intent i = new Intent(SharedAlbumMediaSelect.this, SharedAlbumMediaDisplay.class);
-                                    i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+
                                     i.putExtra("Id", ID);
                                     i.putExtra("Name", NAME);
                                     SharedAlbumMediaSelect.this.startActivity(i);

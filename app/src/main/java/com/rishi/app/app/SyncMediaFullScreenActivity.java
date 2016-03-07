@@ -358,6 +358,8 @@ public class SyncMediaFullScreenActivity extends AppCompatActivity {
                         // @Override
                         public void onSuccess(String response) {
                             // called when response HTTP status is "200 OK"
+
+                            Log.i("responseDelete",response.toString());
                             try {
                                 JSONObject obj = new JSONObject(response);
 

@@ -169,6 +169,7 @@ public class ImageUploadService extends Service {
                         responseString = EntityUtils.toString(r_entity);
 
                         Log.i("response", responseString);
+
                         try {
                             JSONObject obj = new JSONObject(responseString);
 
@@ -182,8 +183,7 @@ public class ImageUploadService extends Service {
                                 String link = obj.getString("link");
 
                                 //Log.d("response ok", String.valueOf(mediaId) + " " + link);
-
-                                //Log.d("link", link);
+                                Log.d("link", link);
 
                                 File folder = new File(Environment.getExternalStorageDirectory().toString() + "/ClikApp");
                                 boolean success = true;

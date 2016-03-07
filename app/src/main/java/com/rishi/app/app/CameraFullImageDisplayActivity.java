@@ -212,7 +212,7 @@ public class CameraFullImageDisplayActivity extends AppCompatActivity {
             if (statusCode == 200) {
                 // Server response
                 responseString = EntityUtils.toString(r_entity);
-                //Log.d("response 200",responseString);
+                Log.d("response 200",responseString);
 
                 try {
                     JSONObject obj = new JSONObject(responseString);
