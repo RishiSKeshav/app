@@ -77,12 +77,14 @@ public class SyncMediaFullScreenActivity extends AppCompatActivity {
         viewPager.setAdapter(adapter);
         adapter.notifyDataSetChanged();
 
-        viewPager.postDelayed(new Runnable() {
+        viewPager.setCurrentItem(Integer.parseInt(position));
+
+       /* viewPager.postDelayed(new Runnable() {
             @Override
             public void run() {
                 viewPager.setCurrentItem(Integer.parseInt(position));
             }
-        },100);
+        },100);*/
     }
 
 

@@ -180,10 +180,6 @@ public class Sync extends AppCompatActivity {
                         stopSync();
                 }
 
-            /*initializeImageLists();
-            serviceIntent = new Intent(Sync.this,ImageUploadService.class);
-            serviceIntent.putParcelableArrayListExtra("unSyncedImageList", unSyncedImageList);
-            startService(serviceIntent);*/
             } else {
                 switchButton.setChecked(false);
                 imgView.setVisibility(View.INVISIBLE);
@@ -200,9 +196,11 @@ public class Sync extends AppCompatActivity {
 
             initializeImageLists();
 
-            serviceIntent = new Intent(Sync.this,ImageUploadService.class);
-            serviceIntent.putParcelableArrayListExtra("unSyncedImageList", unSyncedImageList);
-            startService(serviceIntent);
+            if(unSyncedImageList!=null) {
+                serviceIntent = new Intent(Sync.this, ImageUploadService.class);
+                serviceIntent.putParcelableArrayListExtra("unSyncedImageList", unSyncedImageList);
+                startService(serviceIntent);
+            }
     }
 
     private void stopSync(){

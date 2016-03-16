@@ -15,6 +15,7 @@ import org.apache.http.HttpResponse;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpPost;
+import org.apache.http.entity.mime.content.FileBody;
 import org.apache.http.entity.mime.content.StringBody;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.util.EntityUtils;
@@ -55,8 +56,14 @@ public class ImageUploadService extends Service {
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         sessionManager = new SessionManager(getApplicationContext());
-        unSyncedImageList = intent.getParcelableArrayListExtra("unSyncedImageList");
-        startUpload(unSyncedImageList);
+
+        if(intent!=null) {
+            if(intent.hasExtra("unSyncedImageList")) {
+
+                unSyncedImageList = intent.getParcelableArrayListExtra("unSyncedImageList");
+                startUpload(unSyncedImageList);
+            }
+        }
         return START_STICKY;
     }
 
@@ -121,15 +128,15 @@ public class ImageUploadService extends Service {
 
                 Bitmap bitmap = BitmapFactory.decodeFile(filePath);
 
-                ByteArrayOutputStream stream = new ByteArrayOutputStream();
+                /*ByteArrayOutputStream stream = new ByteArrayOutputStream();
                 bitmap.compress(Bitmap.CompressFormat.PNG, 50, stream);
                 byte[] byte_arr = stream.toByteArray();
-                String encodedString = Base64.encodeToString(byte_arr, 0);
+                String encodedString = Base64.encodeToString(byte_arr, 0);*/
 
                 String responseString = null;
 
                 HttpClient httpclient = new DefaultHttpClient();
-                HttpPost httppost = new HttpPost("http://52.89.2.186/project/webservice/uploadMedia.php");
+                HttpPost httppost = new HttpPost("http://52.89.2.186/project/webservice/temp1.php");
 
                 try {
                     AndroidMultiPartEntity entity = new AndroidMultiPartEntity(
@@ -147,7 +154,7 @@ public class ImageUploadService extends Service {
                             });
 
                     // Adding file data to http body
-                    entity.addPart("image", new StringBody(encodedString));
+                    entity.addPart("image", new FileBody(new File(img.getPath())));
 
                     // Extra parameters if you want to pass to server
                     entity.addPart("userId", new StringBody(sessionManager.getId()));

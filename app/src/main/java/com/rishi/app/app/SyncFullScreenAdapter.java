@@ -64,11 +64,28 @@ public class SyncFullScreenAdapter extends PagerAdapter {
 //        Bitmap bitmap = BitmapFactory.decodeFile(_imagePaths.get(position), options);
 //        imgDisplay.setImageBitmap(bitmap);
 
+        final int MAX_WIDTH = 1024;
+        final int MAX_HEIGHT = 768;
+
+        int size = (int) Math.ceil(Math.sqrt(MAX_WIDTH * MAX_HEIGHT));
+
         if(_imagePaths.get(position).startsWith("http")) {
 
             Context context = imgDisplay.getContext();
-            Picasso.with(context).load(_imagePaths.get(position)).error(R.mipmap.ic_launcher).placeholder(R.mipmap.ic_launcher)
+
+            Picasso.with(context)
+                    .load(_imagePaths.get(position))
+                    .transform(new BitmapTransform(MAX_WIDTH, MAX_HEIGHT))
+                    .error(R.mipmap.ic_launcher)
+                    .placeholder(R.mipmap.ic_launcher)
+                    .skipMemoryCache()
+                    .resize(size, size)
+                    .centerInside()
                     .into(imgDisplay);
+
+
+            /*Picasso.with(context).load(_imagePaths.get(position)).error(R.mipmap.ic_launcher).placeholder(R.mipmap.ic_launcher)
+                    .into(imgDisplay);*/
         }
         else
         {

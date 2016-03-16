@@ -55,7 +55,8 @@ public class NetworkChangeReceiver extends BroadcastReceiver {
         boolean isWIFI = activeNetwork.getType() == ConnectivityManager.TYPE_WIFI;
 
         if (sessionManager.getSyncStatus()) {
-                        if (isWIFI) {
+
+            if (isWIFI) {
                 startSync();
             } else if (isMobileData) {
                 if (sessionManager.getPhotoSyncStatus())
@@ -64,11 +65,11 @@ public class NetworkChangeReceiver extends BroadcastReceiver {
                     stopSync();
             }
 
-            initializeImageLists();
+            /*initializeImageLists();
 
             serviceIntent = new Intent(c,ImageUploadService.class);
             serviceIntent.putParcelableArrayListExtra("unSyncedImageList", unSyncedImageList);
-            c.startService(serviceIntent);
+            c.startService(serviceIntent);*/
         } else {
 
             stopSync();
@@ -80,9 +81,11 @@ public class NetworkChangeReceiver extends BroadcastReceiver {
 
         initializeImageLists();
 
-        serviceIntent = new Intent(c,ImageUploadService.class);
-        serviceIntent.putParcelableArrayListExtra("unSyncedImageList", unSyncedImageList);
-        c.startService(serviceIntent);
+        if(unSyncedImageList!=null) {
+            serviceIntent = new Intent(c, ImageUploadService.class);
+            serviceIntent.putParcelableArrayListExtra("unSyncedImageList", unSyncedImageList);
+            c.startService(serviceIntent);
+        }
     }
 
     private void stopSync(){
