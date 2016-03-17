@@ -11,6 +11,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.net.Uri;
 import android.os.Environment;
 import android.preference.PreferenceActivity;
 import android.provider.MediaStore;
@@ -36,14 +37,19 @@ import android.widget.Toast;
 
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.AsyncHttpResponseHandler;
+import com.nispok.snackbar.Snackbar;
 import com.nispok.snackbar.SnackbarManager;
+import com.nispok.snackbar.listeners.EventListener;
 import com.squareup.picasso.Picasso;
 
 import org.apache.http.entity.StringEntity;
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.File;
 import java.io.UnsupportedEncodingException;
+import java.net.URI;
 import java.security.PrivateKey;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -112,11 +118,16 @@ public class Sync extends AppCompatActivity {
         layout =(RelativeLayout) findViewById(R.id.sync_sub_layout);
         mainLayout =(RelativeLayout) findViewById(R.id.sync_main_layout);
 
+        checkMemoryStatus();
+
         IntentFilter filter = new IntentFilter("PROGRESS_ACTION");
         registerReceiver(myReceiver, filter);
 
         IntentFilter finalFilter = new IntentFilter("IMAGE_ACTION");
         registerReceiver(finalCountReceiver, finalFilter);
+
+        IntentFilter filter1 = new IntentFilter("SPACE_FULL_ACTION");
+        registerReceiver(receiver,filter1);
 
         /*IntentFilter networkFilter = new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION);
         registerReceiver(networkChangeReceiver1, networkFilter);*/
@@ -154,6 +165,70 @@ public class Sync extends AppCompatActivity {
                 }
             }
         }));
+    }
+
+    private void checkMemoryStatus() {
+
+        try {
+
+            JSONObject obj = new JSONObject();
+            obj.put("userId","313");
+            StringEntity jsonString = new StringEntity(obj.toString());
+
+        AsyncHttpClient client = new AsyncHttpClient();
+
+        client.post(getApplicationContext(), "http://52.89.2.186/project/webservice/public/Getmemorystatus", jsonString, "application/json", new AsyncHttpResponseHandler() {
+
+            @Override
+            public void onStart() {
+                // called before request is started
+            }
+
+            // @Override
+            public void onSuccess(String response) {
+                // called when response HTTP status is "200 OK"
+                try {
+                    //Log.i("eee",response);
+                    JSONObject obj = new JSONObject(response);
+
+                    if (obj.getBoolean("error")) {
+
+                    }
+                    else
+                    {
+                        if(Double.parseDouble(obj.getString("data"))>100.00){
+
+                            Intent i = new Intent(Sync.this,PricingActivity.class);
+                            startActivity(i);
+                            finish();
+                        }
+                    }
+                } catch (JSONException e) {
+                    // TODO Auto-generated catch block
+                    Toast.makeText(getApplicationContext(), "Error Occured [Server's JSON response might be invalid]!", Toast.LENGTH_LONG).show();
+                    e.printStackTrace();
+
+                }
+            }
+
+            //@Override
+            public void onFailure(int statusCode, PreferenceActivity.Header[] headers, byte[] errorResponse, Throwable e) {
+                // called when response HTTP status is "4XX" (eg. 401, 403, 404)
+            }
+
+            //@Override
+            public void onRetry(int retryNo) {
+                // called when request is retried
+            }
+
+
+        });
+
+        }catch (JSONException e) {
+            e.printStackTrace();
+        }catch(UnsupportedEncodingException ee){
+            ee.printStackTrace();
+        }
     }
 
     public void startOrStopSync() {
@@ -491,13 +566,24 @@ public class Sync extends AppCompatActivity {
             int countLeft = intent.getIntExtra("leftCount", 0);
             String imgPath = intent.getStringExtra("imgPath");
 
-            Bitmap bmp = BitmapFactory.decodeFile(imgPath);
+            //Bitmap bmp = BitmapFactory.decodeFile(imgPath);
 
             if(imgView.getParent()!=null)
                 ((ViewGroup)imgView.getParent()).removeView(imgView);
 
             imgView.setVisibility(View.VISIBLE);
-            imgView.setImageBitmap(bmp);
+
+            Picasso.with(context)
+                    .load(Uri.fromFile(new File(imgPath)))
+                    /*.transform(new BitmapTransform(MAX_WIDTH, MAX_HEIGHT))*/
+                    .error(R.mipmap.ic_launcher)
+                    .placeholder(R.mipmap.ic_launcher)
+                    /*.skipMemoryCache()*/
+                    .resize(100, 90)
+                    .centerInside()
+                    .into(imgView);
+
+            /*imgView.setImageBitmap(bmp);*/
             layout.addView(imgView);
 
 
@@ -510,11 +596,25 @@ public class Sync extends AppCompatActivity {
         }
     };
 
+    private BroadcastReceiver receiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+
+            Log.d("onReceive", "100% reached");
+            stopSync();
+
+            Intent i = new Intent(Sync.this,PricingActivity.class);
+            startActivity(i);
+
+        }
+    };
+
     @Override
     protected void onDestroy() {
         super.onDestroy();
 
         unregisterReceiver(myReceiver);
         unregisterReceiver(finalCountReceiver);
+        unregisterReceiver(receiver);
     }
 }

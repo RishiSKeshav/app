@@ -92,8 +92,15 @@ public class AlbumMediaSelectAdapter extends SelectableAdapter<AlbumMediaSelectA
     public void onBindViewHolder(MyViewHolder holder, int position) {
         AlbumMedia m = albummediaList.get(position);
 
-        Context context = holder.path.getContext();
-        Picasso.with(context).load(m.getPath()).error(R.mipmap.ic_launcher).placeholder(R.mipmap.ic_launcher)
+        Context c = holder.path.getContext();
+        Picasso.with(c)
+                .load(m.getPath())
+                .transform(new BitmapTransform(500, 500))
+                .error(R.mipmap.ic_launcher)
+                .placeholder(R.mipmap.ic_launcher)
+                .skipMemoryCache()
+                .fit()
+                .centerCrop()
                 .into(holder.path);
 
 

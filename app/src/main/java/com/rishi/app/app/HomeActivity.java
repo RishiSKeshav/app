@@ -158,9 +158,17 @@ public class HomeActivity extends AppCompatActivity {
         tv.setText(sessionManager.getName());
 
         CircleImageView cv = (CircleImageView) hView.findViewById(R.id.nav_circleView);
-        Picasso.with(getApplicationContext()).load(sessionManager.getDisplayPicture())
-                .placeholder(R.mipmap.ic_launcher).error(R.mipmap.ic_launcher)
+
+        Picasso.with(getApplicationContext())
+                .load(sessionManager.getDisplayPicture())
+                .transform(new BitmapTransform(500, 500))
+                .error(R.mipmap.ic_launcher)
+                .placeholder(R.mipmap.ic_launcher)
+                .skipMemoryCache()
+                .fit()
+                .centerCrop()
                 .into(cv);
+
         t1 = (TextView) hView.findViewById(R.id.photos_id);
         t2 = (TextView) hView.findViewById(R.id.personal_album_id);
         t3 = (TextView) hView.findViewById(R.id.shared_album_id);

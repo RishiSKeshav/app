@@ -27,9 +27,9 @@
 
     <application
         android:name=".MyApplication"
-        android:label="ClikApp"
         android:allowBackup="false"
         android:icon="@mipmap/launch_icon"
+        android:label="ClikApp"
         android:largeHeap="true"
         android:supportsRtl="true"
         android:theme="@style/AppTheme" >
@@ -123,14 +123,18 @@
         <activity android:name=".RegistrationDetails" >
         </activity>
         <activity android:name=".UploadDP" />
-        <activity android:name=".Invitations"
-            android:parentActivityName=".HomeActivity"/>
-        <activity android:name=".InvitationsContacts"
-            android:parentActivityName=".Invitations"/>
-        <activity android:name=".SearchUser"
-            android:parentActivityName=".LoginActivity"/>
-        <activity android:name=".GetCode"
-            android:parentActivityName=".SearchUser"/>
+        <activity
+            android:name=".Invitations"
+            android:parentActivityName=".HomeActivity" />
+        <activity
+            android:name=".InvitationsContacts"
+            android:parentActivityName=".Invitations" />
+        <activity
+            android:name=".SearchUser"
+            android:parentActivityName=".LoginActivity" />
+        <activity
+            android:name=".GetCode"
+            android:parentActivityName=".SearchUser" />
         <activity android:name=".PasswordReset" />
 
         <receiver
@@ -143,7 +147,6 @@
                 <category android:name="info.androidhive.gcm" />
             </intent-filter>
         </receiver>
-
         <receiver android:name=".NetworkChangeReceiver" >
             <intent-filter>
                 <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
@@ -173,6 +176,12 @@
             android:theme="@style/AppTheme" >
         </activity>
         <activity android:name=".SyncMediaFullScreenActivity" >
+        </activity>
+        <activity
+            android:name=".PricingActivity"
+            android:label="@string/title_activity_pricing"
+            android:parentActivityName=".HomeActivity"
+            android:theme="@style/AppTheme" >
         </activity>
     </application>
 

@@ -8,6 +8,7 @@ import android.graphics.BitmapFactory;
 import android.hardware.Camera;
 import android.os.Bundle;
 import android.os.Environment;
+import android.preference.PreferenceActivity;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.view.ViewPager;
@@ -22,6 +23,8 @@ import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.loopj.android.http.AsyncHttpClient;
+import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.nispok.snackbar.SnackbarManager;
 import com.nispok.snackbar.listeners.EventListener;
 
@@ -30,6 +33,7 @@ import org.apache.http.HttpResponse;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpPost;
+import org.apache.http.entity.StringEntity;
 import org.apache.http.entity.mime.content.FileBody;
 import org.apache.http.entity.mime.content.StringBody;
 import org.apache.http.impl.client.DefaultHttpClient;
@@ -40,6 +44,7 @@ import org.json.JSONObject;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
 
@@ -49,6 +54,7 @@ public class CameraFullImageDisplayActivity extends AppCompatActivity {
     private ViewPager viewPager;
     ImageDatabaseHandler db;
     SessionManager sessionManager;
+    Thread t;
 
     ArrayList<Image> photoImageList;
     long totalSize=0;
@@ -74,9 +80,6 @@ public class CameraFullImageDisplayActivity extends AppCompatActivity {
         ArrayList<String> photoList = intent.getStringArrayListExtra("photoFileList");
 
         //Log.d("photolist size",photoList.toString());
-
-        ArrayList<File> photoFileList = new ArrayList<File>();
-
 
         adapter = new CameraImageAdapter(CameraFullImageDisplayActivity.this,
                 photoList);
@@ -106,10 +109,7 @@ public class CameraFullImageDisplayActivity extends AppCompatActivity {
                 return true;
             case R.id.camera_upload:
 
-
-
                 startUpload(photoImageList);
-
 
                 return true;
         }
@@ -119,6 +119,8 @@ public class CameraFullImageDisplayActivity extends AppCompatActivity {
 
     public void startUpload(final ArrayList<Image> unSyncedImageList)
     {
+
+
 
         final ProgressDialog ringProgressDialog = ProgressDialog.show(CameraFullImageDisplayActivity.this, "Please wait ...", "Uploading Image ...", true);
         ringProgressDialog.setCancelable(true);
@@ -134,25 +136,26 @@ public class CameraFullImageDisplayActivity extends AppCompatActivity {
                     synchronized (this) {
                         try {
 
-                           /* progressDialog.setMessage("Uploading" + i+1 + "of" + unSyncedImageList.size());
-                            progressDialog.show();*/
-                            upload(unSyncedImageList.get(i), count);
-                            ringProgressDialog.dismiss();
+                            if(Thread.interrupted()){
+                                throw new InterruptedException();
+                            }
+                            else {
+                                upload(unSyncedImageList.get(i), count);
+                                ringProgressDialog.dismiss();
+                            }
+                        }
+                        catch(InterruptedException e){
 
-                        } catch (Exception e) {
+                        }
+                        catch (Exception e) {
                         }
                     }
                 }
-
-
             }
         };
 
-        Thread t = new Thread(r);
+        t = new Thread(r);
         t.start();
-
-        db = new ImageDatabaseHandler(getApplicationContext(), Environment.getExternalStorageDirectory().toString()+ "/ClikApp");
-        //Log.d("Db count", String.valueOf(db.getCount()));
 
     }
     public void upload(Image img,int count)
@@ -164,7 +167,7 @@ public class CameraFullImageDisplayActivity extends AppCompatActivity {
         sendBroadcast(intent);
 
         String filePath=img.getPath();
-        String filename = img.getName();
+
 
         /*Bitmap bitmap = BitmapFactory.decodeFile(filePath);
         ByteArrayOutputStream stream = new ByteArrayOutputStream();
@@ -175,7 +178,7 @@ public class CameraFullImageDisplayActivity extends AppCompatActivity {
         String responseString = null;
 
         HttpClient httpclient = new DefaultHttpClient();
-        HttpPost httppost = new HttpPost("http://52.89.2.186/project/webservice/cameraMediaUpload.php");
+        HttpPost httppost = new HttpPost("http://52.89.2.186/project/webservice/cameraMediaUpload_1.1.5.php");
 
         try {
             AndroidMultiPartEntity entity = new AndroidMultiPartEntity(
@@ -220,14 +223,24 @@ public class CameraFullImageDisplayActivity extends AppCompatActivity {
                     //Log.d("obh",String.valueOf(obj));
                     if (obj.getBoolean("error")) {
                         //Log.d("error true", "true");
-
                         f.delete();
+                        if(obj.getString("msg").equals("You have used your 100% free space.")){
 
-                        SnackbarManager.show(
-                                com.nispok.snackbar.Snackbar.with(this)
-                                        .text("Upload failed")
-                                        .duration(com.nispok.snackbar.Snackbar.SnackbarDuration.LENGTH_SHORT)
-                        );
+                            Log.d("msg", "100 %reached camera");
+
+                            Intent i = new Intent(this,PricingActivity.class);
+                            this.startActivity(i);
+
+                            t.interrupt();
+                            finish();
+                        }
+                        else {
+                            SnackbarManager.show(
+                                    com.nispok.snackbar.Snackbar.with(this)
+                                            .text("Upload failed")
+                                            .duration(com.nispok.snackbar.Snackbar.SnackbarDuration.LENGTH_SHORT)
+                            );
+                        }
 
                         //Toast.makeText(getApplicationContext(), obj.getString("message"), Toast.LENGTH_LONG).show();
                     } else {
@@ -261,6 +274,7 @@ public class CameraFullImageDisplayActivity extends AppCompatActivity {
 
                         f.delete();
 
+                        db.close();
                         //Log.d("image inserted", String.valueOf(db.getCount()));
 
                         SnackbarManager.show(
@@ -320,6 +334,70 @@ public class CameraFullImageDisplayActivity extends AppCompatActivity {
             responseString = e.toString();
         } catch (IOException e) {
             responseString = e.toString();
+        }
+    }
+
+    private void checkMemoryStatus() {
+
+        try {
+
+            JSONObject obj = new JSONObject();
+            obj.put("userId","313");
+            StringEntity jsonString = new StringEntity(obj.toString());
+
+            AsyncHttpClient client = new AsyncHttpClient();
+
+            client.post(getApplicationContext(), "http://52.89.2.186/project/webservice/public/Getmemorystatus", jsonString, "application/json", new AsyncHttpResponseHandler() {
+
+                @Override
+                public void onStart() {
+                    // called before request is started
+                }
+
+                // @Override
+                public void onSuccess(String response) {
+                    // called when response HTTP status is "200 OK"
+                    try {
+                        //Log.i("eee",response);
+                        JSONObject obj = new JSONObject(response);
+
+                        if (obj.getBoolean("error")) {
+
+                        }
+                        else
+                        {
+                            if(Double.parseDouble(obj.getString("data"))>100.00){
+
+                                Intent i = new Intent(CameraFullImageDisplayActivity.this,PricingActivity.class);
+                                startActivity(i);
+                                finish();
+                            }
+                        }
+                    } catch (JSONException e) {
+                        // TODO Auto-generated catch block
+                        Toast.makeText(getApplicationContext(), "Error Occured [Server's JSON response might be invalid]!", Toast.LENGTH_LONG).show();
+                        e.printStackTrace();
+
+                    }
+                }
+
+                //@Override
+                public void onFailure(int statusCode, PreferenceActivity.Header[] headers, byte[] errorResponse, Throwable e) {
+                    // called when response HTTP status is "4XX" (eg. 401, 403, 404)
+                }
+
+                //@Override
+                public void onRetry(int retryNo) {
+                    // called when request is retried
+                }
+
+
+            });
+
+        }catch (JSONException e) {
+            e.printStackTrace();
+        }catch(UnsupportedEncodingException ee){
+            ee.printStackTrace();
         }
     }
 }

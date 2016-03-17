@@ -85,12 +85,29 @@ public class SharedMediaAdapter extends RecyclerView.Adapter<SharedMediaAdapter.
         //holder.name.setText(sm.getName());
         //holder.date.setText(sm.getDate());
         Context context = holder.path.getContext();
-        Picasso.with(context).load(sm.getPath()).error(R.mipmap.ic_launcher).placeholder(R.mipmap.ic_launcher)
+
+        Picasso.with(context)
+                .load(sm.getPath())
+                .transform(new BitmapTransform(500, 500))
+                .error(R.mipmap.ic_launcher)
+                .placeholder(R.mipmap.ic_launcher)
+                .skipMemoryCache()
+                .fit()
+                .centerCrop()
                 .into(holder.path);
 
-        Context context1 = holder.fromdisplayPicture.getContext();
-        Picasso.with(context).load(sm.getFromdisplayPicture()).error(R.mipmap.ic_launcher).placeholder(R.mipmap.ic_launcher)
+        /*Context context1 = holder.fromdisplayPicture.getContext();*/
+
+        Picasso.with(context)
+                .load(sm.getFromdisplayPicture())
+                .transform(new BitmapTransform(500, 500))
+                .error(R.mipmap.ic_launcher)
+                .placeholder(R.mipmap.ic_launcher)
+                .skipMemoryCache()
+                .fit()
+                .centerCrop()
                 .into(holder.fromdisplayPicture);
+
     }
 
     @Override

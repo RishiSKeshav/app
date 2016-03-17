@@ -76,7 +76,15 @@ public class SharedAlbumAdapter extends RecyclerView.Adapter<SharedAlbumAdapter.
         //holder.date.setText(sh.getDate());
         //holder.members.setText(sh.getMembers());
         Context context = holder.thumbnail.getContext();
-        Picasso.with(context).load(sh.getThumbnail()).error(R.mipmap.ic_launcher).placeholder(R.mipmap.ic_launcher)
+
+        Picasso.with(context)
+                .load(sh.getThumbnail())
+                .transform(new BitmapTransform(500, 500))
+                .error(R.mipmap.ic_launcher)
+                .placeholder(R.mipmap.ic_launcher)
+                .skipMemoryCache()
+                .fit()
+                .centerCrop()
                 .into(holder.thumbnail);
     }
 

@@ -93,8 +93,16 @@ public class ToSharedAlbumAdapter extends SelectableAdapter<ToSharedAlbumAdapter
     public void onBindViewHolder(MyViewHolder holder, int position) {
         SharedAlbum sa = sharedalbumList.get(position);
         holder.name.setText(sa.getName());
-        Context context = holder.thumbnail.getContext();
-        Picasso.with(context).load(sa.getThumbnail()).error(R.mipmap.ic_launcher).placeholder(R.mipmap.ic_launcher)
+        Context c = holder.thumbnail.getContext();
+
+        Picasso.with(c)
+                .load(sa.getThumbnail())
+                .transform(new BitmapTransform(500, 500))
+                .error(R.mipmap.ic_launcher)
+                .placeholder(R.mipmap.ic_launcher)
+                .skipMemoryCache()
+                .fit()
+                .centerCrop()
                 .into(holder.thumbnail);
 
 

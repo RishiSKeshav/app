@@ -134,13 +134,17 @@ public class AddMoreMedia extends AppCompatActivity implements AddMoreMediaAdapt
                 Intent i = new Intent(AddMoreMedia.this,AlbumMediaDisplay.class);
                 i.putExtra("Id",ID);
                 i.putExtra("Name",NAME);
+                i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                 AddMoreMedia.this.startActivity(i);
             }else{
                 Intent i = new Intent(AddMoreMedia.this,SharedAlbumMediaDisplay.class);
                 i.putExtra("Id",ID);
                 i.putExtra("Name",NAME);
+                i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                 AddMoreMedia.this.startActivity(i);
             }
+
+
 
         //    onBackPressed();
             return true;

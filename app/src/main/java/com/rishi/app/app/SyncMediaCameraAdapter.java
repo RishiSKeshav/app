@@ -81,9 +81,15 @@ public class SyncMediaCameraAdapter extends RecyclerView.Adapter<SyncMediaCamera
 
         Context c = holder.path.getContext();
 
-        Picasso.with(c).load(cameraMediaList.get(position)).error(R.mipmap.ic_launcher).placeholder(R.mipmap.ic_launcher)
+        Picasso.with(c)
+                .load(cameraMediaList.get(position))
+                .transform(new BitmapTransform(500, 500))
+                .error(R.mipmap.ic_launcher)
+                .placeholder(R.mipmap.ic_launcher)
+                .skipMemoryCache()
+                .fit()
+                .centerCrop()
                 .into(holder.path);
-
     }
 
 

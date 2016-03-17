@@ -95,8 +95,16 @@ public class ToPersonalAlbumAdapter extends SelectableAdapter<ToPersonalAlbumAda
         Album a = personalalbumList.get(position);
         holder.name.setText(a.getName());
         holder.count.setText(a.getCount() + " Items");
-        Context context = holder.thumbnail.getContext();
-        Picasso.with(context).load(a.getThumbnail()).error(R.mipmap.ic_launcher).placeholder(R.mipmap.ic_launcher)
+        Context c = holder.thumbnail.getContext();
+
+        Picasso.with(c)
+                .load(a.getThumbnail())
+                .transform(new BitmapTransform(500, 500))
+                .error(R.mipmap.ic_launcher)
+                .placeholder(R.mipmap.ic_launcher)
+                .skipMemoryCache()
+                .fit()
+                .centerCrop()
                 .into(holder.thumbnail);
 
 

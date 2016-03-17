@@ -85,10 +85,16 @@ public class AlbumAdapter extends RecyclerView.Adapter<AlbumAdapter.MyViewHolder
         holder.count.setText(album.getCount());
         holder.date.setText(album.getDate());
         Context context = holder.thumbnail.getContext();
-        Picasso.with(context).load(album.getThumbnail()).error(R.mipmap.ic_launcher).placeholder(R.mipmap.ic_launcher)
+
+        Picasso.with(context)
+                .load(album.getThumbnail())
+                .transform(new BitmapTransform(500, 500))
+                .error(R.mipmap.ic_launcher)
+                .placeholder(R.mipmap.ic_launcher)
+                .skipMemoryCache()
+                .fit()
+                .centerCrop()
                 .into(holder.thumbnail);
-
-
     }
 
     @Override

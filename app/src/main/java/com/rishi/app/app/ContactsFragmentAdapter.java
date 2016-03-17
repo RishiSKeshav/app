@@ -108,7 +108,15 @@ public class ContactsFragmentAdapter extends SelectableAdapter<ContactsFragmentA
         holder.number.setText(cf.getNumber());
 
         Context context = holder.path.getContext();
-        Picasso.with(context).load(cf.getDisplayPicture()).error(R.mipmap.ic_launcher).placeholder(R.mipmap.ic_launcher)
+
+        Picasso.with(context)
+                .load(cf.getDisplayPicture())
+                .transform(new BitmapTransform(500, 500))
+                .error(R.mipmap.ic_launcher)
+                .placeholder(R.mipmap.ic_launcher)
+                .skipMemoryCache()
+                .fit()
+                .centerCrop()
                 .into(holder.path);
 
         holder.selectedOverlay.setVisibility(isSelected(position) ? View.VISIBLE : View.INVISIBLE);

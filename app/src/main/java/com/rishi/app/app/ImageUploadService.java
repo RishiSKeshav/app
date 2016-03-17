@@ -38,7 +38,7 @@ public class ImageUploadService extends Service {
     long totalSize = 0;
     AsyncTask<ArrayList<Image>, Integer, Integer> uploadTask;
     int count = 0;
-    String imgPath = "";
+    Thread t;
 
     @Override
     public IBinder onBind(Intent intent) {
@@ -89,20 +89,26 @@ public class ImageUploadService extends Service {
                 for (int i = 0; i < unSyncedImageList.size(); i++) {
                     synchronized (this) {
                         try {
-                            upload(unSyncedImageList.get(i));
+                            if(Thread.interrupted()){
+                                throw new InterruptedException();
+                            }
+                            else {
+                                upload(unSyncedImageList.get(i));
+                            }
+                        }
+                        catch (InterruptedException e){
 
-                        } catch (Exception e) {
+                        }
+                        catch (Exception e) {
                         }
                     }
                 }
             }
         };
 
-        Thread t = new Thread(r);
+        t = new Thread(r);
         t.start();
 
-        db = new ImageDatabaseHandler(getApplicationContext(), Environment.getExternalStorageDirectory().toString() + "/ClikApp");
-        //Log.d("Db count", String.valueOf(db.getCount()));
     }
 
     public void upload(Image img) {
@@ -126,7 +132,7 @@ public class ImageUploadService extends Service {
                 String filePath = img.getPath();
                 String filename = img.getName();
 
-                Bitmap bitmap = BitmapFactory.decodeFile(filePath);
+                //Bitmap bitmap = BitmapFactory.decodeFile(filePath);
 
                 /*ByteArrayOutputStream stream = new ByteArrayOutputStream();
                 bitmap.compress(Bitmap.CompressFormat.PNG, 50, stream);
@@ -136,8 +142,7 @@ public class ImageUploadService extends Service {
                 String responseString = null;
 
                 HttpClient httpclient = new DefaultHttpClient();
-                HttpPost httppost = new HttpPost("http://52.89.2.186/project/webservice/temp1.php");
-
+                HttpPost httppost = new HttpPost("http://52.89.2.186/project/webservice/uploadMedia_1.1.5.php");
                 try {
                     AndroidMultiPartEntity entity = new AndroidMultiPartEntity(
                             new AndroidMultiPartEntity.ProgressListener() {
@@ -182,8 +187,14 @@ public class ImageUploadService extends Service {
 
                             if (obj.getBoolean("error")) {
 
-                                //Log.d("file error", obj.getString("msg"));
-                                //Toast.makeText(getApplicationContext(), obj.getString("msg"), Toast.LENGTH_LONG).show();
+                                if(obj.getString("msg").equals("You have used your 100% free space.")) {
+                                    Log.d("msg","100% reaached");
+
+                                    t.interrupt();
+                                    Intent i = new Intent("SPACE_FULL_ACTION");
+                                    sendBroadcast(i);
+                                }
+
                             } else {
 
                                 int mediaId = Integer.parseInt(obj.getString("mediaId"));
@@ -207,8 +218,9 @@ public class ImageUploadService extends Service {
                                 image.setName(filename);
                                 image.setLink(link);
 
-                                db.addImage(image,sessionManager.getId());
+                                db.addImage(image, sessionManager.getId());
 
+                                db.close();
                                 count--;
                                 //Log.d("count", String.valueOf(count));
                             }

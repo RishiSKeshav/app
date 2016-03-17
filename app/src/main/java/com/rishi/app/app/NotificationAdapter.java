@@ -94,17 +94,29 @@ public class NotificationAdapter extends SelectableAdapter<NotificationAdapter.M
         NotificationsModel n = notifications.get(position);
 
         Context context = holder.from.getContext();
-        Picasso.with(context).load(n.getFrom()).error(R.mipmap.ic_launcher).placeholder(R.mipmap.ic_launcher)
+        Picasso.with(context)
+                .load(n.getFrom())
+                .transform(new BitmapTransform(500, 500))
+                .error(R.mipmap.ic_launcher)
+                .placeholder(R.mipmap.ic_launcher)
+                .skipMemoryCache()
+                .fit()
+                .centerCrop()
                 .into(holder.from);
 
         holder.message.setText(n.getMessage());
 
         Context context1 = holder.dataThumbnail.getContext();
-        Picasso.with(context1).load(n.getDatathumbnail()).error(R.mipmap.ic_launcher).placeholder(R.mipmap.ic_launcher)
+
+        Picasso.with(context1)
+                .load(n.getDatathumbnail())
+                .transform(new BitmapTransform(500, 500))
+                .error(R.mipmap.ic_launcher)
+                .placeholder(R.mipmap.ic_launcher)
+                .skipMemoryCache()
+                .fit()
+                .centerCrop()
                 .into(holder.dataThumbnail);
-
-
-
     }
 
     @Override

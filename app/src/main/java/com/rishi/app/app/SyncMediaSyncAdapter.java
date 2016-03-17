@@ -79,10 +79,29 @@ public class SyncMediaSyncAdapter extends RecyclerView.Adapter<SyncMediaSyncAdap
     public void onBindViewHolder(MyViewHolder holder, int position) {
         Context c = holder.path.getContext();
 
+        final int MAX_WIDTH = 500;
+        final int MAX_HEIGHT = 500;
 
-        Picasso.with(c).load(syncMediaList.get(position)).fit().centerCrop().error(R.mipmap.ic_launcher).placeholder(R.mipmap.ic_launcher)
-                    .into(holder.path);
+        int size = (int) Math.ceil(Math.sqrt(MAX_WIDTH * MAX_HEIGHT));
 
+        Picasso.with(c)
+                .load(syncMediaList.get(position))
+                .transform(new BitmapTransform(MAX_WIDTH, MAX_HEIGHT))
+                .error(R.mipmap.ic_launcher)
+                .placeholder(R.mipmap.ic_launcher)
+                .skipMemoryCache()
+                .resize(MAX_WIDTH,MAX_HEIGHT)
+                .centerCrop()
+                .into(holder.path);
+
+        /*Picasso.with(c)
+                .load(syncMediaList.get(position))
+                //.transform(new BitmapTransform(MAX_WIDTH, MAX_HEIGHT))
+                .fit()
+                .centerCrop()
+                .error(R.mipmap.ic_launcher)
+                .placeholder(R.mipmap.ic_launcher)
+                .into(holder.path);*/
     }
 
 

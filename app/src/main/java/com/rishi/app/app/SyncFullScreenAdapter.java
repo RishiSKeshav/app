@@ -91,7 +91,15 @@ public class SyncFullScreenAdapter extends PagerAdapter {
         {
             Context context = imgDisplay.getContext();
             File f = new File(_imagePaths.get(position));
-            Picasso.with(context).load(f).into(imgDisplay);
+            Picasso.with(context)
+                    .load(f)
+                    .transform(new BitmapTransform(MAX_WIDTH, MAX_HEIGHT))
+                    .error(R.mipmap.ic_launcher)
+                    .placeholder(R.mipmap.ic_launcher)
+                    .skipMemoryCache()
+                    .resize(size, size)
+                    .centerInside()
+                    .into(imgDisplay);
         }
 
         ((ViewPager) container).addView(viewLayout);

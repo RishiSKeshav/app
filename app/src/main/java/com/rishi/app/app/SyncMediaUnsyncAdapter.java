@@ -118,7 +118,7 @@ public class SyncMediaUnsyncAdapter extends RecyclerView.Adapter<SyncMediaUnsync
        // }
     }
 
-    public static Bitmap decodeSampledBitmapFromPath(String path, int reqWidth,
+    /*public static Bitmap decodeSampledBitmapFromPath(String path, int reqWidth,
                                                      int reqHeight) {
 
         final BitmapFactory.Options options = new BitmapFactory.Options();
@@ -164,7 +164,7 @@ public class SyncMediaUnsyncAdapter extends RecyclerView.Adapter<SyncMediaUnsync
         // recreate the new Bitmap
         Bitmap resizedBitmap = Bitmap.createBitmap(bm, 0, 0, width, height, matrix, false);
         return resizedBitmap;
-    }
+    }*/
 
     @Override
     public int getItemCount() {

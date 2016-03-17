@@ -54,10 +54,23 @@ public class FullScreenMediaAdapter extends PagerAdapter {
 
         imgDisplay = (ImageView) viewLayout.findViewById(R.id.imgDisplay);
 
+        int size = (int) Math.ceil(Math.sqrt(1024 * 768));
+
         Context context = imgDisplay.getContext();
-        Picasso.with(context).load(_imagePaths.get(position)).error(R.mipmap.ic_launcher).placeholder(R.mipmap.ic_launcher)
+
+        Picasso.with(context)
+                .load(_imagePaths.get(position))
+                .transform(new BitmapTransform(1024, 768))
+                .error(R.mipmap.ic_launcher)
+                .placeholder(R.mipmap.ic_launcher)
+                .skipMemoryCache()
+                .resize(size,size)
+                .centerInside()
                 .into(imgDisplay);
 
+        /*Picasso.with(context).load(_imagePaths.get(position)).error(R.mipmap.ic_launcher).placeholder(R.mipmap.ic_launcher)
+                .into(imgDisplay);
+*/
 
         ((ViewPager) container).addView(viewLayout);
 

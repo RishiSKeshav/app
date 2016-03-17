@@ -91,6 +91,12 @@ public class AlbumMediaDisplay extends AppCompatActivity{
 
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.menu_album_media, menu);
+
+        if(NAME.equals("ClikApp")){
+            menu.findItem( R.id.delete_album).setVisible(false);
+            menu.findItem( R.id.edit_title).setVisible(false);
+
+        }
         return true;
     }
 
