@@ -40,7 +40,7 @@ import java.util.List;
 public class SyncMediaPageFragment extends Fragment {
     public static final String ARG_PAGE = "ARG_PAGE";
 
-    private int mPage,countalbum,countsharedalbum,countsharedmedia;
+    private int mPage, countalbum, countsharedalbum, countsharedmedia;
     Context context;
     private ArrayList<com.rishi.app.app.Image> imageList = new ArrayList<>();
     private ArrayList<String> syncedPathList = new ArrayList<>();
@@ -67,10 +67,8 @@ public class SyncMediaPageFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mPage = getArguments().getInt(ARG_PAGE);
-        sessionManager= new SessionManager(getContext());
+        sessionManager = new SessionManager(getContext());
     }
-
-
 
 
     @Override
@@ -78,14 +76,14 @@ public class SyncMediaPageFragment extends Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.sync_media_fragment_page, container, false);
 
-        aswipeRefreshLayout = (SwipeRefreshLayout)view.findViewById(R.id.sync_media_refresh_layout);
+        aswipeRefreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.sync_media_refresh_layout);
 
-        if(mPage == 1) {
-            Log.i("rrr","A");
+        if (mPage == 1) {
+            Log.i("rrr", "A");
             recyclerView = (RecyclerView) view.findViewById(R.id.sync_media_recycler_view);
             smuAdapter = new SyncMediaUnsyncAdapter(unSyncImageList);
             recyclerView.setHasFixedSize(true);
-            RecyclerView.LayoutManager mLayoutManager = new GridLayoutManager(getContext(),3);
+            RecyclerView.LayoutManager mLayoutManager = new GridLayoutManager(getContext(), 3);
             recyclerView.setLayoutManager(mLayoutManager);
             recyclerView.setAdapter(smuAdapter);
 
@@ -100,13 +98,13 @@ public class SyncMediaPageFragment extends Fragment {
 
         }
 
-        if (mPage == 2){
-            Log.i("rrr","B");
+        if (mPage == 2) {
+            Log.i("rrr", "B");
             recyclerView = (RecyclerView) view.findViewById(R.id.sync_media_recycler_view);
             smsAdapter = new SyncMediaSyncAdapter(syncImageList);
 
             recyclerView.setHasFixedSize(true);
-            RecyclerView.LayoutManager sLayoutManager = new GridLayoutManager(getContext(),3);
+            RecyclerView.LayoutManager sLayoutManager = new GridLayoutManager(getContext(), 3);
             recyclerView.setLayoutManager(sLayoutManager);
             recyclerView.setAdapter(smsAdapter);
 
@@ -122,13 +120,13 @@ public class SyncMediaPageFragment extends Fragment {
 
         }
 
-        if(mPage == 3){
+        if (mPage == 3) {
 
 
             recyclerView = (RecyclerView) view.findViewById(R.id.sync_media_recycler_view);
             smcAdapter = new SyncMediaCameraAdapter(cameraImageList);
             recyclerView.setHasFixedSize(true);
-            RecyclerView.LayoutManager smLayoutManager = new GridLayoutManager(getContext(),3);
+            RecyclerView.LayoutManager smLayoutManager = new GridLayoutManager(getContext(), 3);
             recyclerView.setLayoutManager(smLayoutManager);
             recyclerView.setAdapter(smcAdapter);
 
@@ -149,18 +147,17 @@ public class SyncMediaPageFragment extends Fragment {
 
     private void generateImageList() {
         unSyncImageList.clear();
-        ImageDatabaseHandler db = new ImageDatabaseHandler(getContext(), Environment.getExternalStorageDirectory().toString()+ "/ClikApp");
-        if(db!=null){
-            syncedPathList= db.getAllImagePath(sessionManager.getId());
-        }
-        else
-            Log.i("databasae_name","DB not created");
+        ImageDatabaseHandler db = new ImageDatabaseHandler(getContext(), Environment.getExternalStorageDirectory().toString() + "/ClikApp");
+        if (db != null) {
+            syncedPathList = db.getAllImagePath(sessionManager.getId());
+        } else
+            Log.i("databasae_name", "DB not created");
         db.close();
 
 
         ContentResolver cr = getContext().getContentResolver();
 
-        String[] columns = new String[] {
+        String[] columns = new String[]{
                 MediaStore.Images.ImageColumns.DATA,
                 MediaStore.Images.ImageColumns.DISPLAY_NAME};
         Cursor cursor = cr.query(MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
@@ -179,11 +176,12 @@ public class SyncMediaPageFragment extends Fragment {
         cursor.close();
 
 
-        for(com.rishi.app.app.Image img : imageList){
+        for (com.rishi.app.app.Image img : imageList) {
 
-            if(!syncedPathList.contains(img.path))
+            if (!syncedPathList.contains(img.path)) {
                 unSyncImageList.add(img);
                 smuAdapter.notifyDataSetChanged();
+            }
         }
 
         aswipeRefreshLayout.setRefreshing(false);
@@ -194,11 +192,11 @@ public class SyncMediaPageFragment extends Fragment {
     private void generateCameraImageList() {
         cameraImageList.clear();
 
-        ImageDatabaseHandler db = new ImageDatabaseHandler(getContext(), Environment.getExternalStorageDirectory().toString()+ "/ClikApp");
+        ImageDatabaseHandler db = new ImageDatabaseHandler(getContext(), Environment.getExternalStorageDirectory().toString() + "/ClikApp");
 
-        if(db!=null){
+        if (db != null) {
 
-            String selectQuery = "SELECT  * FROM table_syncimage where source='camera' and userId='"+ sessionManager.getId()+"'";
+            String selectQuery = "SELECT  * FROM table_syncimage where source='camera' and userId='" + sessionManager.getId() + "'";
 
             SQLiteDatabase db1 = db.getReadableDatabase();
             Cursor cursor = db1.rawQuery(selectQuery, null);
@@ -213,9 +211,8 @@ public class SyncMediaPageFragment extends Fragment {
 
             cursor.close();
 
-        }
-        else
-            Log.i("databasae_name","DB not created");
+        } else
+            Log.i("databasae_name", "DB not created");
 
         db.close();
 
@@ -227,11 +224,11 @@ public class SyncMediaPageFragment extends Fragment {
     private void generateSyncImageList() {
         syncImageList.clear();
 
-        ImageDatabaseHandler db = new ImageDatabaseHandler(getContext(), Environment.getExternalStorageDirectory().toString()+ "/ClikApp");
+        ImageDatabaseHandler db = new ImageDatabaseHandler(getContext(), Environment.getExternalStorageDirectory().toString() + "/ClikApp");
 
-        if(db!=null){
+        if (db != null) {
 
-            String selectQuery = "SELECT  * FROM table_syncimage where source='sync' and userId='"+ sessionManager.getId()+"'";
+            String selectQuery = "SELECT  * FROM table_syncimage where source='sync' and userId='" + sessionManager.getId() + "'";
 
             SQLiteDatabase db1 = db.getReadableDatabase();
             Cursor cursor = db1.rawQuery(selectQuery, null);
@@ -245,11 +242,10 @@ public class SyncMediaPageFragment extends Fragment {
             }
 
             cursor.close();
-        }
-        else
+        } else
             //Log.i("databasae_name","DB not created");
 
-        db.close();
+            db.close();
 
         aswipeRefreshLayout.setRefreshing(false);
 

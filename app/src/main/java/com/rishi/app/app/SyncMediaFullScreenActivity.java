@@ -32,6 +32,7 @@ import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.StringEntity;
+import org.apache.http.entity.mime.content.FileBody;
 import org.apache.http.entity.mime.content.StringBody;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.util.EntityUtils;
@@ -113,6 +114,7 @@ public class SyncMediaFullScreenActivity extends AppCompatActivity {
         int id = item.getItemId();
         if (id == android.R.id.home) {
             onBackPressed();
+            SyncMediaFullScreenActivity.this.finish();
     }
         if(id == R.id.delete_sync_media_display){
 
@@ -193,17 +195,17 @@ public class SyncMediaFullScreenActivity extends AppCompatActivity {
             Long fileSize = imgFile.length();
             //Log.d("Image upload size",String.valueOf(imgFile.length()));
 
-            Bitmap bitmap = BitmapFactory.decodeFile(imgFile.toString());
+           // Bitmap bitmap = BitmapFactory.decodeFile(imgFile.toString());
 
-            ByteArrayOutputStream stream = new ByteArrayOutputStream();
-            bitmap.compress(Bitmap.CompressFormat.PNG, 50, stream);
-            byte[] byte_arr = stream.toByteArray();
-            String encodedString = Base64.encodeToString(byte_arr, 0);
+           // ByteArrayOutputStream stream = new ByteArrayOutputStream();
+            //bitmap.compress(Bitmap.CompressFormat.PNG, 50, stream);
+            //byte[] byte_arr = stream.toByteArray();
+            //String encodedString = Base64.encodeToString(byte_arr, 0);
 
             String responseString = null;
 
             HttpClient httpclient = new DefaultHttpClient();
-            HttpPost httppost = new HttpPost("http://52.89.2.186/project/webservice/uploadMedia.php");
+            HttpPost httppost = new HttpPost("http://52.89.2.186/project/webservice/uploadMedia_1.1.5.php");
 
             try {
                 AndroidMultiPartEntity entity = new AndroidMultiPartEntity(
@@ -215,8 +217,8 @@ public class SyncMediaFullScreenActivity extends AppCompatActivity {
                         });
 
                 // Adding file data to http body
-                entity.addPart("image", new StringBody(encodedString));
-
+               // entity.addPart("image", new StringBody(encodedString));
+                entity.addPart("image", new FileBody(new File(imgFile.getPath())));
                 // Extra parameters if you want to pass to server
                 entity.addPart("userId", new StringBody(sessionManager.getId()));
                 entity.addPart("filename", new StringBody(imgFile.getName()));
@@ -294,9 +296,10 @@ public class SyncMediaFullScreenActivity extends AppCompatActivity {
                                                 public void onDismiss(com.nispok.snackbar.Snackbar snackbar) {
 
                                                     Intent i = new Intent(getApplicationContext(),SyncMediaDisplayActivity.class);
-                                                    i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                                                    i.putExtra("action",action);
-                                                    getApplicationContext().startActivity(i);
+                                                    //i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                                                    i.putExtra("action", action);
+                                                    SyncMediaFullScreenActivity.this.startActivity(i);
+                                                    SyncMediaFullScreenActivity.this.finish();
                                                 }
 
                                                 @Override
@@ -406,10 +409,10 @@ public class SyncMediaFullScreenActivity extends AppCompatActivity {
                                                             db.close();
 
                                                             Intent i = new Intent(getApplicationContext(),SyncMediaDisplayActivity.class);
-                                                            i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                                                           // i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                                                             i.putExtra("action",action);
-                                                            getApplicationContext().startActivity(i);
-                                                            finish();
+                                                            SyncMediaFullScreenActivity.this.startActivity(i);
+                                                            SyncMediaFullScreenActivity.this.finish();
                                                         }
 
                                                         @Override

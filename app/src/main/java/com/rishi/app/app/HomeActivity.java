@@ -32,6 +32,7 @@ import android.os.Environment;
 import android.os.ParcelFileDescriptor;
 import android.preference.PreferenceActivity;
 import android.provider.MediaStore;
+
 import com.github.clans.fab.FloatingActionButton;
 import com.github.clans.fab.FloatingActionMenu;
 
@@ -104,8 +105,8 @@ import de.hdodenhof.circleimageview.CircleImageView;
 /**
  * Created by RishiS on 1/27/2016.
  */
+
 /**
- *
  * Home Screen Activity
  */
 public class HomeActivity extends AppCompatActivity {
@@ -114,7 +115,7 @@ public class HomeActivity extends AppCompatActivity {
     TextView nameTV;
     String picturePath;
     TextView name;
-    private FloatingActionButton fab,fab1;
+    private FloatingActionButton fab, fab1;
     final int PICK_FROM_CAPTURE = 0;
     final int PICK_FROM_FILE = 1;
     final int PIC_CROP = 2;
@@ -130,7 +131,7 @@ public class HomeActivity extends AppCompatActivity {
     private static final String TAG = HomeActivity.class.getName();
     RequestParams params = new RequestParams();
 
-    TextView t1,t2,t3;
+    TextView t1, t2, t3;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -140,7 +141,7 @@ public class HomeActivity extends AppCompatActivity {
 
         String fontPath = "fonts/Orbitron-Bold.ttf";
 
-        Toolbar home_toolbar= (Toolbar) findViewById(R.id.home_toolbar);
+        Toolbar home_toolbar = (Toolbar) findViewById(R.id.home_toolbar);
         TextView header = (TextView) findViewById(R.id.tv_ld_header);
         Typeface tf = Typeface.createFromAsset(getAssets(), fontPath);
         header.setTypeface(tf);
@@ -148,13 +149,12 @@ public class HomeActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
 
-
         mDrawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         nvDrawer = (NavigationView) findViewById(R.id.nvView);
         setupDrawerContent(nvDrawer);
 
-        View hView =  nvDrawer.inflateHeaderView(R.layout.nav_header);
-        TextView tv= (TextView) hView.findViewById(R.id.nav_name);
+        View hView = nvDrawer.inflateHeaderView(R.layout.nav_header);
+        TextView tv = (TextView) hView.findViewById(R.id.nav_name);
         tv.setText(sessionManager.getName());
 
         CircleImageView cv = (CircleImageView) hView.findViewById(R.id.nav_circleView);
@@ -176,25 +176,24 @@ public class HomeActivity extends AppCompatActivity {
 
         album = (FloatingActionButton) findViewById(R.id.fab_album);
         share_album = (FloatingActionButton) findViewById(R.id.fab_shared_album);
-        album.setOnClickListener(new View.OnClickListener(){
+        album.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view){
+            public void onClick(View view) {
                 Intent intent = new Intent(HomeActivity.this, NewAlbum.class);
-                intent.putExtra("shared","no");
+                intent.putExtra("shared", "no");
                 startActivity(intent);
 
             }
         });
-        share_album.setOnClickListener(new View.OnClickListener(){
+        share_album.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view){
+            public void onClick(View view) {
                 Intent intent = new Intent(HomeActivity.this, NewAlbum.class);
-                intent.putExtra("shared","yes");
+                intent.putExtra("shared", "yes");
                 startActivity(intent);
 
             }
         });
-
 
 
         cv.setOnClickListener(new View.OnClickListener() {
@@ -205,11 +204,11 @@ public class HomeActivity extends AppCompatActivity {
                 popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
                     public boolean onMenuItemClick(MenuItem item) {
 
-                        if(item.getTitle().equals("Take Photo")){
+                        if (item.getTitle().equals("Take Photo")) {
                             Intent captureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
                             //we will handle the returned data in onActivityResult
                             startActivityForResult(captureIntent, PICK_FROM_CAPTURE);
-                        }else{
+                        } else {
                             Intent intent = new Intent();
 //                            intent.setType("image/*");
 //                            intent.setAction(Intent.ACTION_GET_CONTENT);
@@ -226,7 +225,7 @@ public class HomeActivity extends AppCompatActivity {
                                 intent.setType("*/*");
                                 intent.putExtra(android.provider.MediaStore.EXTRA_OUTPUT,
                                         mImageCaptureUri);
-                                startActivityForResult(Intent.createChooser(intent,"Complete action using"), PICK_FROM_FILE);
+                                startActivityForResult(Intent.createChooser(intent, "Complete action using"), PICK_FROM_FILE);
                             }
                         }
 
@@ -244,7 +243,7 @@ public class HomeActivity extends AppCompatActivity {
         viewPager.setAdapter(new SampleFragmentPagerAdapter(getSupportFragmentManager(),
                 HomeActivity.this));
 
-        if(i.hasExtra("shared_media")){
+        if (i.hasExtra("shared_media")) {
             viewPager.setCurrentItem(2);
         }
 
@@ -275,7 +274,7 @@ public class HomeActivity extends AppCompatActivity {
     }
 
 
-    private  void navHeaderData(){
+    private void navHeaderData() {
 
 
         try {
@@ -307,7 +306,7 @@ public class HomeActivity extends AppCompatActivity {
                             );
                         } else {
 
-                           // Log.i("ddd",obj.getJSONObject("user").toString());
+                            // Log.i("ddd",obj.getJSONObject("user").toString());
 
                             JSONObject user = obj.getJSONObject("user");
                             t1.setText(user.optString("photos"));
@@ -337,9 +336,9 @@ public class HomeActivity extends AppCompatActivity {
 
             });
 
-        }catch (JSONException e) {
+        } catch (JSONException e) {
             e.printStackTrace();
-        }catch(UnsupportedEncodingException ee){
+        } catch (UnsupportedEncodingException ee) {
             ee.printStackTrace();
         }
 
@@ -359,28 +358,28 @@ public class HomeActivity extends AppCompatActivity {
     public void selectDrawerItem(MenuItem menuItem) {
         // Create a new fragment and specify the planet to show based on
         // position
-        switch(menuItem.getItemId()) {
+        switch (menuItem.getItemId()) {
             case R.id.nav_first_fragment:
-                Intent i = new Intent(HomeActivity.this,HomeActivity.class);
-               i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                Intent i = new Intent(HomeActivity.this, HomeActivity.class);
+                i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 startActivity(i);
                 finish();
                 break;
 
             case R.id.nav_second_fragment:
-                Intent i2 = new Intent(HomeActivity.this,CameraActivity.class);
+                Intent i2 = new Intent(HomeActivity.this, CameraActivity.class);
                 //i2.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                 startActivity(i2);
                 break;
 
             case R.id.nav_third_fragment:
-                Intent i3 = new Intent(HomeActivity.this,Notification.class);
+                Intent i3 = new Intent(HomeActivity.this, Notification.class);
                 //i3.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                 startActivity(i3);
                 break;
 
             case R.id.nav_fourth_fragment:
-                Intent i4 = new Intent(HomeActivity.this,Sync.class);
+                Intent i4 = new Intent(HomeActivity.this, Sync.class);
                 //i4.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                 startActivity(i4);
                 break;
@@ -391,8 +390,8 @@ public class HomeActivity extends AppCompatActivity {
                 progressDialog.setIndeterminate(true);
                 progressDialog.setMessage("Loading...");
                 progressDialog.show();
-                Intent i5 = new Intent(HomeActivity.this,SyncMediaDisplayActivity.class);
-               // i5.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                Intent i5 = new Intent(HomeActivity.this, SyncMediaDisplayActivity.class);
+                // i5.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                 startActivity(i5);
                 progressDialog.hide();
                 break;
@@ -411,7 +410,7 @@ public class HomeActivity extends AppCompatActivity {
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if(resultCode != RESULT_CANCELED) {
+        if (resultCode != RESULT_CANCELED) {
             if (requestCode == PICK_FROM_FILE) {
                 if (Build.VERSION.SDK_INT < 19) {
                     mImageCaptureUri = data.getData();
@@ -440,45 +439,41 @@ public class HomeActivity extends AppCompatActivity {
 
             }
         }
-        if(requestCode == PICK_FROM_CAPTURE){
+        if (requestCode == PICK_FROM_CAPTURE) {
             mImageCaptureUri = data.getData();
             picturePath = getRealPathFromURI(mImageCaptureUri);
             performCrop();
         }
-        if(requestCode == PIC_CROP){
-            Bundle extras = data.getExtras();
-            if(extras != null) {
-                bitmap = extras.getParcelable("data");
-                encodeImagetoString();
+        if (requestCode == PIC_CROP) {
+            if (data != null) {
+                Bundle extras = data.getExtras();
+                if (extras != null) {
+                    bitmap = extras.getParcelable("data");
+                    encodeImagetoString();
 
-              //  Log.i("fff",picturePath.toString());
+                    //  Log.i("fff",picturePath.toString());
 //                File f  = new File(mImageCaptureUri.);
 //                f.delete();
+                }
             }
         }
 
     }
 
-    public String getRealPathFromURI(Uri contentUri)
-    {
-        try
-        {
+    public String getRealPathFromURI(Uri contentUri) {
+        try {
             String[] proj = {MediaStore.Images.Media.DATA};
             Cursor cursor = managedQuery(contentUri, proj, null, null, null);
             int column_index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
             cursor.moveToFirst();
             return cursor.getString(column_index);
-        }
-        catch (Exception e)
-        {
+        } catch (Exception e) {
             return contentUri.getPath();
         }
     }
 
 
-
-
-    private void performCrop(){
+    private void performCrop() {
 
         try {
 
@@ -498,8 +493,7 @@ public class HomeActivity extends AppCompatActivity {
             //start the activity - we handle returning in onActivityResult
             startActivityForResult(cropIntent, PIC_CROP);
 
-        }
-        catch(ActivityNotFoundException anfe){
+        } catch (ActivityNotFoundException anfe) {
             String errorMessage = "Whoops - your device doesn't support the crop action!";
             Toast toast = Toast.makeText(this, errorMessage, Toast.LENGTH_SHORT);
             toast.show();
@@ -511,14 +505,16 @@ public class HomeActivity extends AppCompatActivity {
 
             protected void onPreExecute() {
 
-            };
+            }
+
+            ;
 
             @Override
             protected String doInBackground(Void... params) {
                 //BitmapFactory.Options options = null;
                 //options = new BitmapFactory.Options();
                 //options.inSampleSize = 3;
-              //  bitmap = BitmapFactory.decodeFile(imgPath,
+                //  bitmap = BitmapFactory.decodeFile(imgPath,
                 //        options);
                 ByteArrayOutputStream stream = new ByteArrayOutputStream();
                 bitmap.compress(Bitmap.CompressFormat.PNG, 50, stream);
@@ -529,11 +525,11 @@ public class HomeActivity extends AppCompatActivity {
 
             @Override
             protected void onPostExecute(String msg) {
-               // prgDialog.setMessage("Calling Upload");
+                // prgDialog.setMessage("Calling Upload");
                 // Put converted Image string into Async Http Post param
-               params.put("image", encodedString);
+                params.put("image", encodedString);
                 params.put("userId", sessionManager.getId());
-                params.put("filename",System.currentTimeMillis() + ".jpg");
+                params.put("filename", System.currentTimeMillis() + ".jpg");
                 triggerImageUpload();
             }
         }.execute(null, null, null);
@@ -596,14 +592,11 @@ public class HomeActivity extends AppCompatActivity {
     }
 
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
 
-
-
-        @Override
-    public boolean onCreateOptionsMenu(Menu menu){
-
-       MenuInflater inflater = getMenuInflater();
-            inflater.inflate(R.menu.menu_home, menu);
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.menu_home, menu);
 
 
         return true;
@@ -615,13 +608,13 @@ public class HomeActivity extends AppCompatActivity {
 
         int id = item.getItemId();
 
-        if(id == android.R.id.home){
+        if (id == android.R.id.home) {
             mDrawer.openDrawer(GravityCompat.START);
         }
 
         if (id == R.id.home_settings) {
 
-            Intent i = new Intent(this,HomeSettings.class);
+            Intent i = new Intent(this, HomeSettings.class);
             this.startActivity(i);
 
         }
@@ -634,11 +627,11 @@ public class HomeActivity extends AppCompatActivity {
     }
 
 
-            protected void animateFab(final int position) {
+    protected void animateFab(final int position) {
         switch (position) {
             case 0:
                 album.setVisibility(View.VISIBLE);
-               share_album.setVisibility(View.INVISIBLE);
+                share_album.setVisibility(View.INVISIBLE);
                 break;
             case 1:
                 album.setVisibility(View.INVISIBLE);
@@ -651,7 +644,6 @@ public class HomeActivity extends AppCompatActivity {
                 break;
         }
     }
-
 
 
 }

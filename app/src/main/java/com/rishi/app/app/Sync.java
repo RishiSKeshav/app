@@ -127,44 +127,9 @@ public class Sync extends AppCompatActivity {
         registerReceiver(finalCountReceiver, finalFilter);
 
         IntentFilter filter1 = new IntentFilter("SPACE_FULL_ACTION");
-        registerReceiver(receiver,filter1);
+        registerReceiver(receiver, filter1);
 
-        /*IntentFilter networkFilter = new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION);
-        registerReceiver(networkChangeReceiver1, networkFilter);*/
 
-        switchButton = (Switch) findViewById(R.id.switchButton);
-        photoChk =(CheckBox) findViewById(R.id.chkPhoto);
-        txtview =(TextView) findViewById(R.id.txtView);
-
-        startOrStopSync();
-
-        switchButton.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton compoundButton, boolean bChecked) {
-                if (bChecked) {
-                    sessionManager.changeSyncStatus(bChecked);
-                    startOrStopSync();
-
-                } else {
-                    sessionManager.changeSyncStatus(bChecked);
-                    startOrStopSync();
-                }
-            }
-        });
-
-        photoChk.setOnCheckedChangeListener((new CompoundButton.OnCheckedChangeListener() {
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-
-                if(isChecked){
-                    sessionManager.changePhotoSyncStatus(true);
-                    startOrStopSync();
-                }
-                else{
-                    sessionManager.changePhotoSyncStatus(false);
-                    startOrStopSync();
-                }
-            }
-        }));
     }
 
     private void checkMemoryStatus() {
@@ -172,7 +137,7 @@ public class Sync extends AppCompatActivity {
         try {
 
             JSONObject obj = new JSONObject();
-            obj.put("userId","313");
+            obj.put("userId",sessionManager.getId());
             StringEntity jsonString = new StringEntity(obj.toString());
 
         AsyncHttpClient client = new AsyncHttpClient();
@@ -199,8 +164,47 @@ public class Sync extends AppCompatActivity {
                         if(Double.parseDouble(obj.getString("data"))>100.00){
 
                             Intent i = new Intent(Sync.this,PricingActivity.class);
-                            startActivity(i);
-                            finish();
+                            Sync.this.startActivity(i);
+                            Sync.this.finish();
+                        }else{
+
+
+        /*IntentFilter networkFilter = new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION);
+        registerReceiver(networkChangeReceiver1, networkFilter);*/
+
+                            switchButton = (Switch) findViewById(R.id.switchButton);
+                            photoChk =(CheckBox) findViewById(R.id.chkPhoto);
+                            txtview =(TextView) findViewById(R.id.txtView);
+
+                            startOrStopSync();
+
+                            switchButton.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                                @Override
+                                public void onCheckedChanged(CompoundButton compoundButton, boolean bChecked) {
+                                    if (bChecked) {
+                                        sessionManager.changeSyncStatus(bChecked);
+                                        startOrStopSync();
+
+                                    } else {
+                                        sessionManager.changeSyncStatus(bChecked);
+                                        startOrStopSync();
+                                    }
+                                }
+                            });
+
+                            photoChk.setOnCheckedChangeListener((new CompoundButton.OnCheckedChangeListener() {
+                                public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+
+                                    if(isChecked){
+                                        sessionManager.changePhotoSyncStatus(true);
+                                        startOrStopSync();
+                                    }
+                                    else{
+                                        sessionManager.changePhotoSyncStatus(false);
+                                        startOrStopSync();
+                                    }
+                                }
+                            }));
                         }
                     }
                 } catch (JSONException e) {
